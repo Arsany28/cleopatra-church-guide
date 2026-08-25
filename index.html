@@ -146,39 +146,35 @@
 
   <main class="max-w-6xl mx-auto px-4 mt-4 space-y-6">
 
-    <!-- ================= 2. REAL 3D ARCHITECTURAL CHURCH MAP ================= -->
+    <!-- ================= 2. 3D DUAL BUILDINGS MAP: CHURCH & SERVICES ================= -->
     <section id="map-section" class="glass-card rounded-3xl p-4 sm:p-6 border border-cyanGlow/30 shadow-glass">
       
-      <!-- Section Title & Filter Controls -->
+      <!-- Section Title & Building Switcher -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
         <div>
           <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-300 mb-1 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-500/30">
             <i data-lucide="compass" class="w-3.5 h-3.5 text-cyanGlow"></i>
-            <span>المجسم المعماري التفاعلي 3D (Church & Services Complex)</span>
+            <span>المجسم المعماري التفاعلي 3D (مبنى الكنيسة ومبنى الخدمات المستقل)</span>
           </div>
           <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
-            <span>خريطة مبنى الكنيسة ومبنى الخدمات وتوزيع المرافق</span>
-            <span class="text-xs font-bold text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/30">مطابق للواقع 100%</span>
+            <span>خريطة مباني الكنيسة وتوزيع الأدوار والمرافق</span>
+            <span class="text-xs font-bold text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/30">مبنيان مستقلان</span>
           </h2>
-          <p class="text-xs text-slate-300 mt-1">اضغط على أي علامة في المجسم ثلاثي الأبعاد أو اختر القسم لعرض تفاصيل الوصول</p>
+          <p class="text-xs text-slate-300 mt-1">اختر المبنى لعرض مجسمه ثلاثي الأبعاد والضغط على أي قاعة أو مرفق</p>
         </div>
 
-        <!-- Filter Tabs on the 3D Model -->
-        <div class="flex items-center bg-sapphire-950/90 p-1.5 rounded-2xl border border-white/10 shadow-inner overflow-x-auto no-scrollbar gap-1">
-          <button onclick="filter3DMap('all')" id="filter-all" class="floor-tab active-floor px-3.5 py-2 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-glow-cyan whitespace-nowrap flex items-center gap-1.5">
-            <span>✨ كامل المجسم (الكل)</span>
+        <!-- 2 Main Standalone Buildings Switcher Tabs -->
+        <div class="flex items-center bg-sapphire-950/90 p-1.5 rounded-2xl border border-white/10 shadow-inner overflow-x-auto no-scrollbar gap-1.5">
+          <button onclick="switchBuilding('church')" id="tab-bld-church" class="building-tab active-bld px-4 py-2.5 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-glow-cyan whitespace-nowrap flex items-center gap-2">
+            <span class="text-sm">⛪</span>
+            <span>1. مبنى الكنيسة الرئيسي</span>
+            <span class="text-[10px] bg-slate-900/30 px-1.5 py-0.5 rounded-md">الكاتدرائية • الصغيرة • المزار • المكتبة</span>
           </button>
           
-          <button onclick="filter3DMap('church')" id="filter-church" class="floor-tab px-3 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1">
-            <span>⛪ مبنى الكنيسة والصلوات</span>
-          </button>
-
-          <button onclick="filter3DMap('services')" id="filter-services" class="floor-tab px-3 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1">
-            <span>🏢 مبنى الخدمات (العزاء والفصول)</span>
-          </button>
-
-          <button onclick="filter3DMap('basement')" id="filter-basement" class="floor-tab px-3 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1">
-            <span>⚽ تحت خالص (الملعب والاستوديو)</span>
+          <button onclick="switchBuilding('services')" id="tab-bld-services" class="building-tab px-4 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-2">
+            <span class="text-sm">🏢</span>
+            <span>2. مبنى الخدمات المستقل</span>
+            <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded-md">العزاء • الفصول • الكافتيريا • الألعاب</span>
           </button>
         </div>
       </div>
@@ -187,158 +183,207 @@
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-3" id="quickPlacesBar">
       </div>
 
-      <!-- 3D Master Model Container with Interactive Pulsing Pins -->
+      <!-- Map Display Container -->
       <div class="relative bg-gradient-to-b from-sapphire-950 via-[#071126] to-sapphire-950 rounded-3xl p-2 sm:p-4 border border-cyan-500/30 overflow-hidden shadow-2xl">
         
-        <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
-          <img 
-            id="mainChurch3DImage"
-            src="church_3d_real_map.jpg" 
-            alt="المجسم المعماري الحقيقي ثلاثي الأبعاد لكنيسة السيدة العذراء والبابا كيرلس بكليوباترا ومبنى الخدمات" 
-            class="w-full h-auto object-cover select-none"
-          />
-
-          <!-- 1. Big Church (Upper Floor Cathedral) -->
-          <div data-category="church" class="hotspot-pin absolute top-[20%] left-[55%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('big_church')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-8 w-8 sm:h-9 sm:w-9">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-8 w-8 sm:h-9 sm:w-9 bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 font-black items-center justify-center text-xs sm:text-sm shadow-glow-gold border-2 border-white">👑</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-amber-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap">
-                الكنيسة الكبرى (العلوي)
-              </span>
-            </button>
+        <!-- ================= 1. BUILDING 1: MAIN CHURCH 3D ================= -->
+        <div id="view-bld-church" class="building-view w-full max-w-4xl mx-auto transition-all duration-500">
+          <div class="text-center mb-2">
+            <span class="inline-block text-xs font-bold text-cyan-300 bg-cyan-950/80 px-3 py-1 rounded-full border border-cyan-500/30">
+              ⛪ مبنى الكنيسة الرئيسي والصلوات (الكاتدرائية، الكنيسة الصغيرة، مزار العذراء، المكتبة، الجراج)
+            </span>
           </div>
 
-          <!-- 2. Glass Bookstore -->
-          <div data-category="church" class="hotspot-pin absolute top-[48%] left-[32%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('bookstore')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-cyan-600 to-cyan-400 text-slate-950 font-black items-center justify-center text-xs shadow-glow-cyan border-2 border-white">📖</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-cyan-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-cyan-500/40 shadow-lg whitespace-nowrap">
-                المكتبة الكنسية
-              </span>
-            </button>
+          <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
+            <img 
+              src="church_3d_real_map.jpg" 
+              alt="المجسم المعماري الحقيقي ثلاثي الأبعاد لكنيسة السيدة العذراء والبابا كيرلس بكليوباترا" 
+              class="w-full h-auto object-cover select-none"
+            />
+
+            <!-- Hotspot: Big Church (Upper Floor) -->
+            <div class="absolute top-[20%] left-[55%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('big_church')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-8 w-8 sm:h-9 sm:w-9">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-8 w-8 sm:h-9 sm:w-9 bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 font-black items-center justify-center text-xs sm:text-sm shadow-glow-gold border-2 border-white">👑</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-amber-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap">
+                  الكنيسة الكبرى (العلوي)
+                </span>
+              </button>
+            </div>
+
+            <!-- Hotspot: Glass Bookstore -->
+            <div class="absolute top-[48%] left-[32%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('bookstore')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-cyan-600 to-cyan-400 text-slate-950 font-black items-center justify-center text-xs shadow-glow-cyan border-2 border-white">📖</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-cyan-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-cyan-500/40 shadow-lg whitespace-nowrap">
+                  المكتبة الكنسية
+                </span>
+              </button>
+            </div>
+
+            <!-- Hotspot: St. Mary Flower Heart Shrine -->
+            <div class="absolute top-[58%] left-[45%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('st_mary_shrine')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-rose-600 to-pink-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🌹</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-rose-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-rose-500/40 shadow-lg whitespace-nowrap">
+                  مزار العذراء بالفناء
+                </span>
+              </button>
+            </div>
+
+            <!-- Hotspot: Small Church Chapel -->
+            <div class="absolute top-[55%] left-[16%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('small_church')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-blue-600 to-indigo-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">⛪</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-blue-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-blue-500/40 shadow-lg whitespace-nowrap">
+                  الكنيسة الصغيرة (الأرضي)
+                </span>
+              </button>
+            </div>
+
+            <!-- Hotspot: Priest Office -->
+            <div class="absolute top-[57%] left-[66%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('priest_office')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
+                  <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-amber-700 to-amber-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">✝️</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-amber-200 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap">
+                  مكتب الآباء الكهنة
+                </span>
+              </button>
+            </div>
+
+            <!-- Hotspot: Parking Garage -->
+            <div class="absolute top-[62%] left-[84%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('garage')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
+                  <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-slate-700 to-slate-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🚗</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-slate-200 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap">
+                  الجراج
+                </span>
+              </button>
+            </div>
+
+            <!-- Hotspot: Nursery -->
+            <div class="absolute top-[72%] left-[22%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('nursery')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7">
+                  <span class="relative inline-flex rounded-full h-7 w-7 bg-gradient-to-tr from-emerald-600 to-green-400 text-slate-950 font-black items-center justify-center text-xs shadow-md border-2 border-white">👶</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-emerald-300 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border border-emerald-500/40 shadow-lg whitespace-nowrap">
+                  الحضانة
+                </span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================= 2. BUILDING 2: STANDALONE SERVICES BUILDING 3D ================= -->
+        <div id="view-bld-services" class="building-view hidden w-full max-w-4xl mx-auto transition-all duration-500">
+          <div class="text-center mb-2">
+            <span class="inline-block text-xs font-bold text-purple-300 bg-purple-950/80 px-3 py-1 rounded-full border border-purple-500/30">
+              🏢 مبنى الخدمات المستقل (الكافتيريا فوق خالص، فصول الخدمات أدوار 2-4، قاعة العزاء والتواليت بالدور 1، الألعاب تحت خالص)
+            </span>
           </div>
 
-          <!-- 3. St. Mary Flower Heart Shrine -->
-          <div data-category="church" class="hotspot-pin absolute top-[58%] left-[45%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('st_mary_shrine')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-rose-600 to-pink-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🌹</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-rose-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-rose-500/40 shadow-lg whitespace-nowrap">
-                مزار العذراء بالفناء
-              </span>
-            </button>
-          </div>
+          <div class="relative rounded-2xl overflow-hidden border border-purple-500/40 shadow-2xl group">
+            <img 
+              src="services_building_3d.jpg" 
+              alt="المجسم المعماري ثلاثي الأبعاد لمبنى الخدمات المستقل لكنيسة السيدة العذراء والبابا كيرلس" 
+              class="w-full h-auto object-cover select-none"
+            />
 
-          <!-- 4. Small Church Chapel -->
-          <div data-category="church" class="hotspot-pin absolute top-[55%] left-[16%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('small_church')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-blue-600 to-indigo-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">⛪</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-blue-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-blue-500/40 shadow-lg whitespace-nowrap">
-                الكنيسة الصغيرة (الأرضي)
-              </span>
-            </button>
-          </div>
+            <!-- Hotspot 1: Top Rooftop Cafeteria (فوق خالص) -->
+            <div class="absolute top-[12%] left-[50%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('cafeteria')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-8 w-8 sm:h-9 sm:w-9">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-8 w-8 sm:h-9 sm:w-9 bg-gradient-to-tr from-amber-600 to-amber-400 text-slate-950 font-black items-center justify-center text-xs sm:text-sm shadow-glow-gold border-2 border-white">☕</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-amber-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap">
+                  الكافتيريا والساحة (السطح - فوق خالص)
+                </span>
+              </button>
+            </div>
 
-          <!-- 5. Condolence Hall (مبنى الخدمات - قاعة العزاء) -->
-          <div data-category="services" class="hotspot-pin absolute top-[54%] left-[64%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('condolence_hall')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-8 w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-purple-700 to-indigo-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🕊️</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-purple-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-purple-500/40 shadow-lg whitespace-nowrap">
-                قاعة العزاء والمناسبات
-              </span>
-            </button>
-          </div>
+            <!-- Hotspot 2: Services Classrooms (Floors 2, 3, 4) -->
+            <div class="absolute top-[38%] left-[45%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('services_classrooms')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-8 w-8">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-cyan-600 to-blue-500 text-slate-950 font-black items-center justify-center text-xs shadow-glow-cyan border-2 border-white">👥</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-cyan-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-cyan-500/40 shadow-lg whitespace-nowrap">
+                  فصول مدارس الأحد والخدمات (الأدوار 2 و 3 و 4)
+                </span>
+              </button>
+            </div>
 
-          <!-- 6. Restrooms opposite condolence hall (دورات المياه قدام قاعة العزاء) -->
-          <div data-category="services" class="hotspot-pin absolute top-[54%] left-[76%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('toilets')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-7 w-7">
-                <span class="relative inline-flex rounded-full h-7 w-7 bg-gradient-to-tr from-slate-700 to-slate-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🚻</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-slate-300 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap">
-                دورات المياه
-              </span>
-            </button>
-          </div>
+            <!-- Hotspot 3: Condolence Hall (Floor 1) -->
+            <div class="absolute top-[64%] left-[38%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('condolence_hall')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-8 w-8">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-purple-700 to-indigo-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🕊️</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-purple-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-purple-500/40 shadow-lg whitespace-nowrap">
+                  قاعة العزاء والمناسبات (الدور الأول)
+                </span>
+              </button>
+            </div>
 
-          <!-- 7. Services Classrooms (مبنى الخدمات - فصول وأدوار الخدمة 2 و 3 و 4) -->
-          <div data-category="services" class="hotspot-pin absolute top-[36%] left-[72%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('services_classrooms')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-8 w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-blue-600 to-cyan-500 text-slate-950 font-black items-center justify-center text-xs shadow-glow-cyan border-2 border-white">👥</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-blue-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-blue-500/40 shadow-lg whitespace-nowrap">
-                فصول مدارس الأحد والخدمات (الأدوار 2-4)
-              </span>
-            </button>
-          </div>
+            <!-- Hotspot 4: Restrooms directly across the hallway (قدام قاعة العزاء) -->
+            <div class="absolute top-[64%] left-[70%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('toilets')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7">
+                  <span class="relative inline-flex rounded-full h-7 w-7 bg-gradient-to-tr from-slate-700 to-slate-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🚻</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap">
+                  دورات المياه (قدام قاعة العزاء)
+                </span>
+              </button>
+            </div>
 
-          <!-- 8. Rooftop Cafeteria (الكافتيريا فوق خالص) -->
-          <div data-category="services" class="hotspot-pin absolute top-[16%] left-[75%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('cafeteria')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-7 w-7 sm:h-8 sm:w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-7 w-7 sm:h-8 sm:w-8 bg-gradient-to-tr from-amber-600 to-yellow-400 text-slate-950 font-black items-center justify-center text-xs shadow-glow-gold border-2 border-white">☕</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-amber-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap">
-                الكافتيريا والساحة (فوق خالص)
-              </span>
-            </button>
-          </div>
+            <!-- Hotspot 5: Youth Game Hall & Playground (تحت خالص بالبدروم) -->
+            <div class="absolute top-[82%] left-[55%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('playground')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-8 w-8">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-emerald-600 to-emerald-400 text-slate-950 font-black items-center justify-center text-xs shadow-glow-emerald border-2 border-white">⚽</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-emerald-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-emerald-500/40 shadow-lg whitespace-nowrap">
+                  صالة الألعاب والملعب (تحت خالص)
+                </span>
+              </button>
+            </div>
 
-          <!-- 9. Parking Garage -->
-          <div data-category="church" class="hotspot-pin absolute top-[62%] left-[84%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('garage')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-7 w-7">
-                <span class="relative inline-flex rounded-full h-7 w-7 bg-gradient-to-tr from-slate-700 to-slate-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🚗</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-slate-200 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap">
-                الجراج
-              </span>
-            </button>
-          </div>
+            <!-- Hotspot 6: Sound Studio (تحت خالص) -->
+            <div class="absolute top-[82%] left-[25%] -translate-x-1/2 -translate-y-1/2 z-20">
+              <button onclick="showPersistentPlace('studio')" class="group/pin focus:outline-none flex flex-col items-center">
+                <span class="relative flex h-7 w-7">
+                  <span class="relative inline-flex rounded-full h-7 w-7 bg-gradient-to-tr from-pink-700 to-rose-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🎙️</span>
+                </span>
+                <span class="mt-1 bg-slate-950/90 text-pink-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-pink-500/40 shadow-lg whitespace-nowrap">
+                  استوديو الصوت والتسجيل
+                </span>
+              </button>
+            </div>
 
-          <!-- 10. Basement Sports Playground (تحت خالص) -->
-          <div data-category="basement" class="hotspot-pin absolute top-[80%] left-[38%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('playground')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-8 w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-emerald-600 to-emerald-400 text-slate-950 font-black items-center justify-center text-xs shadow-glow-emerald border-2 border-white">⚽</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-emerald-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-emerald-500/40 shadow-lg whitespace-nowrap">
-                صالة الألعاب والملعب (تحت خالص)
-              </span>
-            </button>
           </div>
-
-          <!-- 11. Sound & Recording Studio (تحت خالص) -->
-          <div data-category="basement" class="hotspot-pin absolute top-[78%] left-[62%] -translate-x-1/2 -translate-y-1/2 z-20 transition-all duration-300">
-            <button onclick="showPersistentPlace('studio')" class="group/pin focus:outline-none flex flex-col items-center">
-              <span class="relative flex h-8 w-8">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-8 w-8 bg-gradient-to-tr from-pink-700 to-rose-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🎙️</span>
-              </span>
-              <span class="mt-1 bg-slate-950/90 text-pink-300 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-lg border border-pink-500/40 shadow-lg whitespace-nowrap">
-                استوديو التسجيل الصوتي
-              </span>
-            </button>
-          </div>
-
         </div>
 
       </div>
@@ -360,7 +405,7 @@
             <div>
               <div class="flex items-center gap-2">
                 <h3 id="inspTitle" class="text-base md:text-lg font-black text-white">الكنيسة الكبرى (الكاتدرائية الرئيسية)</h3>
-                <span id="inspFloor" class="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/30">مبنى الكنيسة - الدور العلوي</span>
+                <span id="inspFloor" class="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/30">مبنى الكنيسة الرئيسي</span>
               </div>
               <p id="inspDesc" class="text-xs text-slate-200 mt-1 max-w-2xl leading-relaxed">
                 مقر صلوات القداسات الإلهية الكبرى والأعياد والنهضات الروحية مع القبة الأيقونية المرسومة والنجف الكريستالي.
@@ -971,45 +1016,36 @@
       initServiceWorker();
     });
 
-    let current3DCategory = 'all';
+    let currentBuilding = 'church';
     let activePersistentKey = 'big_church';
 
-    function filter3DMap(category) {
-      current3DCategory = category;
+    function switchBuilding(building) {
+      currentBuilding = building;
 
-      // Update active tab styling
-      document.querySelectorAll('.floor-tab').forEach(btn => {
-        btn.classList.remove('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-slate-950', 'shadow-glow-cyan', 'active-floor');
+      // Update Building Views
+      document.querySelectorAll('.building-view').forEach(el => el.classList.add('hidden'));
+      const activeView = document.getElementById(`view-bld-${building}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      // Update Tab styling
+      document.querySelectorAll('.building-tab').forEach(btn => {
+        btn.classList.remove('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-slate-950', 'shadow-glow-cyan', 'active-bld');
         btn.classList.add('text-slate-300');
       });
 
-      const activeBtn = document.getElementById(`filter-${category}`);
+      const activeBtn = document.getElementById(`tab-bld-${building}`);
       if (activeBtn) {
         activeBtn.classList.remove('text-slate-300');
-        activeBtn.classList.add('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-slate-950', 'shadow-glow-cyan', 'active-floor');
+        activeBtn.classList.add('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-slate-950', 'shadow-glow-cyan', 'active-bld');
       }
-
-      // Filter Pins on 3D Model
-      document.querySelectorAll('.hotspot-pin').forEach(pin => {
-        const pinCat = pin.getAttribute('data-category');
-        if (category === 'all' || pinCat === category) {
-          pin.style.opacity = '1';
-          pin.style.pointerEvents = 'auto';
-          pin.style.transform = 'scale(1)';
-        } else {
-          pin.style.opacity = '0.2';
-          pin.style.pointerEvents = 'none';
-          pin.style.transform = 'scale(0.8)';
-        }
-      });
 
       renderQuickPlacesBar();
 
-      // If active place is not in filtered category, pick first available
+      // Show first place in this building
       const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
-      const matchPlaces = (category === 'all') ? places : places.filter(p => p.category === category);
-      if (matchPlaces.length > 0 && !matchPlaces.some(p => p.key === activePersistentKey)) {
-        showPersistentPlace(matchPlaces[0].key);
+      const bldPlaces = places.filter(p => (building === 'church' ? (p.category === 'church' || p.category === 'all') : (p.category === 'services' || p.category === 'basement')));
+      if (bldPlaces.length > 0) {
+        showPersistentPlace(bldPlaces[0].key);
       }
     }
 
@@ -1025,10 +1061,7 @@
       if (!bar) return;
       const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
       
-      let displayedPlaces = places;
-      if (current3DCategory !== 'all') {
-        displayedPlaces = places.filter(p => p.category === current3DCategory);
-      }
+      const displayedPlaces = places.filter(p => (currentBuilding === 'church' ? (p.category === 'church' || p.category === 'all') : (p.category === 'services' || p.category === 'basement')));
       
       bar.innerHTML = displayedPlaces.map(p => `
         <button onclick="showPersistentPlace('${p.key}')" class="px-3 py-1.5 rounded-xl border text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${p.key === activePersistentKey ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-glow-cyan' : 'bg-sapphire-900/60 text-slate-300 border-white/10 hover:border-cyan-400/50'}">
@@ -1054,7 +1087,7 @@
       const floorNames = { 
         ground: 'مبنى الكنيسة - الدور الأرضي', 
         first: 'مبنى الكنيسة - الدور العلوي', 
-        services: 'مبنى الخدمات',
+        services: 'مبنى الخدمات المستقل',
         basement: 'تحت خالص (البدروم)'
       };
       document.getElementById('inspFloor').innerText = floorNames[place.floor] || place.floor;
