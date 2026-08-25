@@ -146,134 +146,214 @@
 
   <main class="max-w-6xl mx-auto px-4 mt-4 space-y-6">
 
-    <!-- ================= 2. 3D ISOMETRIC ARCHITECTURAL CHURCH MAP ================= -->
-    <section id="map-section" class="glass-card rounded-3xl p-5 md:p-6 border border-cyanGlow/20 shadow-glass">
+    <!-- ================= 2. REAL 3D ARCHITECTURAL CHURCH MAP ================= -->
+    <section id="map-section" class="glass-card rounded-3xl p-4 sm:p-6 border border-cyanGlow/20 shadow-glass">
       
       <!-- Section Title & Floor Switcher -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
         <div>
           <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-300 mb-1 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-500/30">
             <i data-lucide="compass" class="w-3.5 h-3.5 text-cyanGlow"></i>
-            <span>المجسم المعماري التفاعلي للكنيسة (3D Floor Map)</span>
+            <span>المجسم المعماري الحقيقي التفاعلي (3D Real Model)</span>
           </div>
           <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
-            <span>خريطة مبنى الكنيسة وتوزيع الأدوار</span>
-            <span class="text-xs font-normal text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/30">3 مستويات</span>
+            <span>خريطة مبنى الكنيسة وتوزيع الأدوار والمرافق</span>
+            <span class="text-xs font-bold text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/30">مطابق للواقع</span>
           </h2>
-          <p class="text-xs text-slate-300 mt-1">اضغط على أي دور أو مكان لعرض إرشادات الوصول والتفاصيل الثابتة</p>
+          <p class="text-xs text-slate-300 mt-1">اضغط على أي مكان في المجسم أو اختر الدور لعرض تفاصيل الوصول</p>
         </div>
 
-        <!-- 3 Floor Switcher Buttons -->
+        <!-- 4 Switcher Buttons: Full 3D Master Model + 3 Floors -->
         <div class="flex items-center bg-sapphire-950/90 p-1.5 rounded-2xl border border-white/10 shadow-inner overflow-x-auto no-scrollbar gap-1">
-          <button onclick="switchFloor('ground')" id="tab-ground" class="floor-tab active-floor px-3.5 py-2 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-glow-cyan whitespace-nowrap flex items-center gap-1.5">
-            <span>🚪 مستوى الأرضي</span>
-            <span class="text-[10px] bg-slate-900/30 px-1.5 py-0.5 rounded-md">كنيسة صغيرة • حضانة • جراج • مكتب أبونا</span>
+          <button onclick="switchFloor('master')" id="tab-master" class="floor-tab active-floor px-3.5 py-2 rounded-xl text-xs font-black transition-all bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 shadow-glow-cyan whitespace-nowrap flex items-center gap-1.5">
+            <span>✨ المجسم الشامل 3D</span>
           </button>
           
-          <button onclick="switchFloor('first')" id="tab-first" class="floor-tab px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1.5">
-            <span>⛪ الدور العلوي</span>
-            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-md">الكنيسة الكبيرة • المكتبة</span>
+          <button onclick="switchFloor('ground')" id="tab-ground" class="floor-tab px-3 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1">
+            <span>🚪 الأرضي</span>
           </button>
 
-          <button onclick="switchFloor('basement')" id="tab-basement" class="floor-tab px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1.5">
-            <span>⚽ تحت الأرض (البدروم)</span>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-md">الملعب • استوديو الصوت</span>
+          <button onclick="switchFloor('first')" id="tab-first" class="floor-tab px-3 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1">
+            <span>⛪ العلوي</span>
+          </button>
+
+          <button onclick="switchFloor('basement')" id="tab-basement" class="floor-tab px-3 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 whitespace-nowrap flex items-center gap-1">
+            <span>⚽ البدروم</span>
           </button>
         </div>
       </div>
 
       <!-- Quick Places Filter Pills -->
-      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-4" id="quickPlacesBar">
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 mb-3" id="quickPlacesBar">
       </div>
 
       <!-- Map Display Container -->
-      <div class="relative bg-gradient-to-b from-sapphire-950 via-[#071126] to-sapphire-950 rounded-3xl p-4 md:p-6 border border-white/10 overflow-hidden shadow-2xl min-h-[440px] flex items-center justify-center">
+      <div class="relative bg-gradient-to-b from-sapphire-950 via-[#071126] to-sapphire-950 rounded-3xl p-2 sm:p-4 border border-white/10 overflow-hidden shadow-2xl min-h-[420px] flex items-center justify-center">
         
-        <!-- ================= FLOOR 1: GROUND LEVEL (مستوى الأرضي) ================= -->
-        <div id="floor-ground-view" class="floor-view w-full max-w-4xl transition-all duration-500">
+        <!-- ================= VIEW 1: MASTER 3D REAL ARCHITECTURAL MODEL ================= -->
+        <div id="floor-master-view" class="floor-view w-full max-w-4xl transition-all duration-500 relative">
+          <div class="relative rounded-2xl overflow-hidden border border-cyan-500/30 shadow-2xl group">
+            <img 
+              src="church_3d_real_map.jpg" 
+              alt="المجسم المعماري الحقيقي ثلاثي الأبعاد لكنيسة السيدة العذراء والبابا كيرلس بكليوباترا" 
+              class="w-full h-auto object-cover select-none"
+            />
+
+            <!-- Interactive Hotspot Pins overlaying the 3D Render -->
+            <!-- 1. Big Church (Cathedral & Painted Dome) -->
+            <button onclick="showPersistentPlace('big_church')" class="absolute top-[18%] left-[55%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-8 w-8">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-8 w-8 bg-amber-500 text-slate-950 font-black items-center justify-center text-xs shadow-glow-gold border-2 border-white">👑</span>
+              </span>
+              <span class="absolute top-9 left-1/2 -translate-x-1/2 bg-slate-950/90 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                الكنيسة الكبرى (العلوي)
+              </span>
+            </button>
+
+            <!-- 2. Glass Bookstore -->
+            <button onclick="showPersistentPlace('bookstore')" class="absolute top-[48%] left-[32%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-cyan-500 text-slate-950 font-black items-center justify-center text-xs shadow-glow-cyan border-2 border-white">📖</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-cyan-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-cyan-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                المكتبة الكنسية
+              </span>
+            </button>
+
+            <!-- 3. St. Mary Heart Shrine -->
+            <button onclick="showPersistentPlace('st_mary_shrine')" class="absolute top-[58%] left-[45%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-rose-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🌹</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-rose-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                مزار العذراء مريم
+              </span>
+            </button>
+
+            <!-- 4. Small Church Chapel -->
+            <button onclick="showPersistentPlace('small_church')" class="absolute top-[55%] left-[16%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-blue-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">⛪</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-blue-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                الكنيسة الصغيرة (الأرضي)
+              </span>
+            </button>
+
+            <!-- 5. Priest Office -->
+            <button onclick="showPersistentPlace('priest_office')" class="absolute top-[57%] left-[66%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-amber-600 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">✝️</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-amber-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                مكتب الآباء الكهنة
+              </span>
+            </button>
+
+            <!-- 6. Parking Garage -->
+            <button onclick="showPersistentPlace('garage')" class="absolute top-[62%] left-[82%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-slate-700 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🚗</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                جراج الكنيسة
+              </span>
+            </button>
+
+            <!-- 7. Basement Sports Playground -->
+            <button onclick="showPersistentPlace('playground')" class="absolute top-[80%] left-[38%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-emerald-500 text-slate-950 font-black items-center justify-center text-xs shadow-glow-emerald border-2 border-white">⚽</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-emerald-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                ملعب وصالة الألعاب (البدروم)
+              </span>
+            </button>
+
+            <!-- 8. Sound & Recording Studio -->
+            <button onclick="showPersistentPlace('studio')" class="absolute top-[78%] left-[62%] -translate-x-1/2 -translate-y-1/2 group/pin z-20 cursor-pointer focus:outline-none">
+              <span class="relative flex h-7 w-7">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-7 w-7 bg-pink-600 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🎙️</span>
+              </span>
+              <span class="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-950/90 text-pink-300 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-pink-500/40 shadow-lg whitespace-nowrap hidden sm:block">
+                استوديو الصوت (البدروم)
+              </span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- ================= VIEW 2: GROUND LEVEL ================= -->
+        <div id="floor-ground-view" class="floor-view hidden w-full max-w-4xl transition-all duration-500">
           <div class="text-center mb-3">
             <span class="inline-block text-xs font-bold text-cyan-300 bg-cyan-950/80 px-3 py-1 rounded-full border border-cyan-500/30">
-              📍 الدور الأرضي (مستوى الشارع والمدخل الرئيسي)
+              📍 الدور الأرضي (مستوى الشارع والمدخل الرئيسي ومزار العذراء)
             </span>
           </div>
 
-          <!-- Isometric Architectural SVG for Ground Floor -->
           <div class="relative w-full aspect-[16/10] max-h-[380px] mx-auto">
             <svg viewBox="0 0 900 560" class="w-full h-full drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="groundFloorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#0f274a" stop-opacity="0.9"/>
-                  <stop offset="100%" stop-color="#07152b" stop-opacity="0.95"/>
-                </linearGradient>
-                <linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.4"/>
-                  <stop offset="100%" stop-color="#142554" stop-opacity="0.8"/>
-                </linearGradient>
-                <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="6" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
-
-              <!-- Main Isometric Base Slab -->
-              <polygon points="450,40 850,220 450,520 50,340" fill="url(#groundFloorGrad)" stroke="#00f0ff" stroke-width="2" stroke-opacity="0.4" />
-              <!-- Isometric Grid Accent Lines -->
+              <polygon points="450,40 850,220 450,520 50,340" fill="#0f274a" stroke="#00f0ff" stroke-width="2" stroke-opacity="0.4" />
               <line x1="450" y1="40" x2="450" y2="520" stroke="#00f0ff" stroke-dasharray="4,4" stroke-opacity="0.2" />
               <line x1="250" y1="190" x2="650" y2="370" stroke="#00f0ff" stroke-dasharray="4,4" stroke-opacity="0.2" />
 
-              <!-- ROOM 1 (Right): الكنيسة الصغيرة -->
+              <!-- الكنيسة الصغيرة -->
               <g onclick="showPersistentPlace('small_church')" class="cursor-pointer group">
-                <polygon points="450,70 780,210 580,340 320,180" fill="#143160" fill-opacity="0.7" stroke="#00f0ff" stroke-width="2" class="group-hover:fill-cyan-600/40 group-hover:stroke-cyanGlow transition-all duration-300" />
-                <polygon points="450,70 780,210 780,240 450,100" fill="#0c1e3d" stroke="#00f0ff" stroke-width="1" stroke-opacity="0.4" />
-                <!-- 3D Altar Accent -->
+                <polygon points="450,70 780,210 580,340 320,180" fill="#143160" fill-opacity="0.75" stroke="#00f0ff" stroke-width="2" class="group-hover:fill-cyan-600/40 transition-all" />
                 <polygon points="560,120 700,180 630,230 500,165" fill="#f59e0b" fill-opacity="0.25" stroke="#f59e0b" stroke-width="1.5" />
                 <text x="560" y="200" fill="#ffffff" font-weight="bold" font-size="16" text-anchor="middle" font-family="Cairo">⛪ الكنيسة الصغيرة</text>
                 <text x="560" y="222" fill="#38bdf8" font-size="11" text-anchor="middle" font-family="Cairo">مذبح مارمرقس والقداسات اليومية</text>
               </g>
 
-              <!-- ROOM 2 (Top Left): مكتب الآباء الكهنة -->
+              <!-- مزار العذراء -->
+              <g onclick="showPersistentPlace('st_mary_shrine')" class="cursor-pointer group">
+                <polygon points="340,240 450,300 390,350 280,290" fill="#be123c" fill-opacity="0.6" stroke="#fb7185" stroke-width="1.5" class="group-hover:fill-rose-600/50 transition-all" />
+                <text x="365" y="300" fill="#ffffff" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">🌹 مزار العذراء مريم</text>
+                <text x="365" y="320" fill="#fecdd3" font-size="10" text-anchor="middle" font-family="Cairo">قلب الزهور بالفناء</text>
+              </g>
+
+              <!-- مكتب الكهنة -->
               <g onclick="showPersistentPlace('priest_office')" class="cursor-pointer group">
-                <polygon points="280,120 420,190 320,260 180,185" fill="#1e293b" fill-opacity="0.8" stroke="#f59e0b" stroke-width="1.5" class="group-hover:fill-amber-600/30 group-hover:stroke-amber-400 transition-all duration-300" />
+                <polygon points="280,120 420,190 320,260 180,185" fill="#1e293b" fill-opacity="0.8" stroke="#f59e0b" stroke-width="1.5" class="group-hover:fill-amber-600/30 transition-all" />
                 <text x="300" y="195" fill="#ffffff" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">✝️ مكتب أبونا (الكهنة)</text>
                 <text x="300" y="215" fill="#fcd34d" font-size="10" text-anchor="middle" font-family="Cairo">للاعتراف والمقابلات</text>
               </g>
 
-              <!-- ROOM 3 (Mid Left): جراج السيارات -->
+              <!-- جراج السيارات -->
               <g onclick="showPersistentPlace('garage')" class="cursor-pointer group">
-                <polygon points="160,200 300,275 210,345 80,265" fill="#0f172a" fill-opacity="0.85" stroke="#64748b" stroke-width="1.5" class="group-hover:fill-slate-700/50 group-hover:stroke-cyan-400 transition-all duration-300" />
+                <polygon points="160,200 300,275 210,345 80,265" fill="#0f172a" fill-opacity="0.85" stroke="#64748b" stroke-width="1.5" class="group-hover:fill-slate-700/50 transition-all" />
                 <text x="190" y="275" fill="#ffffff" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">🚗 جراج الكنيسة</text>
                 <text x="190" y="295" fill="#94a3b8" font-size="10" text-anchor="middle" font-family="Cairo">مواقف السيارات والزوار</text>
               </g>
 
-              <!-- ROOM 4 (Bottom Left): الحضانة -->
+              <!-- الحضانة -->
               <g onclick="showPersistentPlace('nursery')" class="cursor-pointer group">
-                <polygon points="190,360 340,450 250,510 110,410" fill="#14532d" fill-opacity="0.6" stroke="#22c55e" stroke-width="1.5" class="group-hover:fill-emerald-600/40 group-hover:stroke-emerald-300 transition-all duration-300" />
+                <polygon points="190,360 340,450 250,510 110,410" fill="#14532d" fill-opacity="0.6" stroke="#22c55e" stroke-width="1.5" class="group-hover:fill-emerald-600/40 transition-all" />
                 <text x="220" y="440" fill="#ffffff" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">👶 حضانة الأطفال</text>
                 <text x="220" y="460" fill="#86efac" font-size="10" text-anchor="middle" font-family="Cairo">فصول وألعاب مرحلة الحضانة</text>
               </g>
 
-              <!-- STAIRS 1 (To Upper Floor): السلم الصاعد للكنيسة الكبيرة -->
+              <!-- سلالم الصعود للدور العلوي -->
               <g onclick="switchFloor('first')" class="cursor-pointer group">
-                <polygon points="460,340 560,400 480,455 380,390" fill="#3b82f6" fill-opacity="0.3" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3,3" class="group-hover:fill-blue-500/50 transition-all" />
-                <!-- Stair Steps Drawing -->
-                <line x1="430" y1="375" x2="480" y2="405" stroke="#93c5fd" stroke-width="2" />
-                <line x1="445" y1="385" x2="495" y2="415" stroke="#93c5fd" stroke-width="2" />
-                <line x1="460" y1="395" x2="510" y2="425" stroke="#93c5fd" stroke-width="2" />
+                <polygon points="460,340 560,400 480,455 380,390" fill="#3b82f6" fill-opacity="0.35" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="3,3" class="group-hover:fill-blue-500/50 transition-all" />
                 <text x="470" y="375" fill="#bfdbfe" font-weight="bold" font-size="12" text-anchor="middle" font-family="Cairo">🪜 سلم صاعد للدور العلوي ⬆️</text>
                 <text x="470" y="435" fill="#60a5fa" font-size="10" text-anchor="middle" font-family="Cairo">(للكنيسة الكبيرة والمكتبة)</text>
               </g>
 
-              <!-- STAIRS 2 (To Basement): السلم الهابط للبدروم والملعب -->
+              <!-- سلالم الهبوط للبدروم -->
               <g onclick="switchFloor('basement')" class="cursor-pointer group">
-                <polygon points="570,330 670,390 600,440 500,380" fill="#047857" fill-opacity="0.3" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,3" class="group-hover:fill-emerald-500/50 transition-all" />
-                <!-- Stair Steps Down -->
-                <line x1="550" y1="370" x2="600" y2="400" stroke="#6ee7b7" stroke-width="2" />
-                <line x1="565" y1="380" x2="615" y2="410" stroke="#6ee7b7" stroke-width="2" />
+                <polygon points="570,330 670,390 600,440 500,380" fill="#047857" fill-opacity="0.35" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,3" class="group-hover:fill-emerald-500/50 transition-all" />
                 <text x="585" y="360" fill="#a7f3d0" font-weight="bold" font-size="12" text-anchor="middle" font-family="Cairo">🪜 سلم هابط للبدروم ⬇️</text>
                 <text x="585" y="420" fill="#34d399" font-size="10" text-anchor="middle" font-family="Cairo">(للملعب واستوديو الصوت)</text>
               </g>
 
-              <!-- GATE & SECURITY: المدخل الرئيسي -->
+              <!-- البوابة الرئيسية -->
               <g onclick="showPersistentPlace('main_gate')" class="cursor-pointer group">
                 <polygon points="360,460 480,530 430,560 310,490" fill="#e11d48" fill-opacity="0.3" stroke="#f43f5e" stroke-width="1.5" class="group-hover:fill-rose-600/40 transition-all" />
                 <text x="400" y="520" fill="#ffe4e6" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">🚪 البوابة الرئيسية والاستقبال</text>
@@ -282,44 +362,42 @@
           </div>
         </div>
 
-        <!-- ================= FLOOR 2: FIRST / UPPER LEVEL (الدور العلوي) ================= -->
+        <!-- ================= VIEW 3: FIRST / UPPER LEVEL ================= -->
         <div id="floor-first-view" class="floor-view hidden w-full max-w-4xl transition-all duration-500">
           <div class="text-center mb-3">
             <span class="inline-block text-xs font-bold text-amber-300 bg-amber-950/80 px-3 py-1 rounded-full border border-amber-500/30">
-              ⛪ الدور العلوي (الكنيسة الكبيرة ومكتبة الكتب والهدايا)
+              ⛪ الدور العلوي (الكنيسة الكبرى ومكتبة الكتب والهدايا)
             </span>
           </div>
 
           <div class="relative w-full aspect-[16/10] max-h-[380px] mx-auto">
             <svg viewBox="0 0 900 560" class="w-full h-full drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Upper Floor Slab -->
               <polygon points="450,40 850,220 450,520 50,340" fill="#0d1b38" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.4" />
               
-              <!-- MAIN BIG CHURCH (الكنيسة الكبيرة) -->
+              <!-- الكنيسة الكبيرة -->
               <g onclick="showPersistentPlace('big_church')" class="cursor-pointer group">
-                <polygon points="450,60 810,210 520,380 200,200" fill="#1e3a8a" fill-opacity="0.75" stroke="#38bdf8" stroke-width="2" class="group-hover:fill-blue-600/40 group-hover:stroke-cyanGlow transition-all duration-300" />
-                <!-- Iconostasis / Altar Golden Area -->
+                <polygon points="450,60 810,210 520,380 200,200" fill="#1e3a8a" fill-opacity="0.75" stroke="#38bdf8" stroke-width="2" class="group-hover:fill-blue-600/40 transition-all" />
                 <polygon points="560,110 750,190 660,250 490,165" fill="#f59e0b" fill-opacity="0.35" stroke="#f59e0b" stroke-width="2" />
-                <text x="610" y="180" fill="#fde68a" font-weight="black" font-size="14" text-anchor="middle" font-family="Cairo">👑 الهيكل الرئيسي وحامل الأيقونات</text>
+                <text x="610" y="180" fill="#fde68a" font-weight="black" font-size="14" text-anchor="middle" font-family="Cairo">👑 الهيكل الرئيسي وحامل الأيقونات والقباب</text>
                 <text x="460" y="270" fill="#ffffff" font-weight="black" font-size="20" text-anchor="middle" font-family="Cairo">⛪ الكنيسة الكبرى (الكاتدرائية)</text>
                 <text x="460" y="295" fill="#bae6fd" font-size="12" text-anchor="middle" font-family="Cairo">صلوات قداسات الأحد والأعياد الكبرى والنهضات</text>
               </g>
 
-              <!-- BOOKSTORE & GIFTS (المكتبة الكنسية) -->
+              <!-- المكتبة الكنسية -->
               <g onclick="showPersistentPlace('bookstore')" class="cursor-pointer group">
-                <polygon points="210,220 420,340 310,420 100,300" fill="#78350f" fill-opacity="0.7" stroke="#f59e0b" stroke-width="2" class="group-hover:fill-amber-600/50 group-hover:stroke-amber-300 transition-all duration-300" />
+                <polygon points="210,220 420,340 310,420 100,300" fill="#78350f" fill-opacity="0.7" stroke="#f59e0b" stroke-width="2" class="group-hover:fill-amber-600/50 transition-all" />
                 <text x="260" y="325" fill="#ffffff" font-weight="bold" font-size="16" text-anchor="middle" font-family="Cairo">📖 المكتبة الكنسية والهدايا</text>
                 <text x="260" y="350" fill="#fde68a" font-size="11" text-anchor="middle" font-family="Cairo">كتب روحية • أيقونات • صلبان وهدايا</text>
               </g>
 
-              <!-- SUNDAY SCHOOL & MEETING HALL -->
+              <!-- قاعة الاجتماعات -->
               <g onclick="showPersistentPlace('meeting_hall')" class="cursor-pointer group">
                 <polygon points="430,370 540,430 440,500 330,435" fill="#1e1b4b" fill-opacity="0.8" stroke="#818cf8" stroke-width="1.5" class="group-hover:fill-indigo-600/40 transition-all" />
                 <text x="430" y="440" fill="#ffffff" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">👥 قاعة الاجتماعات</text>
                 <text x="430" y="460" fill="#c7d2fe" font-size="10" text-anchor="middle" font-family="Cairo">اجتماع الشباب والندوات</text>
               </g>
 
-              <!-- STAIRS DOWN (سلم النزول للأرضي) -->
+              <!-- سلم النزول -->
               <g onclick="switchFloor('ground')" class="cursor-pointer group">
                 <polygon points="560,350 670,410 590,470 480,405" fill="#0284c7" fill-opacity="0.3" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3" class="group-hover:fill-cyan-500/40 transition-all" />
                 <text x="580" y="415" fill="#e0f2fe" font-weight="bold" font-size="12" text-anchor="middle" font-family="Cairo">🪜 السلم الرئيسي ⬇️</text>
@@ -329,43 +407,41 @@
           </div>
         </div>
 
-        <!-- ================= FLOOR 3: BASEMENT LEVEL (تحت الأرض - البدروم) ================= -->
+        <!-- ================= VIEW 4: BASEMENT LEVEL ================= -->
         <div id="floor-basement-view" class="floor-view hidden w-full max-w-4xl transition-all duration-500">
           <div class="text-center mb-3">
             <span class="inline-block text-xs font-bold text-emerald-300 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30">
-              ⚽ مستوى تحت الأرض (البدروم - الملعب واستوديو الصوت والكافتيريا)
+              ⚽ مستوى تحت الأرض (البدروم - الملعب بالنجيلة الخضراء واستوديو الصوت والكافتيريا)
             </span>
           </div>
 
           <div class="relative w-full aspect-[16/10] max-h-[380px] mx-auto">
             <svg viewBox="0 0 900 560" class="w-full h-full drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Basement Slab -->
               <polygon points="450,40 850,220 450,520 50,340" fill="#061f1a" stroke="#10b981" stroke-width="2" stroke-opacity="0.4" />
 
-              <!-- PLAYGROUND & SPORTS COURT (الملعب وصالة الألعاب) -->
+              <!-- الملعب وصالة الألعاب -->
               <g onclick="showPersistentPlace('playground')" class="cursor-pointer group">
-                <polygon points="450,70 800,220 540,380 230,200" fill="#065f46" fill-opacity="0.7" stroke="#34d399" stroke-width="2" class="group-hover:fill-emerald-600/50 group-hover:stroke-emerald-200 transition-all duration-300" />
-                <!-- Court Center Circle -->
+                <polygon points="450,70 800,220 540,380 230,200" fill="#065f46" fill-opacity="0.75" stroke="#34d399" stroke-width="2" class="group-hover:fill-emerald-600/50 transition-all" />
                 <ellipse cx="510" cy="225" rx="50" ry="25" fill="none" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,4" />
-                <text x="510" y="225" fill="#ffffff" font-weight="black" font-size="18" text-anchor="middle" font-family="Cairo">⚽ صالة الألعاب والملعب</text>
+                <text x="510" y="225" fill="#ffffff" font-weight="black" font-size="18" text-anchor="middle" font-family="Cairo">⚽ صالة الألعاب والملعب (نجيلة خضراء)</text>
                 <text x="510" y="250" fill="#a7f3d0" font-size="12" text-anchor="middle" font-family="Cairo">تنس طاولة • بلياردو • كرة قدم وأنشطة شباب</text>
               </g>
 
-              <!-- SOUND & RECORDING STUDIO (استوديو الصوت والتسجيل) -->
+              <!-- استوديو الصوت -->
               <g onclick="showPersistentPlace('studio')" class="cursor-pointer group">
-                <polygon points="210,220 410,330 300,410 100,290" fill="#831843" fill-opacity="0.75" stroke="#f43f5e" stroke-width="2" class="group-hover:fill-rose-700/50 group-hover:stroke-rose-300 transition-all duration-300" />
+                <polygon points="210,220 410,330 300,410 100,290" fill="#831843" fill-opacity="0.75" stroke="#f43f5e" stroke-width="2" class="group-hover:fill-rose-700/50 transition-all" />
                 <text x="250" y="320" fill="#ffffff" font-weight="bold" font-size="15" text-anchor="middle" font-family="Cairo">🎙️ استوديو التسجيل الصوتي</text>
                 <text x="250" y="342" fill="#fecdd3" font-size="11" text-anchor="middle" font-family="Cairo">تسجيل الترانيم والإنتاج الإعلامي المعزول</text>
               </g>
 
-              <!-- CAFETERIA (كافتيريا الكنيسة) -->
+              <!-- الكافتيريا -->
               <g onclick="showPersistentPlace('cafeteria')" class="cursor-pointer group">
                 <polygon points="420,360 550,430 450,495 320,425" fill="#713f12" fill-opacity="0.7" stroke="#eab308" stroke-width="1.5" class="group-hover:fill-amber-600/40 transition-all" />
                 <text x="435" y="435" fill="#ffffff" font-weight="bold" font-size="13" text-anchor="middle" font-family="Cairo">☕ الكافتيريا والساحة</text>
                 <text x="435" y="455" fill="#fef08a" font-size="10" text-anchor="middle" font-family="Cairo">مشروبات ومخبوزات</text>
               </g>
 
-              <!-- TOILETS & RESTROOMS (المرافق الصحية) -->
+              <!-- دورات المياه -->
               <g onclick="showPersistentPlace('toilets')" class="cursor-pointer group">
                 <polygon points="565,340 680,400 610,455 490,390" fill="#1e293b" fill-opacity="0.8" stroke="#94a3b8" stroke-width="1.5" class="group-hover:fill-slate-600/40 transition-all" />
                 <text x="590" y="405" fill="#ffffff" font-weight="bold" font-size="12" text-anchor="middle" font-family="Cairo">🚻 دورات المياه</text>
@@ -377,7 +453,7 @@
 
       </div>
 
-      <!-- ================= PERSISTENT PLACE INSPECTOR (STAYS ACTIVE UNTIL CLOSED) ================= -->
+      <!-- ================= PERSISTENT PLACE INSPECTOR ================= -->
       <div id="persistentPlaceInspector" class="mt-4 p-4 md:p-5 rounded-3xl bg-gradient-to-r from-sapphire-900/95 via-sapphire-800/90 to-sapphire-900/95 border-2 border-cyanGlow/50 shadow-glow-cyan backdrop-blur-xl relative transition-all duration-300">
         
         <!-- Close Button -->
@@ -387,7 +463,6 @@
         </button>
 
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-          
           <div class="flex items-start gap-3.5">
             <div id="inspIcon" class="w-14 h-14 rounded-2xl bg-cyan-950/90 border border-cyan-400/50 flex items-center justify-center text-3xl shadow-glow-cyan flex-shrink-0">
               ⛪
@@ -402,7 +477,6 @@
               </p>
             </div>
           </div>
-
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-white/10 text-xs">
@@ -898,16 +972,17 @@
         googleScriptUrl: GOOGLE_SCRIPT_URL
       },
       places: [
-        { key: 'small_church', title: 'الكنيسة الصغيرة (مذبح مارمرقس)', floor: 'ground', icon: '⛪', desc: 'مخصصة للقداسات الإلهية اليومية المبكرة والعشيات وصلوات التسبحة الهادئة.', hours: 'يومياً 6:00 ص - 10:00 م', servant: 'آباء وخدام الكنيسة', phone: '01234567890', directions: 'عند الدخول من البوابة الرئيسية، اتجه للأمام في الجناح الأيمن.' },
-        { key: 'nursery', title: 'حضانة الأطفال (Church Nursery)', floor: 'ground', icon: '👶', desc: 'فصول تعليمية وألعاب تربوية وترفيهية مجهزة للأطفال وصغار السن.', hours: 'الأحد إلى الخميس 8:00 ص - 2:00 م', servant: 'تاسوني مسؤولة الحضانة', phone: '01234567890', directions: 'الدور الأرضي - الجناح الأيسر بجوار الفناء.' },
-        { key: 'garage', title: 'جراج ومواقف السيارات', floor: 'ground', icon: '🚗', desc: 'مساحة مخصصة لانتظار سيارات المصلين والزوار بأمان تام.', hours: 'مفتوح طوال أوقات الصلوات والخدمات', servant: 'مسؤولو أمن الجراج', phone: '01234567890', directions: 'المدخل الجانبي المباشر لجراج الكنيسة.' },
-        { key: 'priest_office', title: 'مكتب وغرفة الآباء الكهنة', floor: 'ground', icon: '✝️', desc: 'مقر الآباء الكهنة للاعترافات والاستشارات الروحية والمقابلات الفردية.', hours: 'الأربعاء والجمعة والسبت مساءً', servant: 'الآباء الكهنة', phone: '01234567890', directions: 'الدور الأرضي - الممر الأيسر بعد مدخل الاستقبال مباشرة.' },
+        { key: 'big_church', title: 'الكنيسة الكبرى (الكاتدرائية الرئيسية)', floor: 'first', icon: '👑', desc: 'الكنيسة الكبرى حيث تقام قداسات الأحد والأعياد الكبرى والنهضات الروحية مع القبة الأيقونية المرسومة والنجف الكريستالي.', hours: 'الجمعة والأحد والأعياد والنهضات', servant: 'خورس الشمامسة وآباء الكنيسة', phone: '01234567890', directions: 'اصعد السلم الرئيسي من الدور الأرضي للدور الأول العلوي وافتح الأبواب الخشبية الكبرى.' },
+        { key: 'bookstore', title: 'المكتبة الكنسية والمعرض الزجاجي', floor: 'first', icon: '📖', desc: 'المكتبة الزجاجية على الممشى الرئيسي توفر أحدث الكتب الروحية، الأيقونات، الصلبان، وهدايا ومداليات التخرج.', hours: 'يومياً 9:00 ص - 1:00 م و 5:00 م - 9:30 م', servant: 'خدام المكتبة', phone: '01234567892', directions: 'على الممشى الرئيسي أو بالدور الأول بجوار السلم الخشبي.' },
+        { key: 'st_mary_shrine', title: 'مزار السيدة العذراء مريم (قلب الزهور)', floor: 'ground', icon: '🌹', desc: 'مزار السيدة العذراء المزين بقلب الزهور المبارك في فناء الكنيسة لنيل البركة وإيقاد الشموع.', hours: 'متاح طوال اليوم بالفناء', servant: 'خدام الكنيسة', phone: '01234567890', directions: 'في الفناء الخارجي للكنيسة بجوار مدخل الكنيسة الصغيرة والكانتين.' },
+        { key: 'small_church', title: 'الكنيسة الصغيرة (مذبح مارمرقس)', floor: 'ground', icon: '⛪', desc: 'مخصصة للقداسات الإلهية اليومية المبكرة والعشيات وتسابيح كيهك الهادئة بمقاعدها الخشبية الأصيلة.', hours: 'يومياً 6:00 ص - 10:00 م', servant: 'آباء وخدام الكنيسة', phone: '01234567890', directions: 'عبر السلالم الرخامية بالدور الأرضي بعد الممشى الخارجي.' },
+        { key: 'nursery', title: 'حضانة الأطفال (Church Nursery)', floor: 'ground', icon: '👶', desc: 'فصول تعليمية وألعاب تربوية وترفيهية مجهزة للأطفال وصغار السن مع بوابة السيدة العذراء.', hours: 'الأحد إلى الخميس 8:00 ص - 2:00 م', servant: 'تاسوني مسؤولة الحضانة', phone: '01234567890', directions: 'الدور الأرضي - الجناح الأيسر بجوار الفناء الداخلي.' },
+        { key: 'garage', title: 'جراج ومواقف السيارات', floor: 'ground', icon: '🚗', desc: 'مساحة مخصصة لانتظار سيارات المصلين والزوار بأمان تام على الممر الجانبي.', hours: 'مفتوح طوال أوقات الصلوات والخدمات', servant: 'مسؤولو أمن الجراج', phone: '01234567890', directions: 'الممر الجانبي على يسار البوابة الرئيسية.' },
+        { key: 'priest_office', title: 'مكتب وغرفة الآباء الكهنة', floor: 'ground', icon: '✝️', desc: 'مقر الآباء الكهنة للاعترافات والاستشارات الروحية والمقابلات الفردية بالممرات الداخلية.', hours: 'الأربعاء والجمعة والسبت مساءً', servant: 'الآباء الكهنة', phone: '01234567890', directions: 'الدور الأرضي - الممر الأيسر بعد مدخل الاستقبال وبهو الأعمدة.' },
         { key: 'main_gate', title: 'البوابة الرئيسية ومكتب الاستقبال', floor: 'ground', icon: '🚪', desc: 'مدخل الكنيسة الرئيسي واستقبال الزوار الجدد وتوجيه المخدومين.', hours: 'متاح طوال اليوم', servant: 'فريق خدمة الاستقبال', phone: '01234567890', directions: 'المدخل الخارجي على شارع مصطفى باشا.' },
-        { key: 'big_church', title: 'الكنيسة الكبرى (الكاتدرائية الرئيسية)', floor: 'first', icon: '👑', desc: 'الكنيسة الكبرى حيث تقام قداسات الأحد والأعياد الكبرى والنهضات الروحية والمناسبات الرسمية.', hours: 'الجمعة والأحد والأعياد والنهضات', servant: 'خورس الشمامسة وآباء الكنيسة', phone: '01234567890', directions: 'اصعد السلم الرئيسي من الدور الأرضي للدور الأول العلوي.' },
-        { key: 'bookstore', title: 'المكتبة الكنسية والهدايا', floor: 'first', icon: '📖', desc: 'توفر أحدث الكتب الروحية، الأيقونات، الصلبان، وهدايا ومداليات التخرج.', hours: 'يومياً 9:00 ص - 1:00 م و 5:00 م - 9:30 م', servant: 'خدام المكتبة', phone: '01234567892', directions: 'الدور الأول العلوي - بجوار مدخل الكنيسة الكبيرة مباشرة.' },
         { key: 'meeting_hall', title: 'قاعة الاجتماعات الكبرى', floor: 'first', icon: '👥', desc: 'قاعة مجهزة بشاشات عرض ونظام صوتي حديث لاجتماعات الشباب والندوات.', hours: 'أيام الاجتماعات الأسبوعية', servant: 'خدام الشباب والملتيميديا', phone: '01234567890', directions: 'الدور الأول العلوي - الجناح الأيسر.' },
-        { key: 'playground', title: 'صالة الألعاب والملعب الرياضي', floor: 'basement', icon: '⚽', desc: 'ملعب مجهز وتنس طاولة وبلياردو وبيبي فوت وأنشطة رياضية لخدمة الشباب ومدارس الأحد.', hours: 'الجمعة والأحد بعد القداسات والاجتماعات', servant: 'مسؤول النشاط الرياضي', phone: '01234567890', directions: 'انزل سلم البدروم من الفناء الخارجي على اليمين.' },
-        { key: 'studio', title: 'استوديو الصوت والتسجيل والإنتاج', floor: 'basement', icon: '🎙️', desc: 'استوديو احترافي معزول صوتياً بأحدث مايكروفونات لتسجيل الترانيم والألحان والإنتاج الإعلامي.', hours: 'بالحجز المسبق', servant: 'مهندس الصوت والإنتاج', phone: '01234567890', directions: 'البدروم - الممر الداخلي المعزول صوتياً.' },
+        { key: 'playground', title: 'صالة الألعاب والملعب (نجيلة خضراء)', floor: 'basement', icon: '⚽', desc: 'ملعب مجهز بالنجيلة الخضراء الصناعية وتنس طاولة وبلياردو وبيبي فوت وأنشطة رياضية لخدمة الشباب ومدارس الأحد.', hours: 'الجمعة والأحد بعد القداسات والاجتماعات', servant: 'مسؤول النشاط الرياضي', phone: '01234567890', directions: 'انزل سلم البدروم من الفناء الخارجي.' },
+        { key: 'studio', title: 'استوديو الصوت والتسجيل والإنتاج', floor: 'basement', icon: '🎙️', desc: 'استوديو احترافي معزول صوتياً بأحدث مايكروفونات لتسجيل الترانيم والألحان والإنتاج الإعلامي.', hours: 'بالحجز المسبق', servant: 'مهندس الصوت والإنتاج', phone: '01234567890', directions: 'البدروم - الممر الداخلي المعزول صوتياً بجوار الملعب.' },
         { key: 'cafeteria', title: 'كافتيريا الكنيسة والساحة', floor: 'basement', icon: '☕', desc: 'مشروبات ساخنة وباردة ومخبوزات وساندوتشات صيامية وفطار طازج بعد القداسات.', hours: 'الجمعة والأحد ومواعيد الأنشطة', servant: 'فريق ضيافة الكافتيريا', phone: '01234567890', directions: 'البدروم بجوار ساحة الأنشطة.' },
         { key: 'toilets', title: 'دورات المياه والمرافق الصحية', floor: 'basement', icon: '🚻', desc: 'مرافق صحية حديثة ونظيفة ومجهزة للرجال والسيدات.', hours: 'متاحة طوال فترات فتح الكنيسة', servant: 'فريق الخدمات والصيانة', phone: '01234567890', directions: 'البدروم بجوار مدخل الفناء الخارجي.' }
       ],
@@ -1008,8 +1083,8 @@
       initServiceWorker();
     });
 
-    let currentFloor = 'ground';
-    let activePersistentKey = 'small_church';
+    let currentFloor = 'master';
+    let activePersistentKey = 'big_church';
 
     function switchFloor(floor) {
       currentFloor = floor;
@@ -1031,12 +1106,7 @@
         activeTab.classList.add('bg-gradient-to-r', 'from-cyan-500', 'to-blue-600', 'text-slate-950', 'shadow-glow-cyan', 'active-floor');
       }
 
-      // Auto show first place on this floor if not already showing
-      const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
-      const floorPlaces = places.filter(p => p.floor === floor);
-      if (floorPlaces.length > 0) {
-        showPersistentPlace(floorPlaces[0].key);
-      }
+      // Render quick pills
       renderQuickPlacesBar();
     }
 
@@ -1051,9 +1121,13 @@
       const bar = document.getElementById('quickPlacesBar');
       if (!bar) return;
       const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
-      const floorPlaces = places.filter(p => p.floor === currentFloor);
       
-      bar.innerHTML = floorPlaces.map(p => `
+      let displayedPlaces = places;
+      if (currentFloor !== 'master') {
+        displayedPlaces = places.filter(p => p.floor === currentFloor);
+      }
+      
+      bar.innerHTML = displayedPlaces.map(p => `
         <button onclick="showPersistentPlace('${p.key}')" class="px-3 py-1.5 rounded-xl border text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${p.key === activePersistentKey ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-glow-cyan' : 'bg-sapphire-900/60 text-slate-300 border-white/10 hover:border-cyan-400/50'}">
           <span>${p.icon || '📍'}</span>
           <span>${p.title}</span>
@@ -1074,7 +1148,12 @@
       document.getElementById('inspTitle').innerText = place.title;
       document.getElementById('inspIcon').innerText = place.icon || '📍';
       
-      const floorNames = { ground: 'الدور الأرضي (الشارع)', first: 'الدور الأول (العلوي)', basement: 'تحت الأرض (البدروم)' };
+      const floorNames = { 
+        ground: 'الدور الأرضي (الشارع)', 
+        first: 'الدور الأول (العلوي)', 
+        basement: 'تحت الأرض (البدروم)',
+        courtyard: 'الفناء الخارجي'
+      };
       document.getElementById('inspFloor').innerText = floorNames[place.floor] || place.floor;
       document.getElementById('inspDesc').innerText = place.desc || 'لا يوجد وصف تفصيلي.';
       document.getElementById('inspHours').innerText = place.hours || 'متاح يومياً';
