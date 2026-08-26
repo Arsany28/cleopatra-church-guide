@@ -133,6 +133,29 @@
     <span class="text-[10px] text-slate-400 mt-2 tracking-wide font-bold">جاري تجهيز الخريطة التفاعلية والخدمات...</span>
   </div>
 
+  <!-- INLINE GUARANTEED AUTO-DISMISS SCRIPT (NEVER HANGS) -->
+  <script>
+    (function() {
+      function dismissSplashFast() {
+        var sp = document.getElementById('appSplashScreen');
+        if (sp) {
+          sp.style.opacity = '0';
+          sp.style.pointerEvents = 'none';
+          setTimeout(function() {
+            if (sp && sp.parentNode) sp.parentNode.removeChild(sp);
+          }, 300);
+        }
+      }
+      setTimeout(dismissSplashFast, 400);
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(dismissSplashFast, 150);
+      } else {
+        document.addEventListener('DOMContentLoaded', function() { setTimeout(dismissSplashFast, 150); });
+      }
+      window.addEventListener('load', dismissSplashFast);
+    })();
+  </script>
+
   <!-- ================= TOP STICKY HEADER ================= -->
   <header class="sticky top-0 z-40 glass-card border-b border-white/10 py-3 px-4 md:px-8 shadow-glass">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
@@ -1076,7 +1099,7 @@
 
     const AppStore = {
       data: null,
-      async init() {
+      init() {
         const saved = localStorage.getItem('CLEOPATRA_CHURCH_DATA_V2');
         if (saved) {
           try { this.data = JSON.parse(saved); } catch(e) { this.data = JSON.parse(JSON.stringify(DEFAULT_STORE)); }
@@ -1088,11 +1111,13 @@
           this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
         }
 
-        // Fetch live real-time data from Google Sheets Cloud Database
-        try {
-          const res = await fetch(GOOGLE_SCRIPT_URL);
-          if (res.ok) {
-            const cloudData = await res.json();
+        // 1. RENDER INSTANTLY FROM LOCAL STORAGE (0ms latency)
+        this.applyToUI();
+
+        // 2. Fetch live updates in background asynchronously (without blocking UI)
+        fetch(GOOGLE_SCRIPT_URL)
+          .then(res => res.json())
+          .then(cloudData => {
             if (cloudData && cloudData.places && cloudData.places.length > 0) {
               this.data = cloudData;
               if (!this.data.historyPhotos || this.data.historyPhotos.length === 0) {
@@ -1101,12 +1126,9 @@
               this.data.settings.googleScriptUrl = GOOGLE_SCRIPT_URL;
               localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(this.data));
               this.applyToUI();
-              return;
             }
-          }
-        } catch(e) {}
-
-        this.applyToUI();
+          })
+          .catch(() => {});
       },
       async save() {
         localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(this.data));
