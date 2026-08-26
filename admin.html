@@ -1,130 +1,134 @@
+
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>لوحة تحكم كنيسة السيدة العذراء والبابا كيرلس عمود الدين - إدارة قاعدة بيانات Excel</title>
-  <meta name="theme-color" content="#070d1e" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة تحكم إدارة كنيسة كليوباترا</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { cairo: ['Cairo', 'sans-serif'] },
+          fontFamily: { sans: ['Cairo', 'sans-serif'] },
           colors: {
-            sapphire: { 950: '#030712', 900: '#070d1e', 800: '#0d1836', 700: '#142554', 600: '#1e387e', 500: '#2c4ea7' },
+            sapphire: { 800: '#142554', 900: '#0c1736', 950: '#070d22' },
             cyanGlow: '#00f0ff',
-            goldGlow: '#f59e0b'
+            goldGlow: '#ffd700'
+          },
+          boxShadow: {
+            glass: '0 8px 32px 0 rgba(0, 240, 255, 0.1)',
+            'glow-cyan': '0 0 20px rgba(0, 240, 255, 0.4)',
+            'glow-gold': '0 0 20px rgba(255, 215, 0, 0.3)'
           }
         }
       }
     }
   </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
     body {
-      font-family: 'Cairo', sans-serif;
-      background-color: #050b18;
-      background-image: radial-gradient(at 50% 0%, rgba(20, 37, 84, 0.7) 0px, transparent 60%);
+      background-color: #050a18;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 240, 255, 0.15) 0px, transparent 50%);
       background-attachment: fixed;
-      color: #f1f5f9;
+      font-family: 'Cairo', sans-serif;
     }
     .glass-card {
-      background: rgba(13, 24, 54, 0.75);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(12, 23, 54, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="min-h-screen pb-16 text-slate-100 selection:bg-purple-500/30">
+<body class="text-slate-100 min-h-screen pb-12">
 
   <!-- ADMIN TOP HEADER -->
-  <header class="sticky top-0 z-40 glass-card border-b border-white/10 px-4 py-3 shadow-lg bg-sapphire-950/90">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
-      
+  <header class="sticky top-0 z-40 glass-card border-b border-purple-500/20 py-3.5 px-4 md:px-8 mb-6">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-purple-600/30 border border-purple-400 text-purple-200 flex items-center justify-center text-xl shadow">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-xl shadow-lg border border-purple-400/40">
           ⚙️
         </div>
         <div>
-          <h1 class="text-sm md:text-base font-extrabold text-white flex items-center gap-2">
-            <span>لوحة تحكم وإدارة التطبيق (Church Admin Portal)</span>
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>متصل بقاعدة بيانات Excel</span>
-            </span>
+          <h1 class="text-base sm:text-lg font-black text-white flex items-center gap-2">
+            <span>لوحة تحكم خادم الكنيسة</span>
+            <span class="text-[10px] bg-purple-950 text-purple-300 px-2 py-0.5 rounded-full border border-purple-500/40">Admin Portal</span>
           </h1>
-          <p class="text-[11px] text-slate-300">تحكم وتعديل شامل للمواعيد والخريطة والمكتبة مع الحفظ في Excel</p>
+          <p class="text-[11px] text-slate-400">إدارة الخريطة، الأماكن والصور، المواعيد، متجر المكتبة، والكهنة</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <a href="/api/download-excel" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow transition-all flex items-center gap-1.5">
+      <!-- Sync & Export Action Buttons -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <button onclick="downloadExcelDatabase()" class="px-3 py-1.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all">
           <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">تحميل ملف Excel (.xlsx)</span>
-          <span class="sm:hidden">Excel</span>
-        </a>
+          <span>تحميل قاعدة البيانات Excel (.xlsx)</span>
+        </button>
 
-        <a href="./index.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-sapphire-800 hover:bg-sapphire-700 text-cyan-300 font-bold text-xs border border-white/10 transition-all flex items-center gap-1.5">
+        <label class="px-3 py-1.5 rounded-xl bg-blue-600/90 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md cursor-pointer transition-all">
+          <i data-lucide="upload" class="w-4 h-4"></i>
+          <span>رفع وتحديث من Excel</span>
+          <input type="file" id="excelFileInput" accept=".xlsx, .xls" class="hidden" onchange="uploadExcelDatabase(event)" />
+        </label>
+
+        <a href="index.html" target="_blank" class="px-3 py-1.5 rounded-xl bg-sapphire-900 hover:bg-sapphire-800 text-cyan-300 font-bold text-xs flex items-center gap-1.5 border border-cyan-500/30 transition-all">
           <i data-lucide="external-link" class="w-4 h-4"></i>
-          <span>معاينة تطبيق الزوار</span>
+          <span>معاينة تطبيق الزوار 📱</span>
         </a>
       </div>
-
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 mt-5 space-y-5">
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 md:px-8 space-y-6">
 
-    <div class="glass-card rounded-3xl p-4 md:p-5 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-emerald-950/20">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-900/60 border border-emerald-400 text-emerald-300 flex items-center justify-center text-2xl">
-          📊
-        </div>
-        <div>
-          <h3 class="text-sm md:text-base font-black text-white">قاعدة بيانات الكنيسة مربوطة بملف Excel مباشر</h3>
-          <p class="text-xs text-slate-300">أي تعديل تقوم به هنا يُحفظ تلقائياً في ملف Excel. كما يمكنك تعديل ملف Excel على جهازك وإعادة رفعه هنا!</p>
-        </div>
-      </div>
+    <!-- ADMIN TABS NAVIGATION -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 border-b border-white/10">
+      <button onclick="showAdminTab('general')" id="tab-btn-general" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-purple-600 text-white shadow-md flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="settings" class="w-4 h-4"></i>
+        <span>1. الإعدادات العامة وGoogle Sheets</span>
+      </button>
 
-      <div class="flex items-center gap-2 self-start sm:self-auto flex-wrap">
-        <a href="/api/download-excel" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span>تنزيل Excel</span>
-        </a>
+      <button onclick="showAdminTab('places')" id="tab-btn-places" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="map-pin" class="w-4 h-4"></i>
+        <span>2. الأماكن والخريطة والصور 📸</span>
+      </button>
 
-        <label class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow">
-          <i data-lucide="upload" class="w-4 h-4"></i>
-          <span>رفع ملف Excel معدّل</span>
-          <input type="file" id="excelFileInput" accept=".xlsx" onchange="uploadExcelFile(event)" class="hidden" />
-        </label>
-      </div>
+      <button onclick="showAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="image" class="w-4 h-4"></i>
+        <span>3. أرشيف صور وتاريخ الكنيسة 🏛️</span>
+      </button>
+
+      <button onclick="showAdminTab('schedule')" id="tab-btn-schedule" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="calendar" class="w-4 h-4"></i>
+        <span>4. القداسات والمواعيد</span>
+      </button>
+
+      <button onclick="showAdminTab('shop')" id="tab-btn-shop" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+        <span>5. متجر المكتبة والكتب</span>
+      </button>
+
+      <button onclick="showAdminTab('clergy')" id="tab-btn-clergy" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
+        <i data-lucide="cross" class="w-4 h-4"></i>
+        <span>6. الآباء الكهنة والاعترافات</span>
+      </button>
     </div>
 
-    <div class="glass-card rounded-3xl p-5 md:p-6 border border-white/10 shadow-2xl">
-      
-      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-5 border-b border-white/10">
-        <button onclick="switchTab('general')" id="tab-general" class="adm-tab active-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-purple-600 text-white shadow-md">
-          ⚙️ إعدادات وبيانات الكنيسة
-        </button>
-        <button onclick="switchTab('places')" id="tab-places" class="adm-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-sapphire-900 text-slate-300 hover:text-white border border-white/5">
-          🗺️ أماكن الخريطة والمزارات
-        </button>
-        <button onclick="switchTab('schedule')" id="tab-schedule" class="adm-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-sapphire-900 text-slate-300 hover:text-white border border-white/5">
-          📅 جدول المواعيد والقداسات
-        </button>
-        <button onclick="switchTab('shop')" id="tab-shop" class="adm-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-sapphire-900 text-slate-300 hover:text-white border border-white/5">
-          🛍️ منتجات وكتب المكتبة
-        </button>
-        <button onclick="switchTab('clergy')" id="tab-clergy" class="adm-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-sapphire-900 text-slate-300 hover:text-white border border-white/5">
-          ✝️ الآباء الكهنة والاعترافات
-        </button>
-      </div>
+    <!-- TABS CONTENT BOX -->
+    <div class="glass-card rounded-3xl p-5 md:p-6 border border-white/10 shadow-glass">
 
       <!-- 1. GENERAL TAB -->
       <div id="content-general" class="tab-panel space-y-4">
@@ -190,10 +194,13 @@
         </form>
       </div>
 
-      <!-- 2. PLACES / MAP TAB -->
+      <!-- 2. PLACES / MAP TAB (WITH IMAGES) -->
       <div id="content-places" class="tab-panel hidden space-y-4">
         <div class="flex items-center justify-between">
-          <h4 class="text-sm font-black text-white">أماكن ومرافق الخريطة التفاعلية:</h4>
+          <div>
+            <h4 class="text-sm font-black text-white">أماكن ومرافق الخريطة التفاعلية والصور:</h4>
+            <p class="text-[11px] text-slate-400">يمكنك إضافة صور حقيقية تظهر للزائر عند الضغط على أي مكان بالخريطة</p>
+          </div>
           <button onclick="openAddPlaceForm()" class="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>إضافة مكان جديد</span>
@@ -212,17 +219,25 @@
               <input id="placeTitleInput" type="text" required class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
             </div>
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">الدور:</label>
+              <label class="text-[10px] text-slate-300 block mb-1">المبنى / الدور:</label>
               <select id="placeFloorInput" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white">
-                <option value="ground">الدور الأرضي (الكنيسة)</option>
-                <option value="first">الدور الأول (الخدمات والأنشطة)</option>
-                <option value="basement">البدروم والساحة</option>
+                <option value="first">مبنى الكنيسة - الدور العلوي (الكاتدرائية)</option>
+                <option value="ground">مبنى الكنيسة - الدور الأرضي</option>
+                <option value="services">مبنى الخدمات المستقل (أدوار الخدمات)</option>
+                <option value="basement">تحت خالص (البدروم والأنشطة)</option>
               </select>
             </div>
             <div>
               <label class="text-[10px] text-slate-300 block mb-1">الأيقونة (Emoji):</label>
               <input id="placeIconInput" type="text" placeholder="🏛️" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
             </div>
+          </div>
+
+          <!-- PLACE IMAGE URL -->
+          <div>
+            <label class="text-[10px] text-cyan-300 font-bold block mb-1">📸 رابط صورة المكان (Image URL):</label>
+            <input id="placeImageInput" type="url" placeholder="https://example.com/photo.jpg أو رابط صورة مباشرة" class="w-full bg-sapphire-950 border border-cyan-500/40 rounded-lg p-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow" />
+            <p class="text-[10px] text-slate-400 mt-0.5">ضع رابط صورة تظهر في نافذة التفاصيل عند ضغط الزائر على هذا المكان في الخريطة.</p>
           </div>
 
           <div>
@@ -247,13 +262,60 @@
           </div>
 
           <div class="flex items-center gap-2 pt-2">
-            <button onclick="savePlaceItem()" class="flex-1 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">حفظ المكان</button>
+            <button onclick="savePlaceItem()" class="flex-1 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">حفظ المكان والصورة</button>
             <button onclick="document.getElementById('placeFormBox').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-sapphire-800 text-slate-300 text-xs">إلغاء</button>
           </div>
         </div>
       </div>
 
-      <!-- 3. SCHEDULE TAB -->
+      <!-- 3. CHURCH HISTORY PHOTOS TAB (NEW) -->
+      <div id="content-history" class="tab-panel hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="text-sm font-black text-white">معرض صور تاريخ وأرشيف الكنيسة:</h4>
+            <p class="text-[11px] text-slate-400">إضافة وتعديل صور أرشيف بناء الكنيسة، التدشين، وسيرة البابا كيرلس</p>
+          </div>
+          <button onclick="openAddHistoryPhotoForm()" class="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>إضافة صورة تاريخية جديدة</span>
+          </button>
+        </div>
+
+        <div id="adminHistoryPhotosList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+
+        <div id="historyPhotoFormBox" class="hidden p-4 rounded-2xl bg-sapphire-900/90 border border-cyanGlow/40 space-y-3">
+          <h5 id="historyPhotoFormHeading" class="text-xs font-black text-cyan-300">إضافة صورة تاريخية جديدة</h5>
+          <input type="hidden" id="editHistoryPhotoId" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label class="text-[10px] text-slate-300 block mb-1">عنوان الصورة / الحدث:</label>
+              <input id="historyTitleInput" type="text" required placeholder="مثال: وضع حجر أساس الكنيسة..." class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-300 block mb-1">السنة / التاريخ:</label>
+              <input id="historyYearInput" type="text" placeholder="مثال: 1975م / عيد القيامة..." class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[10px] text-cyan-300 font-bold block mb-1">📸 رابط الصورة (Image URL):</label>
+            <input id="historyUrlInput" type="url" required placeholder="https://... رابط الصورة على الإنترنت أو استضافة الصور" class="w-full bg-sapphire-950 border border-cyan-500/40 rounded-lg p-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow" />
+          </div>
+
+          <div>
+            <label class="text-[10px] text-slate-300 block mb-1">وصف أو تعليق توضيحي للحدث التاريخي:</label>
+            <textarea id="historyDescInput" rows="2" placeholder="اكتب نبذة عن مناسبة الصورة والآباء أو المعالم الظاهرة فيها..." class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white"></textarea>
+          </div>
+
+          <div class="flex items-center gap-2 pt-2">
+            <button onclick="saveHistoryPhotoItem()" class="flex-1 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">حفظ الصورة في الأرشيف</button>
+            <button onclick="document.getElementById('historyPhotoFormBox').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-sapphire-800 text-slate-300 text-xs">إلغاء</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. SCHEDULE TAB -->
       <div id="content-schedule" class="tab-panel hidden space-y-4">
         <div class="flex items-center justify-between">
           <h4 class="text-sm font-black text-white">جدول القداسات والخدمات ومدارس الأحد:</h4>
@@ -319,7 +381,7 @@
         </div>
       </div>
 
-      <!-- 4. SHOP TAB -->
+      <!-- 5. SHOP TAB -->
       <div id="content-shop" class="tab-panel hidden space-y-4">
         <div class="flex items-center justify-between">
           <h4 class="text-sm font-black text-white">منتجات وكتب متجر المكتبة:</h4>
@@ -357,7 +419,7 @@
               <input id="prodPriceInput" type="number" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
             </div>
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">الأيقونة (Emoji):</label>
+              <label class="text-[10px] text-slate-300 block mb-1">الأيقونة (Emoji) أو رابط صورة:</label>
               <input id="prodImageInput" type="text" placeholder="📖" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
             </div>
             <div>
@@ -373,7 +435,7 @@
         </div>
       </div>
 
-      <!-- 5. CLERGY TAB -->
+      <!-- 6. CLERGY TAB -->
       <div id="content-clergy" class="tab-panel hidden space-y-4">
         <div class="flex items-center justify-between">
           <h4 class="text-sm font-black text-white">الآباء الكهنة ومواعيد الاعترافات:</h4>
@@ -431,60 +493,100 @@
 
   </main>
 
-  <!-- TOAST -->
-  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-sapphire-900 border border-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-lg transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
-    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
-    <span id="toastMsg">تم الحفظ بنجاح!</span>
-  </div>
-
   <script>
-    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
-    let appData = null;
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadAdminData();
-      lucide.createIcons();
-    });
+    let currentAdminData = null;
+    let activeAdminTab = 'general';
 
     async function loadAdminData() {
-      const gUrl = localStorage.getItem('CHURCH_GAS_URL') || DEFAULT_GAS_URL;
+      const saved = localStorage.getItem('CLEOPATRA_CHURCH_DATA_V2');
+      if (saved) {
+        try { currentAdminData = JSON.parse(saved); } catch(e) {}
+      }
+
+      const scriptUrl = (currentAdminData && currentAdminData.settings && currentAdminData.settings.googleScriptUrl) ? currentAdminData.settings.googleScriptUrl : 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
       
-      // 1. Try Google Sheets Cloud Database
       try {
-        const res = await fetch(gUrl);
+        const res = await fetch(scriptUrl);
         if (res.ok) {
           const cloudData = await res.json();
-          if (cloudData && cloudData.places && cloudData.places.length > 0) {
-            appData = cloudData;
-            if (!appData.settings) appData.settings = {};
-            appData.settings.googleScriptUrl = gUrl;
-            populateAdminForms();
-            return;
+          if (cloudData && cloudData.places) {
+            currentAdminData = cloudData;
+            localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(currentAdminData));
           }
         }
       } catch(e) {}
 
-      // 2. Try Local Python Server
-      try {
-        const res = await fetch('/api/data');
-        if (res.ok) {
-          appData = await res.json();
-          populateAdminForms();
-          return;
-        }
-      } catch(e) {}
+      if (!currentAdminData) {
+        currentAdminData = {
+          settings: {
+            churchName: 'كنيسة السيدة العذراء والبابا كيرلس عمود الدين',
+            churchLocation: '📍 كليوباترا - الإسكندرية',
+            address: 'شارع مصطفى باشا، كليوباترا حمامات، الإسكندرية',
+            shopWhatsapp: '201234567892',
+            studioPhone: '01234567890',
+            liveTitle: 'بث صلوات القداس الإلهي والعشية مباشر',
+            youtubeUrl: 'https://www.youtube-nocookie.com/embed/live_stream?channel=UC_SAMPLE',
+            googleScriptUrl: scriptUrl
+          },
+          places: [],
+          historyPhotos: [],
+          schedule: [],
+          products: [],
+          clergy: []
+        };
+      }
+
+      if (!currentAdminData.historyPhotos) {
+        currentAdminData.historyPhotos = [];
+      }
+
+      populateGeneralForm();
+      renderAdminPlaces();
+      renderAdminHistoryPhotos();
+      renderAdminSchedule();
+      renderAdminProducts();
+      renderAdminClergy();
+    }
+
+    async function saveAdminData() {
+      localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(currentAdminData));
       
-      // 3. Try LocalStorage
-      const saved = localStorage.getItem('CLEOPATRA_CHURCH_DATA_V2');
-      if (saved) {
-        appData = JSON.parse(saved);
-        populateAdminForms();
+      const scriptUrl = (currentAdminData.settings && currentAdminData.settings.googleScriptUrl) ? currentAdminData.settings.googleScriptUrl : 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
+      
+      try {
+        await fetch(scriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentAdminData)
+        });
+      } catch(e) {}
+
+      showToast('✅ تم حفظ التغييرات ومزامنتها مع Google Sheets و Excel!');
+    }
+
+    function showAdminTab(tabName) {
+      activeAdminTab = tabName;
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      const activePanel = document.getElementById(`content-${tabName}`);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      document.querySelectorAll('.admin-tab-btn').forEach(b => {
+        b.classList.remove('bg-purple-600', 'text-white', 'shadow-md');
+        b.classList.add('text-slate-300');
+      });
+
+      const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('bg-purple-600', 'text-white', 'shadow-md');
       }
     }
 
-    function populateAdminForms() {
-      if (!appData) return;
-      const s = appData.settings || {};
+    // 1. GENERAL SETTINGS
+    function populateGeneralForm() {
+      const s = currentAdminData.settings || {};
+      document.getElementById('inputGoogleScriptUrl').value = s.googleScriptUrl || '';
       document.getElementById('inputChurchName').value = s.churchName || '';
       document.getElementById('inputChurchLocation').value = s.churchLocation || '';
       document.getElementById('inputShopWhatsapp').value = s.shopWhatsapp || '';
@@ -492,429 +594,509 @@
       document.getElementById('inputAddress').value = s.address || '';
       document.getElementById('inputYoutubeUrl').value = s.youtubeUrl || '';
       document.getElementById('inputLiveBanner').value = s.liveTitle || '';
-      document.getElementById('inputGoogleScriptUrl').value = s.googleScriptUrl || localStorage.getItem('CHURCH_GAS_URL') || DEFAULT_GAS_URL;
-
-      renderPlacesList();
-      renderScheduleList();
-      renderProductsList();
-      renderClergyList();
-    }
-
-    async function persistChanges() {
-      localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(appData));
-      
-      // 1. Sync to Google Apps Script Web App (Cloud DB)
-      const gUrl = (appData.settings && appData.settings.googleScriptUrl) || localStorage.getItem('CHURCH_GAS_URL') || DEFAULT_GAS_URL;
-      if (gUrl) {
-        try {
-          await fetch(gUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(appData)
-          });
-        } catch(e) {}
-      }
-
-      // 2. Sync to local python server
-      try {
-        await fetch('/api/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(appData)
-        });
-      } catch(e) {}
-
-      showToast('تم حفظ التعديلات في قاعدة البيانات وGoogle Sheets وExcel بنجاح!');
-    }
-
-    async function testAndSaveGoogleScriptUrl() {
-      const url = document.getElementById('inputGoogleScriptUrl').value.trim() || DEFAULT_GAS_URL;
-      try {
-        showToast('جاري الاتصال بـ Google Sheets...');
-        const res = await fetch(url);
-        if (res.ok) {
-          const cloudData = await res.json();
-          if (cloudData && cloudData.places) {
-            appData = cloudData;
-            appData.settings.googleScriptUrl = url;
-            localStorage.setItem('CHURCH_GAS_URL', url);
-            localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(appData));
-            populateAdminForms();
-            alert('🎉 تم الاتصال بنجاح بقاعدة بيانات Google Sheets ومزامنة كافة البيانات!');
-            return;
-          }
-        }
-      } catch(e) {}
-
-      if (!appData.settings) appData.settings = {};
-      appData.settings.googleScriptUrl = url;
-      localStorage.setItem('CHURCH_GAS_URL', url);
-      await persistChanges();
-      alert('تم حفظ رابط Google Apps Script ورفع البيانات الحالية إلى Google Sheets بنجاح!');
-    }
-
-    function switchTab(tab) {
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-      document.querySelectorAll('.adm-tab').forEach(b => {
-        b.className = 'adm-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-sapphire-900 text-slate-300 hover:text-white border border-white/5';
-      });
-      document.getElementById(`content-${tab}`).classList.remove('hidden');
-      document.getElementById(`tab-${tab}`).className = 'adm-tab active-tab px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap bg-purple-600 text-white shadow-md';
-      lucide.createIcons();
     }
 
     function saveGeneralSettings(e) {
       e.preventDefault();
-      appData.settings.churchName = document.getElementById('inputChurchName').value;
-      appData.settings.churchLocation = document.getElementById('inputChurchLocation').value;
-      appData.settings.shopWhatsapp = document.getElementById('inputShopWhatsapp').value;
-      appData.settings.studioPhone = document.getElementById('inputStudioPhone').value;
-      appData.settings.address = document.getElementById('inputAddress').value;
-      appData.settings.youtubeUrl = document.getElementById('inputYoutubeUrl').value;
-      appData.settings.liveTitle = document.getElementById('inputLiveBanner').value;
-      appData.settings.googleScriptUrl = document.getElementById('inputGoogleScriptUrl').value.trim();
-      if (appData.settings.googleScriptUrl) {
-        localStorage.setItem('CHURCH_GAS_URL', appData.settings.googleScriptUrl);
-      }
-      persistChanges();
+      currentAdminData.settings.churchName = document.getElementById('inputChurchName').value;
+      currentAdminData.settings.churchLocation = document.getElementById('inputChurchLocation').value;
+      currentAdminData.settings.shopWhatsapp = document.getElementById('inputShopWhatsapp').value;
+      currentAdminData.settings.studioPhone = document.getElementById('inputStudioPhone').value;
+      currentAdminData.settings.address = document.getElementById('inputAddress').value;
+      currentAdminData.settings.youtubeUrl = document.getElementById('inputYoutubeUrl').value;
+      currentAdminData.settings.liveTitle = document.getElementById('inputLiveBanner').value;
+      saveAdminData();
     }
 
-    // Places CRUD
-    function renderPlacesList() {
-      const container = document.getElementById('adminPlacesList');
-      container.innerHTML = appData.places.map(p => `
-        <div class="flex items-center justify-between p-3 rounded-2xl bg-sapphire-900/80 border border-white/5 text-xs">
-          <div class="flex items-center gap-2.5">
-            <span class="text-xl">${p.icon || '🏛️'}</span>
+    async function testAndSaveGoogleScriptUrl() {
+      const url = document.getElementById('inputGoogleScriptUrl').value.trim();
+      if (!url) { alert('برجاء كتابة رابط الـ Google Apps Script أولاً'); return; }
+      currentAdminData.settings.googleScriptUrl = url;
+      await saveAdminData();
+      alert('تم تحديث الرابط ومزامنة البيانات بنجاح!');
+    }
+
+    // 2. PLACES MANAGEMENT (WITH IMAGES)
+    function renderAdminPlaces() {
+      const list = document.getElementById('adminPlacesList');
+      if (!list) return;
+      const places = currentAdminData.places || [];
+      
+      list.innerHTML = places.map((p, idx) => `
+        <div class="p-3.5 rounded-2xl bg-sapphire-900/60 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            ${p.image ? `
+              <img src="${p.image}" alt="${p.title}" class="w-12 h-12 rounded-xl object-cover border border-white/20 flex-shrink-0" />
+            ` : `
+              <div class="w-12 h-12 rounded-xl bg-sapphire-950 border border-white/10 flex items-center justify-center text-xl flex-shrink-0">
+                ${p.icon || '📍'}
+              </div>
+            `}
             <div>
-              <span class="font-bold text-white block text-sm">${p.title}</span>
-              <span class="text-[10px] text-cyan-300">${p.floor === 'ground' ? 'الدور الأرضي' : p.floor === 'first' ? 'الدور الأول' : 'البدروم'} • ${p.hours}</span>
+              <h5 class="text-xs font-black text-white flex items-center gap-2">
+                <span>${p.title}</span>
+                <span class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30">${p.floor}</span>
+                ${p.image ? '<span class="text-[10px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded-md">📸 به صورة</span>' : ''}
+              </h5>
+              <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${p.desc || ''}</p>
             </div>
           </div>
-          <div class="flex items-center gap-1.5">
-            <button onclick="editPlace('${p.key}')" class="px-2.5 py-1 rounded-xl bg-blue-600/40 text-blue-200 hover:bg-blue-600 hover:text-white text-xs font-bold">تعديل</button>
-            <button onclick="deletePlace('${p.key}')" class="px-2.5 py-1 rounded-xl bg-red-600/40 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold">حذف</button>
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            <button onclick="editPlaceItem('${p.key}')" class="px-3 py-1.5 rounded-xl bg-cyan-600/30 hover:bg-cyan-600 text-cyan-300 hover:text-white text-xs font-bold transition-all">تعديل</button>
+            <button onclick="deletePlaceItem('${p.key}')" class="px-3 py-1.5 rounded-xl bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-white text-xs font-bold transition-all">حذف</button>
           </div>
         </div>
       `).join('');
     }
 
     function openAddPlaceForm() {
+      document.getElementById('placeFormBox').classList.remove('hidden');
       document.getElementById('placeFormHeading').innerText = 'إضافة مكان جديد للخريطة';
       document.getElementById('editPlaceKey').value = '';
       document.getElementById('placeTitleInput').value = '';
-      document.getElementById('placeFloorInput').value = 'ground';
+      document.getElementById('placeFloorInput').value = 'first';
       document.getElementById('placeIconInput').value = '🏛️';
+      document.getElementById('placeImageInput').value = '';
       document.getElementById('placeDescInput').value = '';
-      document.getElementById('placeHoursInput').value = 'يومياً 6ص - 9م';
-      document.getElementById('placeServantInput').value = 'خدام الكنيسة';
+      document.getElementById('placeHoursInput').value = '';
+      document.getElementById('placeServantInput').value = '';
       document.getElementById('placeDirectionsInput').value = '';
-      document.getElementById('placeFormBox').classList.remove('hidden');
     }
 
-    function editPlace(key) {
-      const p = appData.places.find(item => item.key === key);
-      if (!p) return;
-      document.getElementById('placeFormHeading').innerText = `تعديل مكان: ${p.title}`;
-      document.getElementById('editPlaceKey').value = p.key;
-      document.getElementById('placeTitleInput').value = p.title;
-      document.getElementById('placeFloorInput').value = p.floor;
-      document.getElementById('placeIconInput').value = p.icon;
-      document.getElementById('placeDescInput').value = p.desc;
-      document.getElementById('placeHoursInput').value = p.hours;
-      document.getElementById('placeServantInput').value = p.servant;
-      document.getElementById('placeDirectionsInput').value = p.directions;
+    function editPlaceItem(key) {
+      const place = currentAdminData.places.find(p => p.key === key);
+      if (!place) return;
       document.getElementById('placeFormBox').classList.remove('hidden');
+      document.getElementById('placeFormHeading').innerText = `تعديل: ${place.title}`;
+      document.getElementById('editPlaceKey').value = place.key;
+      document.getElementById('placeTitleInput').value = place.title || '';
+      document.getElementById('placeFloorInput').value = place.floor || 'first';
+      document.getElementById('placeIconInput').value = place.icon || '🏛️';
+      document.getElementById('placeImageInput').value = place.image || '';
+      document.getElementById('placeDescInput').value = place.desc || '';
+      document.getElementById('placeHoursInput').value = place.hours || '';
+      document.getElementById('placeServantInput').value = place.servant || '';
+      document.getElementById('placeDirectionsInput').value = place.directions || '';
     }
 
     function savePlaceItem() {
-      const editKey = document.getElementById('editPlaceKey').value;
+      const key = document.getElementById('editPlaceKey').value || 'place_' + Date.now();
       const title = document.getElementById('placeTitleInput').value.trim();
-      if (!title) return alert('الرجاء إدخال اسم المكان!');
+      if (!title) { alert('اسم المكان مطلوب'); return; }
 
-      const floor = document.getElementById('placeFloorInput').value;
-      const icon = document.getElementById('placeIconInput').value.trim() || '🏛️';
-      const desc = document.getElementById('placeDescInput').value.trim();
-      const hours = document.getElementById('placeHoursInput').value.trim();
-      const servant = document.getElementById('placeServantInput').value.trim();
-      const directions = document.getElementById('placeDirectionsInput').value.trim();
+      const item = {
+        key: key,
+        title: title,
+        floor: document.getElementById('placeFloorInput').value,
+        icon: document.getElementById('placeIconInput').value || '🏛️',
+        image: document.getElementById('placeImageInput').value.trim(),
+        desc: document.getElementById('placeDescInput').value.trim(),
+        hours: document.getElementById('placeHoursInput').value.trim(),
+        servant: document.getElementById('placeServantInput').value.trim(),
+        phone: '01234567890',
+        directions: document.getElementById('placeDirectionsInput').value.trim()
+      };
 
-      if (editKey) {
-        const exist = appData.places.find(p => p.key === editKey);
-        if (exist) {
-          exist.title = title; exist.floor = floor; exist.icon = icon;
-          exist.desc = desc; exist.hours = hours; exist.servant = servant; exist.directions = directions;
-        }
+      const existingIdx = currentAdminData.places.findIndex(p => p.key === key);
+      if (existingIdx >= 0) {
+        currentAdminData.places[existingIdx] = item;
       } else {
-        appData.places.push({ key: 'place_' + Date.now(), title, floor, icon, desc, hours, servant, directions, phone: '01234567890' });
+        currentAdminData.places.push(item);
       }
 
-      renderPlacesList();
-      persistChanges();
       document.getElementById('placeFormBox').classList.add('hidden');
+      renderAdminPlaces();
+      saveAdminData();
     }
 
-    function deletePlace(key) {
-      if (!confirm('هل تريد حذف هذا المكان؟')) return;
-      appData.places = appData.places.filter(p => p.key !== key);
-      renderPlacesList();
-      persistChanges();
+    function deletePlaceItem(key) {
+      if (!confirm('هل أنت متأكد من حذف هذا المكان من الخريطة؟')) return;
+      currentAdminData.places = currentAdminData.places.filter(p => p.key !== key);
+      renderAdminPlaces();
+      saveAdminData();
     }
 
-    // Schedule CRUD
-    function renderScheduleList() {
-      const container = document.getElementById('adminScheduleList');
-      container.innerHTML = appData.schedule.map(s => `
-        <div class="flex items-center justify-between p-3 rounded-2xl bg-sapphire-900/80 border border-white/5 text-xs">
-          <div>
-            <span class="font-bold text-white block text-sm">${s.title}</span>
-            <span class="text-[10px] text-amber-300">${s.day} • ${s.time} • ${s.place}</span>
+    // 3. CHURCH HISTORY PHOTOS MANAGEMENT
+    function renderAdminHistoryPhotos() {
+      const list = document.getElementById('adminHistoryPhotosList');
+      if (!list) return;
+      const photos = currentAdminData.historyPhotos || [];
+      
+      list.innerHTML = photos.map(p => `
+        <div class="p-3 rounded-2xl bg-sapphire-900/60 border border-white/10 flex flex-col justify-between overflow-hidden group">
+          <div class="relative w-full h-32 rounded-xl overflow-hidden mb-2 bg-sapphire-950">
+            <img src="${p.url}" alt="${p.title}" class="w-full h-full object-cover" />
+            <span class="absolute top-2 right-2 bg-slate-950/80 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-md border border-amber-500/30">${p.year || 'تاريخي'}</span>
           </div>
-          <div class="flex items-center gap-1.5">
-            <button onclick="editSched(${s.id})" class="px-2.5 py-1 rounded-xl bg-blue-600/40 text-blue-200 hover:bg-blue-600 hover:text-white text-xs font-bold">تعديل</button>
-            <button onclick="deleteSched(${s.id})" class="px-2.5 py-1 rounded-xl bg-red-600/40 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold">حذف</button>
+          <div>
+            <h5 class="text-xs font-black text-white line-clamp-1">${p.title}</h5>
+            <p class="text-[10px] text-slate-400 mt-1 line-clamp-2">${p.desc || ''}</p>
+          </div>
+          <div class="flex items-center justify-end gap-2 mt-3 pt-2 border-t border-white/5">
+            <button onclick="editHistoryPhotoItem(${p.id})" class="px-2.5 py-1 rounded-lg bg-cyan-600/30 text-cyan-300 text-xs font-bold hover:bg-cyan-600 hover:text-white transition-all">تعديل</button>
+            <button onclick="deleteHistoryPhotoItem(${p.id})" class="px-2.5 py-1 rounded-lg bg-red-600/30 text-red-300 text-xs font-bold hover:bg-red-600 hover:text-white transition-all">حذف</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openAddHistoryPhotoForm() {
+      document.getElementById('historyPhotoFormBox').classList.remove('hidden');
+      document.getElementById('historyPhotoFormHeading').innerText = 'إضافة صورة تاريخية جديدة';
+      document.getElementById('editHistoryPhotoId').value = '';
+      document.getElementById('historyTitleInput').value = '';
+      document.getElementById('historyYearInput').value = '';
+      document.getElementById('historyUrlInput').value = '';
+      document.getElementById('historyDescInput').value = '';
+    }
+
+    function editHistoryPhotoItem(id) {
+      const p = currentAdminData.historyPhotos.find(item => item.id === id);
+      if (!p) return;
+      document.getElementById('historyPhotoFormBox').classList.remove('hidden');
+      document.getElementById('historyPhotoFormHeading').innerText = `تعديل صورة: ${p.title}`;
+      document.getElementById('editHistoryPhotoId').value = p.id;
+      document.getElementById('historyTitleInput').value = p.title || '';
+      document.getElementById('historyYearInput').value = p.year || '';
+      document.getElementById('historyUrlInput').value = p.url || '';
+      document.getElementById('historyDescInput').value = p.desc || '';
+    }
+
+    function saveHistoryPhotoItem() {
+      const title = document.getElementById('historyTitleInput').value.trim();
+      const url = document.getElementById('historyUrlInput').value.trim();
+      if (!title || !url) { alert('عنوان الصورة ورابط الصورة مطلوبان'); return; }
+
+      const id = parseInt(document.getElementById('editHistoryPhotoId').value) || Date.now();
+      const item = {
+        id: id,
+        title: title,
+        year: document.getElementById('historyYearInput').value.trim(),
+        url: url,
+        desc: document.getElementById('historyDescInput').value.trim()
+      };
+
+      const existingIdx = currentAdminData.historyPhotos.findIndex(p => p.id === id);
+      if (existingIdx >= 0) {
+        currentAdminData.historyPhotos[existingIdx] = item;
+      } else {
+        currentAdminData.historyPhotos.push(item);
+      }
+
+      document.getElementById('historyPhotoFormBox').classList.add('hidden');
+      renderAdminHistoryPhotos();
+      saveAdminData();
+    }
+
+    function deleteHistoryPhotoItem(id) {
+      if (!confirm('هل تريد حذف هذه الصورة من الأرشيف التاريخي؟')) return;
+      currentAdminData.historyPhotos = currentAdminData.historyPhotos.filter(p => p.id !== id);
+      renderAdminHistoryPhotos();
+      saveAdminData();
+    }
+
+    // 4. SCHEDULE MANAGEMENT
+    function renderAdminSchedule() {
+      const list = document.getElementById('adminScheduleList');
+      if (!list) return;
+      const schedule = currentAdminData.schedule || [];
+      
+      list.innerHTML = schedule.map(s => `
+        <div class="p-3.5 rounded-2xl bg-sapphire-900/60 border border-white/10 flex items-center justify-between gap-3">
+          <div>
+            <h5 class="text-xs font-black text-white flex items-center gap-2">
+              <span>${s.title}</span>
+              <span class="text-[10px] bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">${s.day} • ${s.time}</span>
+            </h5>
+            <p class="text-[11px] text-slate-400 mt-0.5">📍 ${s.place} • 👤 ${s.priest || ''}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="editScheduleItem(${s.id})" class="px-3 py-1.5 rounded-xl bg-cyan-600/30 text-cyan-300 text-xs font-bold hover:bg-cyan-600 hover:text-white transition-all">تعديل</button>
+            <button onclick="deleteScheduleItem(${s.id})" class="px-3 py-1.5 rounded-xl bg-red-600/30 text-red-300 text-xs font-bold hover:bg-red-600 hover:text-white transition-all">حذف</button>
           </div>
         </div>
       `).join('');
     }
 
     function openAddScheduleForm() {
-      document.getElementById('schedFormHeading').innerText = 'إضافة موعد خدمة جديدة';
+      document.getElementById('schedFormBox').classList.remove('hidden');
+      document.getElementById('schedFormHeading').innerText = 'إضافة موعد خدمة / قداس جديد';
       document.getElementById('editSchedId').value = '';
       document.getElementById('schedTitleInput').value = '';
       document.getElementById('schedCategoryInput').value = 'liturgy';
-      document.getElementById('schedDayInput').value = 'الجمعة';
-      document.getElementById('schedTimeInput').value = '6:00 ص - 8:30 ص';
-      document.getElementById('schedPlaceInput').value = 'المذبح الرئيسي';
-      document.getElementById('schedPriestInput').value = 'آباء الكنيسة';
-      document.getElementById('schedBadgeInput').value = 'جديد';
-      document.getElementById('schedFormBox').classList.remove('hidden');
+      document.getElementById('schedDayInput').value = '';
+      document.getElementById('schedTimeInput').value = '';
+      document.getElementById('schedPlaceInput').value = '';
+      document.getElementById('schedPriestInput').value = '';
+      document.getElementById('schedBadgeInput').value = '';
     }
 
-    function editSched(id) {
-      const s = appData.schedule.find(item => item.id === id);
-      if (!s) return;
-      document.getElementById('schedFormHeading').innerText = `تعديل خدمة: ${s.title}`;
-      document.getElementById('editSchedId').value = s.id;
-      document.getElementById('schedTitleInput').value = s.title;
-      document.getElementById('schedCategoryInput').value = s.category;
-      document.getElementById('schedDayInput').value = s.day;
-      document.getElementById('schedTimeInput').value = s.time;
-      document.getElementById('schedPlaceInput').value = s.place;
-      document.getElementById('schedPriestInput').value = s.priest;
-      document.getElementById('schedBadgeInput').value = s.badge;
+    function editScheduleItem(id) {
+      const item = currentAdminData.schedule.find(s => s.id === id);
+      if (!item) return;
       document.getElementById('schedFormBox').classList.remove('hidden');
+      document.getElementById('schedFormHeading').innerText = `تعديل خدمة: ${item.title}`;
+      document.getElementById('editSchedId').value = item.id;
+      document.getElementById('schedTitleInput').value = item.title || '';
+      document.getElementById('schedCategoryInput').value = item.category || 'liturgy';
+      document.getElementById('schedDayInput').value = item.day || '';
+      document.getElementById('schedTimeInput').value = item.time || '';
+      document.getElementById('schedPlaceInput').value = item.place || '';
+      document.getElementById('schedPriestInput').value = item.priest || '';
+      document.getElementById('schedBadgeInput').value = item.badge || '';
     }
 
     function saveScheduleItem() {
-      const editId = document.getElementById('editSchedId').value;
       const title = document.getElementById('schedTitleInput').value.trim();
-      if (!title) return alert('الرجاء إدخال اسم الخدمة!');
+      if (!title) { alert('اسم الخدمة مطلوب'); return; }
 
-      const category = document.getElementById('schedCategoryInput').value;
-      const day = document.getElementById('schedDayInput').value.trim();
-      const time = document.getElementById('schedTimeInput').value.trim();
-      const place = document.getElementById('schedPlaceInput').value.trim();
-      const priest = document.getElementById('schedPriestInput').value.trim();
-      const badge = document.getElementById('schedBadgeInput').value.trim();
+      const id = parseInt(document.getElementById('editSchedId').value) || Date.now();
+      const item = {
+        id: id,
+        title: title,
+        category: document.getElementById('schedCategoryInput').value,
+        day: document.getElementById('schedDayInput').value.trim(),
+        time: document.getElementById('schedTimeInput').value.trim(),
+        place: document.getElementById('schedPlaceInput').value.trim(),
+        priest: document.getElementById('schedPriestInput').value.trim(),
+        badge: document.getElementById('schedBadgeInput').value.trim()
+      };
 
-      if (editId) {
-        const exist = appData.schedule.find(s => s.id == editId);
-        if (exist) {
-          exist.title = title; exist.category = category; exist.day = day;
-          exist.time = time; exist.place = place; exist.priest = priest; exist.badge = badge;
-        }
-      } else {
-        appData.schedule.push({ id: Date.now(), title, category, day, time, place, priest, badge });
-      }
+      const idx = currentAdminData.schedule.findIndex(s => s.id === id);
+      if (idx >= 0) currentAdminData.schedule[idx] = item;
+      else currentAdminData.schedule.push(item);
 
-      renderScheduleList();
-      persistChanges();
       document.getElementById('schedFormBox').classList.add('hidden');
+      renderAdminSchedule();
+      saveAdminData();
     }
 
-    function deleteSched(id) {
-      if (!confirm('هل تريد حذف هذه الخدمة؟')) return;
-      appData.schedule = appData.schedule.filter(s => s.id != id);
-      renderScheduleList();
-      persistChanges();
+    function deleteScheduleItem(id) {
+      if (!confirm('هل تريد حذف هذا الموعد؟')) return;
+      currentAdminData.schedule = currentAdminData.schedule.filter(s => s.id !== id);
+      renderAdminSchedule();
+      saveAdminData();
     }
 
-    // Shop CRUD
-    function renderProductsList() {
-      const container = document.getElementById('adminProductsList');
-      container.innerHTML = appData.products.map(p => `
-        <div class="flex items-center justify-between p-3 rounded-2xl bg-sapphire-900/80 border border-white/5 text-xs">
-          <div class="flex items-center gap-2.5">
-            <span class="text-2xl">${p.image || '📖'}</span>
+    // 5. SHOP MANAGEMENT
+    function renderAdminProducts() {
+      const list = document.getElementById('adminProductsList');
+      if (!list) return;
+      const prods = currentAdminData.products || [];
+      
+      list.innerHTML = prods.map(p => `
+        <div class="p-3.5 rounded-2xl bg-sapphire-900/60 border border-white/10 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-lg flex-shrink-0">
+              ${p.image || '📖'}
+            </div>
             <div>
-              <span class="font-bold text-white block text-sm">${p.name}</span>
-              <span class="text-[10px] text-amber-300">${p.price} جنيه مصري</span>
+              <h5 class="text-xs font-black text-white">${p.name}</h5>
+              <span class="text-[11px] font-bold text-amber-400">${p.price} ج.م • <span class="text-slate-400 font-normal">${p.category}</span></span>
             </div>
           </div>
-          <div class="flex items-center gap-1.5">
-            <button onclick="editProd(${p.id})" class="px-2.5 py-1 rounded-xl bg-blue-600/40 text-blue-200 hover:bg-blue-600 hover:text-white text-xs font-bold">تعديل</button>
-            <button onclick="deleteProd(${p.id})" class="px-2.5 py-1 rounded-xl bg-red-600/40 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold">حذف</button>
+          <div class="flex items-center gap-2">
+            <button onclick="editProductItem(${p.id})" class="px-3 py-1.5 rounded-xl bg-amber-600/30 text-amber-300 text-xs font-bold hover:bg-amber-600 hover:text-white transition-all">تعديل</button>
+            <button onclick="deleteProductItem(${p.id})" class="px-3 py-1.5 rounded-xl bg-red-600/30 text-red-300 text-xs font-bold hover:bg-red-600 hover:text-white transition-all">حذف</button>
           </div>
         </div>
       `).join('');
     }
 
     function openAddProductForm() {
-      document.getElementById('prodFormHeading').innerText = 'إضافة منتج جديد';
+      document.getElementById('prodFormBox').classList.remove('hidden');
+      document.getElementById('prodFormHeading').innerText = 'إضافة منتج أو كتاب جديد للمكتبة';
       document.getElementById('editProductId').value = '';
       document.getElementById('prodNameInput').value = '';
       document.getElementById('prodCategoryInput').value = 'books';
-      document.getElementById('prodPriceInput').value = '50';
+      document.getElementById('prodPriceInput').value = '';
       document.getElementById('prodImageInput').value = '📖';
-      document.getElementById('prodBadgeInput').value = 'جديد';
-      document.getElementById('prodFormBox').classList.remove('hidden');
+      document.getElementById('prodBadgeInput').value = '';
     }
 
-    function editProd(id) {
-      const p = appData.products.find(item => item.id === id);
-      if (!p) return;
-      document.getElementById('prodFormHeading').innerText = `تعديل منتج: ${p.name}`;
-      document.getElementById('editProductId').value = p.id;
-      document.getElementById('prodNameInput').value = p.name;
-      document.getElementById('prodCategoryInput').value = p.category;
-      document.getElementById('prodPriceInput').value = p.price;
-      document.getElementById('prodImageInput').value = p.image;
-      document.getElementById('prodBadgeInput').value = p.badge;
+    function editProductItem(id) {
+      const item = currentAdminData.products.find(p => p.id === id);
+      if (!item) return;
       document.getElementById('prodFormBox').classList.remove('hidden');
+      document.getElementById('prodFormHeading').innerText = `تعديل منتج: ${item.name}`;
+      document.getElementById('editProductId').value = item.id;
+      document.getElementById('prodNameInput').value = item.name || '';
+      document.getElementById('prodCategoryInput').value = item.category || 'books';
+      document.getElementById('prodPriceInput').value = item.price || '';
+      document.getElementById('prodImageInput').value = item.image || '📖';
+      document.getElementById('prodBadgeInput').value = item.badge || '';
     }
 
     function saveProductItem() {
-      const editId = document.getElementById('editProductId').value;
       const name = document.getElementById('prodNameInput').value.trim();
-      if (!name) return alert('الرجاء إدخال اسم المنتج!');
+      const price = parseFloat(document.getElementById('prodPriceInput').value) || 0;
+      if (!name) { alert('اسم المنتج مطلوب'); return; }
 
-      const category = document.getElementById('prodCategoryInput').value;
-      const price = Number(document.getElementById('prodPriceInput').value) || 0;
-      const image = document.getElementById('prodImageInput').value.trim() || '📖';
-      const badge = document.getElementById('prodBadgeInput').value.trim();
+      const id = parseInt(document.getElementById('editProductId').value) || Date.now();
+      const item = {
+        id: id,
+        name: name,
+        category: document.getElementById('prodCategoryInput').value,
+        price: price,
+        image: document.getElementById('prodImageInput').value || '📖',
+        badge: document.getElementById('prodBadgeInput').value.trim()
+      };
 
-      if (editId) {
-        const exist = appData.products.find(p => p.id == editId);
-        if (exist) {
-          exist.name = name; exist.category = category; exist.price = price; exist.image = image; exist.badge = badge;
-        }
-      } else {
-        appData.products.push({ id: Date.now(), name, category, price, image, badge });
-      }
+      const idx = currentAdminData.products.findIndex(p => p.id === id);
+      if (idx >= 0) currentAdminData.products[idx] = item;
+      else currentAdminData.products.push(item);
 
-      renderProductsList();
-      persistChanges();
       document.getElementById('prodFormBox').classList.add('hidden');
+      renderAdminProducts();
+      saveAdminData();
     }
 
-    function deleteProd(id) {
+    function deleteProductItem(id) {
       if (!confirm('هل تريد حذف هذا المنتج؟')) return;
-      appData.products = appData.products.filter(p => p.id != id);
-      renderProductsList();
-      persistChanges();
+      currentAdminData.products = currentAdminData.products.filter(p => p.id !== id);
+      renderAdminProducts();
+      saveAdminData();
     }
 
-    // Clergy CRUD
-    function renderClergyList() {
-      const container = document.getElementById('adminClergyList');
-      container.innerHTML = appData.clergy.map(c => `
-        <div class="flex items-center justify-between p-3 rounded-2xl bg-sapphire-900/80 border border-white/5 text-xs">
-          <div>
-            <span class="font-bold text-white block text-sm">${c.name}</span>
-            <span class="text-[10px] text-amber-300">${c.role} • ${c.hours}</span>
+    // 6. CLERGY MANAGEMENT
+    function renderAdminClergy() {
+      const list = document.getElementById('adminClergyList');
+      if (!list) return;
+      const clergy = currentAdminData.clergy || [];
+      
+      list.innerHTML = clergy.map(c => `
+        <div class="p-3.5 rounded-2xl bg-sapphire-900/60 border border-white/10 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center text-lg flex-shrink-0">
+              ✝️
+            </div>
+            <div>
+              <h5 class="text-xs font-black text-white">${c.name}</h5>
+              <p class="text-[11px] text-amber-300 mt-0.5">🕒 ${c.hours} • <span class="text-slate-400">${c.place || ''}</span></p>
+            </div>
           </div>
-          <div class="flex items-center gap-1.5">
-            <button onclick="editClergy(${c.id})" class="px-2.5 py-1 rounded-xl bg-blue-600/40 text-blue-200 hover:bg-blue-600 hover:text-white text-xs font-bold">تعديل</button>
-            <button onclick="deleteClergy(${c.id})" class="px-2.5 py-1 rounded-xl bg-red-600/40 text-red-200 hover:bg-red-600 hover:text-white text-xs font-bold">حذف</button>
+          <div class="flex items-center gap-2">
+            <button onclick="editClergyItem(${c.id})" class="px-3 py-1.5 rounded-xl bg-amber-600/30 text-amber-300 text-xs font-bold hover:bg-amber-600 hover:text-white transition-all">تعديل</button>
+            <button onclick="deleteClergyItem(${c.id})" class="px-3 py-1.5 rounded-xl bg-red-600/30 text-red-300 text-xs font-bold hover:bg-red-600 hover:text-white transition-all">حذف</button>
           </div>
         </div>
       `).join('');
     }
 
     function openAddClergyForm() {
-      document.getElementById('clergyFormHeading').innerText = 'إضافة كاهن / خادم جديد';
+      document.getElementById('clergyFormBox').classList.remove('hidden');
+      document.getElementById('clergyFormHeading').innerText = 'إضافة كاهن جديد';
       document.getElementById('editClergyId').value = '';
       document.getElementById('clergyNameInput').value = '';
-      document.getElementById('clergyRoleInput').value = 'كاهن الكنيسة';
-      document.getElementById('clergyHoursInput').value = 'الجمعة والأحد';
-      document.getElementById('clergyPlaceInput').value = 'مكتب الكهنة - الدور الأرضي';
-      document.getElementById('clergyFormBox').classList.remove('hidden');
+      document.getElementById('clergyRoleInput').value = '';
+      document.getElementById('clergyHoursInput').value = '';
+      document.getElementById('clergyPlaceInput').value = '';
     }
 
-    function editClergy(id) {
-      const c = appData.clergy.find(item => item.id === id);
-      if (!c) return;
-      document.getElementById('clergyFormHeading').innerText = `تعديل بيانات: ${c.name}`;
-      document.getElementById('editClergyId').value = c.id;
-      document.getElementById('clergyNameInput').value = c.name;
-      document.getElementById('clergyRoleInput').value = c.role;
-      document.getElementById('clergyHoursInput').value = c.hours;
-      document.getElementById('clergyPlaceInput').value = c.place;
+    function editClergyItem(id) {
+      const item = currentAdminData.clergy.find(c => c.id === id);
+      if (!item) return;
       document.getElementById('clergyFormBox').classList.remove('hidden');
+      document.getElementById('clergyFormHeading').innerText = `تعديل بيانات: ${item.name}`;
+      document.getElementById('editClergyId').value = item.id;
+      document.getElementById('clergyNameInput').value = item.name || '';
+      document.getElementById('clergyRoleInput').value = item.role || '';
+      document.getElementById('clergyHoursInput').value = item.hours || '';
+      document.getElementById('clergyPlaceInput').value = item.place || '';
     }
 
     function saveClergyItem() {
-      const editId = document.getElementById('editClergyId').value;
       const name = document.getElementById('clergyNameInput').value.trim();
-      if (!name) return alert('الرجاء إدخال اسم الكاهن!');
+      if (!name) { alert('اسم الكاهن مطلوب'); return; }
 
-      const role = document.getElementById('clergyRoleInput').value.trim();
-      const hours = document.getElementById('clergyHoursInput').value.trim();
-      const place = document.getElementById('clergyPlaceInput').value.trim();
+      const id = parseInt(document.getElementById('editClergyId').value) || Date.now();
+      const item = {
+        id: id,
+        name: name,
+        role: document.getElementById('clergyRoleInput').value.trim(),
+        hours: document.getElementById('clergyHoursInput').value.trim(),
+        place: document.getElementById('clergyPlaceInput').value.trim()
+      };
 
-      if (editId) {
-        const exist = appData.clergy.find(c => c.id == editId);
-        if (exist) {
-          exist.name = name; exist.role = role; exist.hours = hours; exist.place = place;
-        }
-      } else {
-        appData.clergy.push({ id: Date.now(), name, role, hours, place });
-      }
+      const idx = currentAdminData.clergy.findIndex(c => c.id === id);
+      if (idx >= 0) currentAdminData.clergy[idx] = item;
+      else currentAdminData.clergy.push(item);
 
-      renderClergyList();
-      persistChanges();
       document.getElementById('clergyFormBox').classList.add('hidden');
+      renderAdminClergy();
+      saveAdminData();
     }
 
-    function deleteClergy(id) {
-      if (!confirm('هل تريد الحذف؟')) return;
-      appData.clergy = appData.clergy.filter(c => c.id != id);
-      renderClergyList();
-      persistChanges();
+    function deleteClergyItem(id) {
+      if (!confirm('هل تريد حذف هذا الكاهن؟')) return;
+      currentAdminData.clergy = currentAdminData.clergy.filter(c => c.id !== id);
+      renderAdminClergy();
+      saveAdminData();
     }
 
-    async function uploadExcelFile(e) {
-      const file = e.target.files[0];
+    // EXCEL IMPORT / EXPORT
+    function downloadExcelDatabase() {
+      if (!currentAdminData) return;
+      const wb = XLSX.utils.book_new();
+
+      // Sheets: Settings, Places, HistoryPhotos, Schedule, Products, Clergy
+      const wsSettings = XLSX.utils.json_to_sheet([currentAdminData.settings || {}]);
+      XLSX.utils.book_append_sheet(wb, wsSettings, "Settings");
+
+      const wsPlaces = XLSX.utils.json_to_sheet(currentAdminData.places || []);
+      XLSX.utils.book_append_sheet(wb, wsPlaces, "Places");
+
+      const wsHistory = XLSX.utils.json_to_sheet(currentAdminData.historyPhotos || []);
+      XLSX.utils.book_append_sheet(wb, wsHistory, "HistoryPhotos");
+
+      const wsSched = XLSX.utils.json_to_sheet(currentAdminData.schedule || []);
+      XLSX.utils.book_append_sheet(wb, wsSched, "Schedule");
+
+      const wsProd = XLSX.utils.json_to_sheet(currentAdminData.products || []);
+      XLSX.utils.book_append_sheet(wb, wsProd, "Products");
+
+      const wsClergy = XLSX.utils.json_to_sheet(currentAdminData.clergy || []);
+      XLSX.utils.book_append_sheet(wb, wsClergy, "Clergy");
+
+      XLSX.writeFile(wb, "Church_Cleopatra_Database.xlsx");
+    }
+
+    function uploadExcelDatabase(event) {
+      const file = event.target.files[0];
       if (!file) return;
-      try {
-        const res = await fetch('/api/upload-excel', {
-          method: 'POST',
-          body: file
-        });
-        const result = await res.json();
-        if (result.status === 'success') {
-          appData = result.data;
-          populateAdminForms();
-          showToast('تم استيراد ملف Excel وتحديث قاعدة البيانات بنجاح!');
-        } else {
-          alert('حدث خطأ في قراءة ملف Excel');
-        }
-      } catch(err) {
-        alert('فشل رفع الملف إلى السيرفر');
-      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, { type: 'array' });
+
+        if (wb.Sheets["Settings"]) currentAdminData.settings = XLSX.utils.sheet_to_json(wb.Sheets["Settings"])[0] || currentAdminData.settings;
+        if (wb.Sheets["Places"]) currentAdminData.places = XLSX.utils.sheet_to_json(wb.Sheets["Places"]);
+        if (wb.Sheets["HistoryPhotos"]) currentAdminData.historyPhotos = XLSX.utils.sheet_to_json(wb.Sheets["HistoryPhotos"]);
+        if (wb.Sheets["Schedule"]) currentAdminData.schedule = XLSX.utils.sheet_to_json(wb.Sheets["Schedule"]);
+        if (wb.Sheets["Products"]) currentAdminData.products = XLSX.utils.sheet_to_json(wb.Sheets["Products"]);
+        if (wb.Sheets["Clergy"]) currentAdminData.clergy = XLSX.utils.sheet_to_json(wb.Sheets["Clergy"]);
+
+        populateGeneralForm();
+        renderAdminPlaces();
+        renderAdminHistoryPhotos();
+        renderAdminSchedule();
+        renderAdminProducts();
+        renderAdminClergy();
+        saveAdminData();
+        alert('تم استيراد قاعدة البيانات بنجاح من ملف Excel!');
+      };
+      reader.readAsArrayBuffer(file);
     }
 
     function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMsg');
-      toastMsg.innerText = msg;
-      toast.classList.remove('opacity-0', 'pointer-events-none');
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'pointer-events-none');
-      }, 3500);
+      alert(msg);
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAdminData();
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>
