@@ -1211,6 +1211,22 @@
             💾 حفظ بيانات الحسابات والتبرعات
           </button>
         </form>
+
+        <!-- DONATION LOGS / NOTIFICATIONS TABLE -->
+        <div class="p-4 rounded-2xl bg-sapphire-900/80 border border-white/10 space-y-3 mt-6">
+          <div class="flex items-center justify-between pb-2 border-b border-white/10">
+            <h4 class="text-xs sm:text-sm font-black text-rose-300 flex items-center gap-1.5">
+              <span>📋</span> سجل إشعارات التبرعات والمساهمات الواردة:
+            </h4>
+            <button type="button" onclick="clearAllDonationLogs()" class="text-[11px] text-red-400 hover:text-red-300 font-bold">
+              مسح السجل
+            </button>
+          </div>
+
+          <div id="adminDonationLogsList" class="space-y-2">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
       </div>
 
   </main>
@@ -1363,6 +1379,7 @@
 
       populateGeneralForm();
       populateDonationsForm();
+      renderAdminDonationLogs();
 
       renderAdminPlaces();
 
@@ -1451,6 +1468,67 @@
     // 1. GENERAL SETTINGS
 
     
+    
+    function renderAdminDonationLogs() {
+      const list = document.getElementById('adminDonationLogsList');
+      if (!list) return;
+      const logs = currentAdminData.donationLogs || [];
+
+      if (logs.length === 0) {
+        list.innerHTML = '<div class="text-center py-6 text-xs text-slate-400">لا توجد إشعارات تبرع مسجلة حتى الآن.</div>';
+        return;
+      }
+
+      list.innerHTML = logs.map((log, idx) => `
+        <div class="p-3.5 rounded-xl bg-sapphire-950 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-black text-white text-sm">${log.name || 'فاعل خير'}</span>
+              <span class="px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 font-bold border border-rose-500/30 text-[10px]">${log.cause}</span>
+              <span class="px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 font-bold border border-cyan-500/30 text-[10px]">${log.channel}</span>
+              <span class="text-amber-400 font-black">${log.amount ? log.amount + ' ج.م' : ''}</span>
+            </div>
+            <p class="text-[11px] text-slate-300">
+              <span>📱 الرقم المحول منه: <strong class="text-white font-mono">${log.sender}</strong></span>
+              ${log.notes ? ` • <span>📝 ملاحظات: ${log.notes}</span>` : ''}
+            </p>
+            <span class="text-[10px] text-slate-500 block">⏰ ${log.date}</span>
+          </div>
+
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            ${log.receipt ? `
+              <button onclick="viewReceiptImage('${log.receipt}')" class="px-3 py-1.5 rounded-lg bg-cyan-600/30 text-cyan-300 hover:bg-cyan-600 hover:text-white font-bold text-xs">
+                🖼️ عرض الإيصال
+              </button>
+            ` : ''}
+            <button onclick="deleteDonationLog(${log.id})" class="px-3 py-1.5 rounded-lg bg-red-600/30 text-red-300 hover:bg-red-600 hover:text-white font-bold text-xs">
+              حذف
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function viewReceiptImage(dataUrl) {
+      const win = window.open('');
+      win.document.write(`<body style="margin:0;background:#050b18;display:flex;justify-content:center;align-items:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.5);" /></body>`);
+    }
+
+    function deleteDonationLog(id) {
+      if (!confirm('هل تريد حذف هذا الإشعار من السجل؟')) return;
+      if (!currentAdminData.donationLogs) currentAdminData.donationLogs = [];
+      currentAdminData.donationLogs = currentAdminData.donationLogs.filter(l => l.id !== id);
+      renderAdminDonationLogs();
+      saveAdminData();
+    }
+
+    function clearAllDonationLogs() {
+      if (!confirm('هل أنت متأكد من مسح جميع إشعارات التبرع المسجلة؟')) return;
+      currentAdminData.donationLogs = [];
+      renderAdminDonationLogs();
+      saveAdminData();
+    }
+
     function populateDonationsForm() {
       const don = currentAdminData.donations || {};
       document.getElementById('inputDonInstapay').value = don.instapay || '';
@@ -2669,6 +2747,7 @@
 
         populateGeneralForm();
       populateDonationsForm();
+      renderAdminDonationLogs();
 
         renderAdminPlaces();
 
