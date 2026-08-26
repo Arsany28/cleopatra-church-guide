@@ -134,18 +134,24 @@
       <div id="content-general" class="tab-panel space-y-4">
         
         <!-- Google Apps Script Cloud DB Configuration -->
-        <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-950/80 via-indigo-950/80 to-purple-950/80 border border-blue-400/40 shadow-glass">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-xl">☁️</span>
-            <h4 class="text-xs sm:text-sm font-black text-white">الربط بقاعدة بيانات Google Sheets (عبر Google Apps Script)</h4>
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-blue-950/80 via-indigo-950/80 to-purple-950/80 border border-emerald-500/40 shadow-glass">
+          <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">☁️</span>
+              <h4 class="text-xs sm:text-sm font-black text-white">الربط السحابي بقاعدة بيانات Google Sheets (مثبت تلقائياً ومفعل)</h4>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/90 text-emerald-300 text-[11px] font-black border border-emerald-500/40 shadow-sm">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>✅ الرابط مثبت تلقائياً داخل الكود</span>
+            </span>
           </div>
           <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
-            لربط التطبيق مجاناً 100% مع Google Sheets عند رفعه على <strong>GitHub Pages</strong>، الصق رابط الـ Web App الخاص بك أدناه:
+            تم تثبيت رابط Google Apps Script الخاص بك بشكل دائم في الكود. جميع التعديلات تُحفظ وتُزامن سحابياً مع شيت جوجل تلقائياً:
           </p>
           <div class="flex flex-col sm:flex-row items-center gap-2">
-            <input id="inputGoogleScriptUrl" type="url" placeholder="https://script.google.com/macros/s/AKfycbx.../exec" class="w-full flex-1 bg-sapphire-950 border border-blue-400/40 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow" />
-            <button type="button" onclick="testAndSaveGoogleScriptUrl()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs shadow-glow-cyan transition-all whitespace-nowrap">
-              🔗 اختبار ومزامنة Google Sheets
+            <input id="inputGoogleScriptUrl" type="url" value="https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec" class="w-full flex-1 bg-sapphire-950 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs text-emerald-300 font-mono focus:outline-none focus:border-cyanGlow" />
+            <button type="button" onclick="testAndSaveGoogleScriptUrl()" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs shadow-md transition-all whitespace-nowrap">
+              🔄 فحص الاتصال ومزامنة الآن
             </button>
           </div>
         </div>
@@ -698,7 +704,7 @@
     // 1. GENERAL SETTINGS
     function populateGeneralForm() {
       const s = currentAdminData.settings || {};
-      document.getElementById('inputGoogleScriptUrl').value = s.googleScriptUrl || '';
+      document.getElementById('inputGoogleScriptUrl').value = s.googleScriptUrl || PERMANENT_GOOGLE_SCRIPT_URL;
       document.getElementById('inputChurchName').value = s.churchName || '';
       document.getElementById('inputChurchLocation').value = s.churchLocation || '';
       document.getElementById('inputLogoUrl').value = s.logoUrl || '';
