@@ -157,6 +157,62 @@
 
 <body class="min-h-screen pb-24 text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
 
+  <!-- ================= ULTRA-FAST LUXURY SPLASH SCREEN ================= -->
+  <div id="appSplashScreen" class="fixed inset-0 z-50 bg-[#050b18] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 ease-out" style="z-index: 9999;">
+    <!-- Glowing Logo Container -->
+    <div class="relative mb-5">
+      <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sapphire-900 via-sapphire-950 to-[#040814] border-2 border-cyanGlow/40 flex items-center justify-center shadow-glow-cyan overflow-hidden p-3">
+        <span class="text-5xl sm:text-6xl drop-shadow-[0_0_15px_rgba(255,215,0,0.6)]">⛪</span>
+      </div>
+    </div>
+
+    <!-- Church Title -->
+    <h1 class="text-base sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-amber-300 mb-1 max-w-md leading-snug">
+      كنيسة السيدة العذراء والبابا كيرلس عمود الدين
+    </h1>
+    <p class="text-xs font-bold text-cyan-400 mb-3 flex items-center justify-center gap-1.5">
+      <span>📍</span>
+      <span>كليوباترا - الإسكندرية</span>
+    </p>
+
+    <!-- Spiritual Verse -->
+    <p class="text-[11px] text-amber-200/90 italic max-w-sm mb-5 bg-amber-950/40 px-3.5 py-1 rounded-full border border-amber-500/20">
+      ✨ "بِبَيْتِكَ تَلِيقُ الْقَدَاسَةُ يَا رَبُّ إِلَى طُولِ الأَيَّامِ"
+    </p>
+
+    <!-- Sleek Glowing Progress Bar -->
+    <div class="w-48 sm:w-56 h-1.5 bg-sapphire-950 rounded-full overflow-hidden border border-white/10 relative shadow-inner">
+      <div class="h-full w-full bg-gradient-to-r from-cyan-500 via-teal-300 to-amber-400 rounded-full" style="animation: splashProgress 0.8s ease-in-out infinite alternate;"></div>
+    </div>
+    <span class="text-[10px] text-slate-400 mt-2 font-bold tracking-wide">جاري التجهيز...</span>
+  </div>
+
+  <style>
+    @keyframes splashProgress {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(50%); }
+    }
+  </style>
+
+  <!-- Ultra Fast Self-Dismissing Failsafe Script (450ms) -->
+  <script>
+    (function() {
+      function dismissSplash() {
+        var sp = document.getElementById('appSplashScreen');
+        if (sp && sp.style.display !== 'none') {
+          sp.style.opacity = '0';
+          sp.style.pointerEvents = 'none';
+          setTimeout(function() {
+            if (sp && sp.parentNode) sp.parentNode.removeChild(sp);
+          }, 300);
+        }
+      }
+      setTimeout(dismissSplash, 450);
+      window.addEventListener('load', function() { setTimeout(dismissSplash, 200); });
+    })();
+  </script>
+
+
 
 
   <!-- TOP HEADER (Clean for Visitors, No Admin Button) -->
