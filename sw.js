@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'cleopatra-church-v2';
+﻿const CACHE_NAME = 'cleopatra-church-v3';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
@@ -12,8 +12,5 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  // Pass-through to network for instant, fresh data without intercepting hangs
-  e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
-  );
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
