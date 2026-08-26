@@ -30,9 +30,9 @@
             goldGlow: '#ffd700'
           },
           boxShadow: {
-            glass: '0 4px 20px 0 rgba(0, 0, 0, 0.4)',
-            'glow-cyan': '0 0 15px rgba(0, 240, 255, 0.35)',
-            'glow-gold': '0 0 15px rgba(255, 215, 0, 0.3)'
+            glass: '0 8px 32px 0 rgba(0, 240, 255, 0.1)',
+            'glow-cyan': '0 0 20px rgba(0, 240, 255, 0.4)',
+            'glow-gold': '0 0 20px rgba(255, 215, 0, 0.3)'
           }
         }
       }
@@ -40,24 +40,26 @@
   </script>
 
   <style>
-    /* Ultra Fast Blazing 120 FPS Native Performance */
     body {
       background-color: #050a18;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 240, 255, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.12) 0px, transparent 50%);
       font-family: 'Cairo', sans-serif;
-      overflow-x: hidden;
     }
     .glass-card {
-      background: #0c1736;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(12, 23, 54, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .glass-card-interactive {
-      background: #0e1a3d;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      background: rgba(12, 23, 54, 0.8);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
     }
     .glass-card-interactive:hover {
-      transform: translateY(-2px);
       border-color: rgba(0, 240, 255, 0.4);
+      transform: translateY(-2px);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -66,12 +68,12 @@
 <body class="text-slate-100 min-h-screen pb-24 selection:bg-cyan-500 selection:text-slate-950">
 
   <!-- ================= TOP STICKY HEADER ================= -->
-  <header class="sticky top-0 z-40 bg-[#0c1736]/95 border-b border-white/10 py-3 px-4 md:px-8 shadow-md">
+  <header class="sticky top-0 z-40 glass-card border-b border-white/10 py-3 px-4 md:px-8 shadow-glass">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
       
       <!-- Brand & Title -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-md flex-shrink-0">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-glow-cyan flex-shrink-0">
           <div class="w-full h-full bg-sapphire-950 rounded-[14px] flex items-center justify-center overflow-hidden">
             <img id="headerLogoImg" src="church_logo.png" alt="Church Logo" class="w-full h-full object-contain hidden" onerror="this.classList.add('hidden'); document.getElementById('headerLogoDefault').classList.remove('hidden');" />
             <span id="headerLogoDefault" class="text-xl">✝️</span>
@@ -1059,27 +1061,19 @@
         const s = this.data.settings || {};
         if (s.churchName) {
           document.getElementById('headerChurchName').innerText = s.churchName;
-          const spName = document.getElementById('splashChurchName');
-          if (spName) spName.innerText = s.churchName;
           const posName = document.getElementById('posterChurchName');
           if (posName) posName.innerText = s.churchName;
         }
         if (s.churchLocation) {
           document.getElementById('headerChurchLocation').innerText = s.churchLocation;
-          const spLoc = document.getElementById('splashChurchLocation');
-          if (spLoc) spLoc.innerText = s.churchLocation;
           const posLoc = document.getElementById('posterChurchLocation');
           if (posLoc) posLoc.innerText = s.churchLocation;
         }
         if (s.logoUrl && s.logoUrl.trim() !== '') {
           const hLogo = document.getElementById('headerLogoImg');
-          const sLogo = document.getElementById('splashLogoImg');
           if (hLogo) { hLogo.src = s.logoUrl; hLogo.classList.remove('hidden'); }
-          if (sLogo) { sLogo.src = s.logoUrl; sLogo.classList.remove('hidden'); }
           const hDef = document.getElementById('headerLogoDefault');
-          const sDef = document.getElementById('splashLogoDefault');
           if (hDef) hDef.classList.add('hidden');
-          if (sDef) sDef.classList.add('hidden');
         }
         if (s.liveTitle) document.getElementById('bannerLiveTitle').innerText = s.liveTitle;
         if (s.studioPhone) {
