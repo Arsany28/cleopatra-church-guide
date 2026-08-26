@@ -30,10 +30,9 @@
             goldGlow: '#ffd700'
           },
           boxShadow: {
-            glass: '0 8px 32px 0 rgba(0, 240, 255, 0.12)',
-            'glow-cyan': '0 0 25px rgba(0, 240, 255, 0.45)',
-            'glow-gold': '0 0 25px rgba(255, 215, 0, 0.35)',
-            'glow-emerald': '0 0 25px rgba(16, 185, 129, 0.35)'
+            glass: '0 4px 20px 0 rgba(0, 0, 0, 0.4)',
+            'glow-cyan': '0 0 15px rgba(0, 240, 255, 0.35)',
+            'glow-gold': '0 0 15px rgba(255, 215, 0, 0.3)'
           }
         }
       }
@@ -41,131 +40,41 @@
   </script>
 
   <style>
+    /* Ultra Fast Blazing 120 FPS Native Performance */
     body {
       background-color: #050a18;
-      background-image: 
-        radial-gradient(at 0% 0%, rgba(0, 240, 255, 0.12) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(255, 215, 0, 0.08) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.8) 0px, transparent 80%),
-        radial-gradient(at 0% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
-      background-attachment: fixed;
       font-family: 'Cairo', sans-serif;
+      overflow-x: hidden;
     }
     .glass-card {
-      background: rgba(12, 23, 54, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: #0c1736;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .glass-card-interactive {
-      background: rgba(12, 23, 54, 0.8);
-      backdrop-filter: blur(12px);
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #0e1a3d;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.2s ease, border-color 0.2s ease;
     }
     .glass-card-interactive:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 12px 30px rgba(0, 240, 255, 0.2);
+      transform: translateY(-2px);
       border-color: rgba(0, 240, 255, 0.4);
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    /* Custom Animations */
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-7px); }
-    }
-    .animate-float {
-      animation: floatSlow 4s ease-in-out infinite;
-    }
-
-    @keyframes pulseGlowRing {
-      0%, 100% { transform: scale(1); opacity: 0.4; }
-      50% { transform: scale(1.12); opacity: 0.8; }
-    }
-    .animate-glow-ring {
-      animation: pulseGlowRing 3s ease-in-out infinite;
-    }
-
-    @keyframes progressIndeterminate {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-    .animate-progress-fast {
-      animation: progressIndeterminate 1.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-    }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen pb-24 overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950">
-
-  <!-- ================= LUXURY LOADING / SPLASH SCREEN ================= -->
-  <div id="appSplashScreen" class="fixed inset-0 z-50 bg-[#050a18] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 ease-out">
-    
-    <!-- Rotating Halo & Logo Box -->
-    <div class="relative mb-6">
-      <div class="absolute -inset-6 rounded-full bg-gradient-to-tr from-cyan-500 via-purple-600 to-amber-400 opacity-40 blur-2xl animate-glow-ring"></div>
-      
-      <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-b from-sapphire-900 via-sapphire-950 to-[#040814] border-2 border-cyanGlow/50 flex items-center justify-center shadow-glow-cyan overflow-hidden p-3 animate-float">
-        <img id="splashLogoImg" src="church_logo.png" alt="Church Logo" class="w-full h-full object-contain hidden" onerror="this.classList.add('hidden'); document.getElementById('splashLogoDefault').classList.remove('hidden');" />
-        <div id="splashLogoDefault" class="flex flex-col items-center justify-center">
-          <span class="text-5xl sm:text-6xl drop-shadow-[0_0_15px_rgba(255,215,0,0.6)]">⛪</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Church Name & Location -->
-    <h1 id="splashChurchName" class="text-lg sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-amber-300 mb-1 max-w-lg leading-snug">
-      كنيسة السيدة العذراء والبابا كيرلس عمود الدين
-    </h1>
-    <p id="splashChurchLocation" class="text-xs sm:text-sm font-bold text-cyan-400 mb-4 flex items-center justify-center gap-1.5">
-      <span>📍</span>
-      <span>كليوباترا - الإسكندرية</span>
-    </p>
-
-    <!-- Spiritual Verse -->
-    <p class="text-xs text-amber-200/90 italic max-w-md mb-6 leading-relaxed bg-amber-950/40 px-4 py-1.5 rounded-full border border-amber-500/20">
-      ✨ "بِبَيْتِكَ تَلِيقُ الْقَدَاسَةُ يَا رَبُّ إِلَى طُولِ الأَيَّامِ"
-    </p>
-
-    <!-- Animated Loading Progress Bar -->
-    <div class="w-56 sm:w-64 h-2 bg-sapphire-950/90 rounded-full overflow-hidden border border-white/10 relative shadow-inner">
-      <div class="h-full w-full bg-gradient-to-r from-cyan-500 via-teal-300 to-amber-400 rounded-full animate-progress-fast"></div>
-    </div>
-    <span class="text-[10px] text-slate-400 mt-2 tracking-wide font-bold">جاري تجهيز الخريطة التفاعلية والخدمات...</span>
-  </div>
-
-  <!-- INLINE GUARANTEED AUTO-DISMISS SCRIPT (NEVER HANGS) -->
-  <script>
-    (function() {
-      function dismissSplashFast() {
-        var sp = document.getElementById('appSplashScreen');
-        if (sp) {
-          sp.style.opacity = '0';
-          sp.style.pointerEvents = 'none';
-          setTimeout(function() {
-            if (sp && sp.parentNode) sp.parentNode.removeChild(sp);
-          }, 300);
-        }
-      }
-      setTimeout(dismissSplashFast, 400);
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        setTimeout(dismissSplashFast, 150);
-      } else {
-        document.addEventListener('DOMContentLoaded', function() { setTimeout(dismissSplashFast, 150); });
-      }
-      window.addEventListener('load', dismissSplashFast);
-    })();
-  </script>
+<body class="text-slate-100 min-h-screen pb-24 selection:bg-cyan-500 selection:text-slate-950">
 
   <!-- ================= TOP STICKY HEADER ================= -->
-  <header class="sticky top-0 z-40 glass-card border-b border-white/10 py-3 px-4 md:px-8 shadow-glass">
+  <header class="sticky top-0 z-40 bg-[#0c1736]/95 border-b border-white/10 py-3 px-4 md:px-8 shadow-md">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
       
       <!-- Brand & Title -->
       <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-glow-cyan flex-shrink-0 animate-float">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-md flex-shrink-0">
           <div class="w-full h-full bg-sapphire-950 rounded-[14px] flex items-center justify-center overflow-hidden">
             <img id="headerLogoImg" src="church_logo.png" alt="Church Logo" class="w-full h-full object-contain hidden" onerror="this.classList.add('hidden'); document.getElementById('headerLogoDefault').classList.remove('hidden');" />
-            <span id="headerLogoDefault" class="text-2xl">✝️</span>
+            <span id="headerLogoDefault" class="text-xl">✝️</span>
           </div>
         </div>
         <div>
@@ -612,9 +521,10 @@
         <iframe 
           id="youtubeFrame"
           class="w-full h-full"
-          src="https://www.youtube-nocookie.com/embed/live_stream?channel=UC_SAMPLE" 
+          data-src="https://www.youtube-nocookie.com/embed/live_stream?channel=UC_SAMPLE" 
           title="بث مباشر كنيسة السيدة العذراء والبابا كيرلس عمود الدين بكليوباترا" 
           frameborder="0" 
+          loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
           allowfullscreen>
         </iframe>
@@ -625,8 +535,8 @@
           <h3 class="font-black text-white text-base md:text-lg mb-1">قناة كنيسة السيدة العذراء والبابا كيرلس بكليوباترا</h3>
           <p class="text-xs text-slate-300 max-w-md mb-4">يبدأ البث المباشر تلقائياً مع بدء القداسات والعشيات الرسمية. يمكنك تصفح المقاطع المسجلة والعظات بالأسفل.</p>
           <div class="flex items-center gap-2">
-            <button onclick="document.getElementById('videoFallback').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold text-xs shadow-md transition-all">
-              تشغيل أرشيف الصلوات
+            <button onclick="startLiveVideo()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold text-xs shadow-md transition-all">
+              تشغيل أرشيف الصلوات 📺
             </button>
           </div>
         </div>
@@ -1565,26 +1475,32 @@
       select.innerHTML = AppStore.data.clergy.map(c => `<option>${c.name}</option>`).join('') + '<option>أي أب كاهن متاح</option>';
     }
 
-    // Dismiss Loading Splash Screen Fast & Smoothly
-    function hideSplashScreen() {
-      const splash = document.getElementById('appSplashScreen');
-      if (splash) {
-        splash.style.opacity = '0';
-        splash.style.pointerEvents = 'none';
-        setTimeout(() => {
-          splash.classList.add('hidden');
-        }, 300);
+    function startLiveVideo() {
+      const fallback = document.getElementById('videoFallback');
+      if (fallback) fallback.classList.add('hidden');
+      const frame = document.getElementById('youtubeFrame');
+      if (frame && frame.getAttribute('data-src')) {
+        frame.src = frame.getAttribute('data-src');
       }
     }
 
-    // Initialize Service Worker for PWA
+    function playArchiveVideo(type) {
+      startLiveVideo();
+      const frame = document.getElementById('youtubeFrame');
+      if (!frame) return;
+      if (type === 'liturgy1') {
+        frame.src = "https://www.youtube-nocookie.com/embed/videoseries?list=PL_SAMPLE_LITURGY";
+      } else if (type === 'tasbeha') {
+        frame.src = "https://www.youtube-nocookie.com/embed/videoseries?list=PL_SAMPLE_TASBEHA";
+      } else if (type === 'sermon') {
+        frame.src = "https://www.youtube-nocookie.com/embed/videoseries?list=PL_SAMPLE_SERMONS";
+      }
+    }
+
     function initServiceWorker() {
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js').catch(() => {});
         });
       }
-      
-      // Fast smooth launch (350ms)
-      setTimeout(hideSplashScreen, 350);
     }
