@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- PWA Settings -->
@@ -1255,7 +1255,7 @@
         </div>
       `).join('');
       
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     function openHistoryLightbox(id) {
@@ -1313,7 +1313,7 @@
           </div>
         </div>
       `).join('');
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     function filterSchedule(e, category) {
@@ -1350,7 +1350,7 @@
           </div>
         </div>
       `).join('');
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     function filterShop(e, category) {
@@ -1416,7 +1416,7 @@
           </div>
         `).join('');
       }
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     function changeQty(productId, delta) {
@@ -1461,12 +1461,20 @@
           </div>
         </div>
       `).join('');
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     function populateConfessionSelect() {
       const select = document.getElementById('confessionPriestSelect');
       select.innerHTML = AppStore.data.clergy.map(c => `<option>${c.name}</option>`).join('') + '<option>أي أب كاهن متاح</option>';
+    }
+
+    function safeCreateIcons() {
+      try {
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      } catch(e) {}
     }
 
     function startLiveVideo() {
@@ -1498,3 +1506,21 @@
         });
       }
     }
+
+    // Auto-Initialize everything on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        if (typeof AppStore !== 'undefined' && AppStore.init) {
+          AppStore.init();
+        }
+      } catch(e) {
+        console.error('AppStore init error:', e);
+      }
+      safeCreateIcons();
+      initServiceWorker();
+    });
+
+    window.addEventListener('load', safeCreateIcons);
+  </script>
+</body>
+</html>
