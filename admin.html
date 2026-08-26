@@ -151,6 +151,25 @@
         </div>
 
         <form onsubmit="saveGeneralSettings(event)" class="space-y-4 max-w-2xl">
+          <!-- CHURCH LOGO UPLOADER -->
+          <div class="p-3.5 rounded-2xl bg-sapphire-950 border border-purple-500/30 flex items-center gap-4">
+            <div class="w-16 h-16 rounded-2xl bg-sapphire-900 border border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <img id="adminLogoPreview" src="church_logo.png" alt="Logo Preview" class="w-full h-full object-contain hidden" onerror="this.classList.add('hidden'); document.getElementById('adminLogoDefault').classList.remove('hidden');" />
+              <span id="adminLogoDefault" class="text-2xl">⛪</span>
+            </div>
+            <div class="flex-1">
+              <span class="text-xs font-black text-purple-300 block mb-1">لوجو الكنيسة الرسمي (Church Logo):</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <label class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md transition-all">
+                  <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                  <span>رفع اللوجو من الجهاز / الموبايل</span>
+                  <input type="file" id="logoFileInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)" />
+                </label>
+                <input id="inputLogoUrl" type="text" placeholder="أو رابط صورة اللوجو (Logo URL)" class="flex-1 min-w-[200px] bg-sapphire-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400" oninput="updateLogoPreview(this.value)" />
+              </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="text-xs font-bold text-slate-300 block mb-1">اسم الكنيسة:</label>
@@ -680,6 +699,8 @@
       document.getElementById('inputGoogleScriptUrl').value = s.googleScriptUrl || '';
       document.getElementById('inputChurchName').value = s.churchName || '';
       document.getElementById('inputChurchLocation').value = s.churchLocation || '';
+      document.getElementById('inputLogoUrl').value = s.logoUrl || '';
+      updateLogoPreview(s.logoUrl || '');
       document.getElementById('inputShopWhatsapp').value = s.shopWhatsapp || '';
       document.getElementById('inputStudioPhone').value = s.studioPhone || '';
       document.getElementById('inputAddress').value = s.address || '';
@@ -687,10 +708,33 @@
       document.getElementById('inputLiveBanner').value = s.liveTitle || '';
     }
 
+    function handleLogoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      compressImageFile(file, 400, 400, 0.9, function(dataUrl) {
+        document.getElementById('inputLogoUrl').value = dataUrl;
+        updateLogoPreview(dataUrl);
+      });
+    }
+
+    function updateLogoPreview(url) {
+      const preview = document.getElementById('adminLogoPreview');
+      const placeholder = document.getElementById('adminLogoDefault');
+      if (url && url.trim() !== '') {
+        preview.src = url;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        preview.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
     function saveGeneralSettings(e) {
       e.preventDefault();
       currentAdminData.settings.churchName = document.getElementById('inputChurchName').value;
       currentAdminData.settings.churchLocation = document.getElementById('inputChurchLocation').value;
+      currentAdminData.settings.logoUrl = document.getElementById('inputLogoUrl').value.trim();
       currentAdminData.settings.shopWhatsapp = document.getElementById('inputShopWhatsapp').value;
       currentAdminData.settings.studioPhone = document.getElementById('inputStudioPhone').value;
       currentAdminData.settings.address = document.getElementById('inputAddress').value;
