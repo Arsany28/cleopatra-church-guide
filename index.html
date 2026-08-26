@@ -160,7 +160,7 @@
             <span>خريطة مباني الكنيسة وتوزيع الأدوار والمرافق</span>
             <span class="text-xs font-bold text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded-lg border border-amber-500/30">مبنيان مستقلان</span>
           </h2>
-          <p class="text-xs text-slate-300 mt-1">اختر المبنى لعرض مجسمه ثلاثي الأبعاد والضغط على أي قاعة أو مرفق</p>
+          <p class="text-xs text-slate-300 mt-1">اختر المبنى واضغط على أي مكان لعرض صوره وتفاصيل الوصول إليه</p>
         </div>
 
         <!-- 2 Main Standalone Buildings Switcher Tabs -->
@@ -346,13 +346,13 @@
               </button>
             </div>
 
-            <!-- Hotspot 4: Restrooms directly across the hallway (قدام قاعة العزاء) -->
+            <!-- Hotspot 4: Restrooms directly across the hallway -->
             <div class="absolute top-[64%] left-[70%] -translate-x-1/2 -translate-y-1/2 z-20">
               <button onclick="showPersistentPlace('toilets')" class="group/pin focus:outline-none flex flex-col items-center">
                 <span class="relative flex h-7 w-7">
                   <span class="relative inline-flex rounded-full h-7 w-7 bg-gradient-to-tr from-slate-700 to-slate-500 text-white font-black items-center justify-center text-xs shadow-md border-2 border-white">🚻</span>
                 </span>
-                <span class="mt-1 bg-slate-950/90 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap">
+                <span class="mt-1 bg-slate-950/90 text-slate-200 text-[10px] font-bold px-1.5 py-0.5 rounded-lg border border-slate-500/40 shadow-lg whitespace-nowrap">
                   دورات المياه (قدام قاعة العزاء)
                 </span>
               </button>
@@ -388,56 +388,68 @@
 
       </div>
 
-      <!-- ================= PERSISTENT PLACE INSPECTOR ================= -->
+      <!-- ================= PERSISTENT PLACE INSPECTOR (WITH PHOTO GALLERY) ================= -->
       <div id="persistentPlaceInspector" class="mt-4 p-4 md:p-5 rounded-3xl bg-gradient-to-r from-sapphire-900/95 via-sapphire-800/90 to-sapphire-900/95 border-2 border-cyanGlow/50 shadow-glow-cyan backdrop-blur-xl relative transition-all duration-300">
         
         <!-- Close Button -->
-        <button onclick="closePersistentPlace()" class="absolute top-4 left-4 px-3 py-1.5 rounded-xl bg-red-600/30 hover:bg-red-600 text-red-200 hover:text-white text-xs font-black transition-all border border-red-500/40 flex items-center gap-1">
-          <span>إغلاق التفاصيل</span>
+        <button onclick="closePersistentPlace()" class="absolute top-4 left-4 px-3 py-1.5 rounded-xl bg-red-600/30 hover:bg-red-600 text-red-200 hover:text-white text-xs font-black transition-all border border-red-500/40 flex items-center gap-1 z-10">
+          <span>إغلاق</span>
           <i data-lucide="x" class="w-3.5 h-3.5"></i>
         </button>
 
-        <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-          <div class="flex items-start gap-3.5">
-            <div id="inspIcon" class="w-14 h-14 rounded-2xl bg-cyan-950/90 border border-cyan-400/50 flex items-center justify-center text-3xl shadow-glow-cyan flex-shrink-0">
-              👑
+        <div class="flex flex-col md:flex-row items-start gap-4">
+          
+          <!-- Place Image Preview Box -->
+          <div id="inspImageWrapper" class="relative w-full md:w-56 h-36 rounded-2xl overflow-hidden border border-white/10 flex-shrink-0 bg-sapphire-950/80 shadow-md group cursor-pointer" onclick="openPlacePhotoModal()">
+            <img id="inspImage" src="" alt="صورة المكان" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <div id="inspImageFallback" class="w-full h-full flex items-center justify-center text-4xl hidden">
+              ⛪
             </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h3 id="inspTitle" class="text-base md:text-lg font-black text-white">الكنيسة الكبرى (الكاتدرائية الرئيسية)</h3>
-                <span id="inspFloor" class="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/30">مبنى الكنيسة الرئيسي</span>
-              </div>
-              <p id="inspDesc" class="text-xs text-slate-200 mt-1 max-w-2xl leading-relaxed">
-                مقر صلوات القداسات الإلهية الكبرى والأعياد والنهضات الروحية مع القبة الأيقونية المرسومة والنجف الكريستالي.
-              </p>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-[10px] text-cyan-300 font-bold flex items-center gap-1">
+                <i data-lucide="maximize-2" class="w-3 h-3"></i>
+                <span>عرض الصورة بالحجم الكامل</span>
+              </span>
             </div>
           </div>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-3 border-t border-white/10 text-xs">
-          <div class="bg-sapphire-950/70 p-2.5 rounded-xl border border-white/5">
-            <span class="text-[10px] text-slate-400 block mb-0.5">🕒 المواعيد وأوقات الفتح:</span>
-            <span id="inspHours" class="font-bold text-amber-300">يومياً خلال مواعيد القداسات الرسمية</span>
-          </div>
-
-          <div class="bg-sapphire-950/70 p-2.5 rounded-xl border border-white/5">
-            <span class="text-[10px] text-slate-400 block mb-0.5">👤 المسؤول / الخادم:</span>
-            <span id="inspServant" class="font-bold text-cyan-300">خورس الشمامسة وآباء الكنيسة</span>
-          </div>
-
-          <div id="inspPhoneRow" class="bg-sapphire-950/70 p-2.5 rounded-xl border border-white/5 flex items-center justify-between">
-            <span class="text-[10px] text-slate-400">📞 هاتف الاستفسار:</span>
-            <a id="inspPhoneLink" href="tel:01234567890" class="font-bold text-emerald-400 hover:underline">01234567890</a>
-          </div>
-        </div>
-
-        <div class="mt-3 bg-cyan-950/40 p-3 rounded-2xl border border-cyan-500/30 flex items-start gap-2.5">
-          <i data-lucide="navigation" class="w-4 h-4 text-cyanGlow flex-shrink-0 mt-0.5"></i>
-          <div>
-            <span class="text-[11px] font-bold text-cyan-300 block">طريقة وخطوات الوصول من الباب الرئيسي:</span>
-            <p id="inspDirections" class="text-xs text-slate-200 mt-0.5 leading-relaxed">
-              اصعد السلم الرئيسي من الدور الأرضي للدور الأول العلوي وافتح الأبواب الخشبية الكبرى.
+          <!-- Place Info Details -->
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-center gap-2 mb-1">
+              <h3 id="inspTitle" class="text-base md:text-lg font-black text-white">الكنيسة الكبرى (الكاتدرائية الرئيسية)</h3>
+              <span id="inspFloor" class="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-500/30">مبنى الكنيسة الرئيسي</span>
+            </div>
+            <p id="inspDesc" class="text-xs text-slate-200 mt-1 max-w-2xl leading-relaxed">
+              مقر صلوات القداسات الإلهية الكبرى والأعياد والنهضات الروحية مع القبة الأيقونية المرسومة والنجف الكريستالي.
             </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-3 pt-3 border-t border-white/10 text-xs">
+              <div class="bg-sapphire-950/70 p-2 rounded-xl border border-white/5">
+                <span class="text-[10px] text-slate-400 block mb-0.5">🕒 المواعيد:</span>
+                <span id="inspHours" class="font-bold text-amber-300">يومياً خلال مواعيد القداسات</span>
+              </div>
+
+              <div class="bg-sapphire-950/70 p-2 rounded-xl border border-white/5">
+                <span class="text-[10px] text-slate-400 block mb-0.5">👤 المسؤول:</span>
+                <span id="inspServant" class="font-bold text-cyan-300">آباء وخدام الكنيسة</span>
+              </div>
+
+              <div id="inspPhoneRow" class="bg-sapphire-950/70 p-2 rounded-xl border border-white/5 flex items-center justify-between">
+                <span class="text-[10px] text-slate-400">📞 الهاتف:</span>
+                <a id="inspPhoneLink" href="tel:01234567890" class="font-bold text-emerald-400 hover:underline">01234567890</a>
+              </div>
+            </div>
+
+            <div class="mt-2.5 bg-cyan-950/40 p-2.5 rounded-xl border border-cyan-500/30 flex items-start gap-2">
+              <i data-lucide="navigation" class="w-3.5 h-3.5 text-cyanGlow flex-shrink-0 mt-0.5"></i>
+              <div>
+                <span class="text-[10px] font-bold text-cyan-300 block">طريقة وخطوات الوصول:</span>
+                <p id="inspDirections" class="text-xs text-slate-200 mt-0.5 leading-relaxed">
+                  اصعد السلم الرئيسي من الدور الأرضي للدور الأول العلوي وافتح الأبواب الخشبية الكبرى.
+                </p>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -587,7 +599,7 @@
       <div class="mb-4">
         <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 mb-1 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
           <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>مرافق وخدمات الكنيسة</span>
+          <span>مرافق وخدمات الكنيسة ومبنى الخدمات</span>
         </div>
         <h2 class="text-lg md:text-xl font-black text-white">خدمات الكافتيريا، الاستوديو، صالة الألعاب، وقاعة العزاء</h2>
       </div>
@@ -618,15 +630,15 @@
           <div class="w-12 h-12 rounded-2xl bg-emerald-950/80 border border-emerald-500/30 flex items-center justify-center text-2xl flex-shrink-0 shadow-md">☕</div>
           <div class="flex-1">
             <div class="flex items-center justify-between">
-              <h3 class="font-black text-white text-sm">كافتيريا الكنيسة</h3>
-              <span class="text-[10px] text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30">أيام القداسات والأنشطة</span>
+              <h3 class="font-black text-white text-sm">كافتيريا الكنيسة والساحة</h3>
+              <span class="text-[10px] text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30">فوق خالص بالروف والساحة</span>
             </div>
             <p class="text-xs text-slate-300 mt-1 leading-relaxed">
               مشروبات ساخنة وباردة، مخبوزات طازجة وساندوتشات صيامية وفطار بعد القداسات الإلهية وفي أوقات الأنشطة.
             </p>
             <div class="mt-3 flex items-center justify-between pt-2 border-t border-white/5">
               <span class="text-[11px] text-slate-400">📍 الموقع:</span>
-              <span class="text-xs font-bold text-emerald-300">البدروم بجوار الفناء</span>
+              <span class="text-xs font-bold text-emerald-300">مبنى الخدمات - أعلى طابق (السطح) والساحة</span>
             </div>
           </div>
         </div>
@@ -635,7 +647,7 @@
           <div class="w-12 h-12 rounded-2xl bg-amber-950/80 border border-amber-500/30 flex items-center justify-center text-2xl flex-shrink-0 shadow-md">🏓</div>
           <div class="flex-1">
             <div class="flex items-center justify-between">
-              <h3 class="font-black text-white text-sm">صالة الألعاب والأنشطة</h3>
+              <h3 class="font-black text-white text-sm">صالة الألعاب والأنشطة (تحت خالص)</h3>
               <span class="text-[10px] text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded-full border border-amber-500/30">للشباب ومدارس الأحد</span>
             </div>
             <p class="text-xs text-slate-300 mt-1 leading-relaxed">
@@ -643,7 +655,7 @@
             </p>
             <div class="mt-3 flex items-center justify-between pt-2 border-t border-white/5">
               <span class="text-[11px] text-slate-400">🕒 المواعيد:</span>
-              <span class="text-xs font-bold text-amber-300">الجمعة والأحد بعد القداسات</span>
+              <span class="text-xs font-bold text-amber-300">الجمعة والأحد بعد القداسات بالبدروم</span>
             </div>
           </div>
         </div>
@@ -653,10 +665,10 @@
           <div class="flex-1">
             <div class="flex items-center justify-between">
               <h3 class="font-black text-white text-sm">قاعة العزاء والمناسبات</h3>
-              <span class="text-[10px] text-purple-300 bg-purple-950/80 px-2 py-0.5 rounded-full border border-purple-500/30">سعة 250 فرد</span>
+              <span class="text-[10px] text-purple-300 bg-purple-950/80 px-2 py-0.5 rounded-full border border-purple-500/30">مبنى الخدمات - الدور 1</span>
             </div>
             <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-              قاعة مكيفة ومجهزة بنظام صوتي ومرئي متكامل وخدمة ضيافة لاستقبال التعازي واللقاءات الروحية الرسمية.
+              قاعة مكيفة ومجهزة بنظام صوتي ومرئي متكامل وخدمة ضيافة لاستقبال التعازي واللقاءات الروحية الرسمية مع دورات مياه أمامها.
             </p>
             <div class="mt-3 flex items-center justify-between pt-2 border-t border-white/5">
               <span class="text-[11px] text-slate-400">📞 تنسيق وحجز القاعة:</span>
@@ -691,17 +703,18 @@
       <div id="clergyGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5"></div>
     </section>
 
-    <!-- ================= 8. HERITAGE & ST. CYRIL BIOGRAPHY ================= -->
+    <!-- ================= 8. HERITAGE & HISTORICAL PHOTO GALLERY ================= -->
     <section id="history-section" class="glass-card rounded-3xl p-5 md:p-6 border border-white/10 shadow-glass">
-      <div class="mb-4">
+      <div class="mb-5">
         <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-300 mb-1 bg-cyan-950/60 px-2.5 py-0.5 rounded-full border border-cyan-500/30">
           <i data-lucide="book-open" class="w-3.5 h-3.5 text-cyanGlow"></i>
-          <span>التاريخ والتراث الكنسي</span>
+          <span>التاريخ والتراث الكنسي والمعرض الوثائقي</span>
         </div>
-        <h2 class="text-lg md:text-xl font-black text-white">تاريخ كنيسة كليوباترا وسيرة القديس البابا كيرلس عمود الدين</h2>
+        <h2 class="text-lg md:text-xl font-black text-white">تاريخ كنيسة كليوباترا، سيرة البابا كيرلس، وأرشيف الصور التاريخية</h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- History Articles Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         
         <div class="p-5 rounded-2xl bg-sapphire-900/70 border border-cyan-500/20 relative overflow-hidden">
           <div class="flex items-center gap-3 mb-3">
@@ -738,6 +751,24 @@
         </div>
 
       </div>
+
+      <!-- ================= HISTORICAL PHOTOS ARCHIVE GALLERY ================= -->
+      <div class="pt-4 border-t border-white/10">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-sm md:text-base font-black text-white flex items-center gap-2">
+              <i data-lucide="image" class="w-4 h-4 text-cyanGlow"></i>
+              <span>معرض صور تاريخ الكنيسة وبنائها عبر الأجيال (Photo Archive)</span>
+            </h3>
+            <p class="text-[11px] text-slate-300 mt-0.5">اضغط على أي صورة لعرضها بالحجم الكامل والاطلاع على تفاصيلها التاريخية</p>
+          </div>
+        </div>
+
+        <div id="historyPhotosGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <!-- Dynamically populated from AppStore.data.historyPhotos -->
+        </div>
+      </div>
+
     </section>
 
     <!-- ================= 9. PRINTABLE QR POSTER TOOL ================= -->
@@ -759,7 +790,7 @@
       </div>
     </section>
 
-    <!-- ================= FOOTER CREDIT (PERFECT LTR) ================= -->
+    <!-- ================= FOOTER CREDIT ================= -->
     <footer class="text-center py-6 text-xs text-slate-400 border-t border-white/5 mt-8 mb-12">
       <div class="glass-card inline-block px-6 py-3 rounded-2xl border border-cyanGlow/30 shadow-glow-cyan/20">
         <p style="direction: ltr; unicode-bidi: bidi-override;" class="font-bold text-slate-200 text-xs sm:text-sm tracking-wide">
@@ -786,13 +817,13 @@
         <i data-lucide="shopping-bag" class="w-5 h-5"></i>
         <span>المكتبة</span>
       </a>
+      <a href="#history-section" class="flex flex-col items-center gap-1 text-teal-400 hover:text-teal-300 text-[10px] font-bold p-1">
+        <i data-lucide="image" class="w-5 h-5"></i>
+        <span>الصور والتاريخ</span>
+      </a>
       <a href="#media-section" class="flex flex-col items-center gap-1 text-red-400 hover:text-red-300 text-[10px] font-bold p-1">
         <i data-lucide="youtube" class="w-5 h-5"></i>
         <span>البث</span>
-      </a>
-      <a href="#facilities-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white text-[10px] font-bold p-1">
-        <i data-lucide="sparkles" class="w-5 h-5"></i>
-        <span>المرافق</span>
       </a>
       <a href="#clergy-section" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white text-[10px] font-bold p-1">
         <i data-lucide="cross" class="w-5 h-5"></i>
@@ -801,96 +832,141 @@
     </div>
   </nav>
 
-  <!-- ================= MODALS & DRAWERS ================= -->
+    <!-- ================= PHOTO LIGHTBOX MODAL ================= -->
+    <div id="photoLightboxModal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl hidden flex items-center justify-center p-4">
+      <div class="relative max-w-3xl w-full bg-sapphire-950 border border-cyanGlow/40 rounded-3xl overflow-hidden shadow-2xl animate-scale-up">
+        <!-- Header / Title & Close -->
+        <div class="p-4 bg-sapphire-900/80 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span id="lightboxIcon" class="text-xl">📸</span>
+            <div>
+              <h3 id="lightboxTitle" class="text-sm font-black text-white">عرض الصورة</h3>
+              <span id="lightboxDate" class="text-[10px] text-cyan-300">أرشيف وتاريخ الكنيسة</span>
+            </div>
+          </div>
+          <button onclick="closePhotoLightbox()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
 
-  <!-- 1. CART MODAL -->
-  <div id="cartModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-lg rounded-3xl p-6 border border-amber-500/40 shadow-2xl relative">
-      <button onclick="closeCartModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-sapphire-900 text-slate-400 hover:text-white flex items-center justify-center border border-white/10">✕</button>
-      <div class="flex items-center gap-2 mb-4">
-        <i data-lucide="shopping-bag" class="w-5 h-5 text-amber-400"></i>
-        <h3 class="text-lg font-black text-white">سلة مشتريات المكتبة</h3>
-      </div>
-      <div id="cartItemsContainer" class="max-h-60 overflow-y-auto space-y-2 pr-1 mb-4"></div>
-      <div id="emptyCartMsg" class="py-8 text-center text-slate-400 text-xs hidden">
-        <span class="text-3xl block mb-2">🛒</span>
-        سلة المشتريات فارغة حالياً. تصفح منتجات المكتبة وأضف ما ترغب به!
-      </div>
-      <div class="bg-sapphire-950/90 p-3 rounded-2xl border border-white/10 mb-4 flex items-center justify-between text-sm font-bold">
-        <span class="text-slate-300">الإجمالي:</span>
-        <span id="cartFinalTotal" class="text-amber-400 font-black text-base">0 ج.م</span>
-      </div>
-      <div class="space-y-2">
-        <button onclick="checkoutWhatsApp()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-slate-950 font-black text-xs shadow-md transition-all flex items-center justify-center gap-2">
-          <span>💬 إرسال الطلب وحجزه عبر WhatsApp لمسؤول المكتبة</span>
-        </button>
-        <p class="text-[10px] text-slate-400 text-center">يتم تجهيز المنتجات لاستلامها فوراً من مقر مكتبة الكنيسة</p>
+        <!-- Image Body -->
+        <div class="p-4 flex flex-col items-center justify-center bg-black/40">
+          <img id="lightboxImg" src="" alt="صورة مكبرة" class="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl border border-white/10" />
+          <p id="lightboxDesc" class="text-xs text-slate-300 mt-3 text-center max-w-xl leading-relaxed"></p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 2. PRINTABLE QR POSTER MODAL -->
-  <div id="qrModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-amber-500/40 shadow-2xl relative text-center">
-      <button onclick="closeQRModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-sapphire-900 text-slate-400 hover:text-white flex items-center justify-center border border-white/10">✕</button>
-      <div id="printablePoster" class="bg-slate-900 border-2 border-amber-400/50 rounded-2xl p-6 text-slate-100 shadow-2xl">
-        <div class="text-amber-400 text-2xl mb-1">✝️</div>
-        <h3 class="font-black text-sm text-amber-300" id="posterChurchName">كنيسة السيدة العذراء والبابا كيرلس عمود الدين</h3>
-        <p class="text-[11px] text-slate-400 mb-3" id="posterChurchLocation">كليوباترا - الإسكندرية</p>
-        <div class="w-44 h-44 mx-auto bg-white p-3 rounded-xl shadow-lg flex items-center justify-center my-3" id="qrcodeBox"></div>
-        <p class="text-xs font-bold text-white mb-1">امسح الكود بكاميرا الموبايل</p>
-        <p class="text-[10px] text-slate-400">لدخول دليل الكنيسة، الخريطة التفاعلية، ومواعيد الخدمات فوراً</p>
-      </div>
-      <div class="mt-4 flex items-center gap-2">
-        <button onclick="window.print()" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all shadow-glow-gold flex items-center justify-center gap-1.5">
-          <i data-lucide="printer" class="w-4 h-4"></i>
-          <span>طباعة البوستر الآن</span>
-        </button>
-        <button onclick="closeQRModal()" class="px-4 py-2.5 rounded-xl bg-sapphire-800 text-slate-300 text-xs font-bold">إغلاق</button>
+    <!-- ================= SHOPPING CART MODAL ================= -->
+    <div id="cartModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+      <div class="glass-card max-w-md w-full rounded-3xl p-5 md:p-6 border border-amber-500/30 shadow-2xl max-h-[85vh] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-amber-400"></i>
+            <h3 class="font-black text-white text-base">سلة طلبات المكتبة</h3>
+          </div>
+          <button onclick="closeCartModal()" class="text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div id="cartItemsList" class="flex-1 overflow-y-auto my-4 space-y-3 pr-1">
+          <!-- Items will be rendered here -->
+        </div>
+
+        <div class="pt-3 border-t border-white/10 space-y-3">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-300 font-bold">إجمالي الطلب:</span>
+            <span id="cartTotalPrice" class="font-black text-amber-400 text-lg">0 ج.م</span>
+          </div>
+
+          <button onclick="checkoutWhatsApp()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-black text-sm shadow-lg flex items-center justify-center gap-2 transition-all active:scale-98">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>إرسال الطلب لخدام المكتبة عبر WhatsApp</span>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 3. CONFESSION MODAL -->
-  <div id="confessionModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-md rounded-3xl p-6 border border-amber-500/40 shadow-2xl relative">
-      <button onclick="closeConfessionModal()" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-sapphire-900 text-slate-400 hover:text-white flex items-center justify-center border border-white/10">✕</button>
-      <div class="flex items-center gap-2 mb-3">
-        <span class="text-2xl">✝️</span>
-        <div>
-          <h3 class="text-base font-black text-white">طلب موعد اعتراف / استشارة روحية</h3>
-          <p class="text-[11px] text-amber-300/90">سرية تامة ومباشرة مع الآباء الكهنة</p>
+    <!-- ================= CONFESSION BOOKING MODAL ================= -->
+    <div id="confessionModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+      <div class="glass-card max-w-md w-full rounded-3xl p-5 md:p-6 border border-amber-500/30 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="message-square" class="w-5 h-5 text-amber-400"></i>
+            <h3 class="font-black text-white text-base">طلب موعد اعتراف خاص</h3>
+          </div>
+          <button onclick="closeConfessionModal()" class="text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form onsubmit="sendConfessionRequest(event)" class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">اسم المعترف (ثلاثي):</label>
+            <input type="text" id="confessionName" required placeholder="الاسم هنا..." class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" />
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">اختر الأب الكاهن (أب الاعتراف):</label>
+            <select id="confessionPriestSelect" class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">الموعد أو اليوم المقترح المناسب لك:</label>
+            <input type="text" id="confessionTime" placeholder="مثلاً: يوم الجمعة القادم بعد القداس" class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400" />
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">ملاحظات أو استفسار خاص (اختياري):</label>
+            <textarea id="confessionNotes" rows="2" placeholder="أي تفاصيل أخرى..." class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-glow-gold transition-all">
+            إرسال طلب الموعد عبر WhatsApp
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= QR POSTER TOOL MODAL ================= -->
+    <div id="qrModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+      <div class="glass-card max-w-lg w-full rounded-3xl p-5 md:p-6 border border-cyanGlow/40 shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="printer" class="w-5 h-5 text-cyanGlow"></i>
+            <h3 class="font-black text-white text-base">بوستر الـ QR Code الرسمي للطباعة</h3>
+          </div>
+          <button onclick="closeQRModal()" class="text-slate-400 hover:text-white">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div id="printablePoster" class="bg-white text-slate-900 p-6 rounded-2xl text-center shadow-inner">
+          <div class="text-2xl mb-1">✝️</div>
+          <h2 class="text-base font-black text-blue-950" id="posterChurchName">كنيسة السيدة العذراء والبابا كيرلس عمود الدين</h2>
+          <p class="text-xs text-slate-600 mb-4" id="posterChurchLocation">كليوباترا - الإسكندرية</p>
+          
+          <div class="p-3 bg-slate-100 rounded-xl inline-block border-2 border-dashed border-slate-300 mb-3">
+            <div id="qrcodeWrapper" class="flex items-center justify-center"></div>
+          </div>
+
+          <p class="text-xs font-bold text-blue-900">امسح الكود بكاميرا الموبايل للدخول لدليل الكنيسة التفاعلي والخريطة</p>
+          <p class="text-[10px] text-slate-500 mt-1">تطبيق PWA مجاني يعمل على جميع هواتف الآيفون والأندرويد</p>
+        </div>
+
+        <div class="mt-4 flex gap-2">
+          <button onclick="window.print()" class="flex-1 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs shadow-glow-cyan transition-all flex items-center justify-center gap-2">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>طباعة البوستر الآن</span>
+          </button>
+          <button onclick="closeQRModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold">
+            إغلاق
+          </button>
         </div>
       </div>
-      <form onsubmit="submitConfessionRequest(event)" class="space-y-3">
-        <div>
-          <label class="text-[11px] font-bold text-slate-300 block mb-1">الاسم بالكامل:</label>
-          <input type="text" required placeholder="اكتب اسمك..." class="w-full bg-sapphire-950/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-300 block mb-1">رقم الموبايل / واتساب:</label>
-          <input type="tel" required placeholder="01xxxxxxxxx" class="w-full bg-sapphire-950/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-300 block mb-1">اختر الأب الكاهن:</label>
-          <select id="confessionPriestSelect" class="w-full bg-sapphire-950/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400"></select>
-        </div>
-        <div>
-          <label class="text-[11px] font-bold text-slate-300 block mb-1">اليوم أو الوقت المفضل:</label>
-          <input type="text" placeholder="مثال: الجمعة بعد القداس أو السبت مساءً" class="w-full bg-sapphire-950/90 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" />
-        </div>
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs shadow-glow-gold transition-all active:scale-95">
-          إرسال طلب الموعد
-        </button>
-      </form>
     </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-sapphire-900 border border-cyanGlow/50 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-glow-cyan transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
-    <i data-lucide="check-circle" class="w-4 h-4 text-cyanGlow"></i>
-    <span id="toastMsg">تمت العملية بنجاح!</span>
-  </div>
 
   <script>
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
@@ -907,17 +983,25 @@
         googleScriptUrl: GOOGLE_SCRIPT_URL
       },
       places: [
-        { key: 'big_church', title: 'الكنيسة الكبرى (الكاتدرائية الرئيسية)', category: 'church', floor: 'first', icon: '👑', desc: 'الكنيسة الكبرى حيث تقام قداسات الأحد والأعياد الكبرى والنهضات الروحية مع القبة الأيقونية المرسومة والنجف الكريستالي.', hours: 'الجمعة والأحد والأعياد والنهضات', servant: 'خورس الشمامسة وآباء الكنيسة', phone: '01234567890', directions: 'اصعد السلم الرئيسي من الدور الأرضي للدور الأول العلوي وافتح الأبواب الخشبية الكبرى.' },
-        { key: 'bookstore', title: 'المكتبة الكنسية والمعرض الزجاجي', category: 'church', floor: 'first', icon: '📖', desc: 'المكتبة الزجاجية على الممشى الرئيسي توفر أحدث الكتب الروحية، الأيقونات، الصلبان، وهدايا ومداليات التخرج.', hours: 'يومياً 9:00 ص - 1:00 م و 5:00 م - 9:30 م', servant: 'خدام المكتبة', phone: '01234567892', directions: 'على الممشى الرئيسي أو بالدور الأول بجوار السلم الخشبي.' },
-        { key: 'st_mary_shrine', title: 'مزار السيدة العذراء مريم (قلب الزهور)', category: 'church', floor: 'ground', icon: '🌹', desc: 'مزار السيدة العذراء المزين بقلب الزهور المبارك في فناء الكنيسة لنيل البركة وإيقاد الشموع.', hours: 'متاح طوال اليوم بالفناء', servant: 'خدام الكنيسة', phone: '01234567890', directions: 'في الفناء الخارجي للكنيسة بجوار مدخل الكنيسة الصغيرة والكانتين ومبنى الخدمات.' },
-        { key: 'small_church', title: 'الكنيسة الصغيرة (مذبح مارمرقس)', category: 'church', floor: 'ground', icon: '⛪', desc: 'مخصصة للقداسات الإلهية اليومية المبكرة والعشيات وتسابيح كيهك الهادئة بمقاعدها الخشبية الأصيلة.', hours: 'يومياً 6:00 ص - 10:00 م', servant: 'آباء وخدام الكنيسة', phone: '01234567890', directions: 'عبر السلالم الرخامية بالدور الأرضي بعد الممشى الخارجي.' },
-        { key: 'condolence_hall', title: 'قاعة العزاء والمناسبات (مبنى الخدمات)', category: 'services', floor: 'ground', icon: '🕊️', desc: 'قاعة مجهزة ومكيفة لاستقبال واجب العزاء والمناسبات الرسمية واللقاءات الكنسية.', hours: 'متاحة للحجز وأوقات المناسبات', servant: 'مسؤولو حجز قاعة العزاء', phone: '01234567891', directions: 'مبنى الخدمات - الدور الأول بعد الممر وفناء العذراء.' },
-        { key: 'toilets', title: 'دورات المياه (أمام قاعة العزاء)', category: 'services', floor: 'ground', icon: '🚻', desc: 'مرافق صحية حديثة ومجهزة ونظيفة تقع أمام مدخل قاعة العزاء مباشرة بمبنى الخدمات.', hours: 'متاحة طوال اليوم', servant: 'فريق الخدمات والنظافة', phone: '01234567890', directions: 'مبنى الخدمات - أمام قاعة العزاء مباشرة عبر الممر الداخلي.' },
-        { key: 'services_classrooms', title: 'فصول وقاعات الخدمات ومدارس الأحد (أدوار 2 و 3 و 4)', category: 'services', floor: 'services', icon: '👥', desc: 'أدوار كاملة مخصصة لفصول مدارس الأحد، اجتماعات الشباب، دراسة الكتاب، والأنشطة الكنسية.', hours: 'الجمعة والأحد وأيام الاجتماعات الأسبوعية', servant: 'خدام المراحل والأنشطة', phone: '01234567890', directions: 'مبنى الخدمات - اصعد بالسلالم أو المصعد للأدوار الثاني والثالث والرابع.' },
-        { key: 'cafeteria', title: 'كافتيريا الكنيسة والساحة (فوق خالص)', category: 'services', floor: 'services', icon: '☕', desc: 'مشروبات ساخنة وباردة ومخبوزات وساندوتشات صيامية وفطار طازج بعد القداسات في أعلى المبنى والساحة.', hours: 'الجمعة والأحد ومواعيد الأنشطة', servant: 'فريق ضيافة الكافتيريا', phone: '01234567890', directions: 'مبنى الخدمات - أعلى طابق (فوق خالص بالروف) أو بساحة الخدمات.' },
-        { key: 'garage', title: 'جراج ومواقف السيارات', category: 'church', floor: 'ground', icon: '🚗', desc: 'مساحة مخصصة لانتظار سيارات المصلين والزوار بأمان تام على الممر الجانبي.', hours: 'مفتوح طوال أوقات الصلوات والخدمات', servant: 'مسؤولو أمن الجراج', phone: '01234567890', directions: 'الممر الجانبي على يسار البوابة الرئيسية.' },
-        { key: 'playground', title: 'صالة الألعاب والملعب (تحت خالص بالبدروم)', category: 'basement', floor: 'basement', icon: '⚽', desc: 'ملعب مجهز بالنجيلة الخضراء وتنس طاولة وبلياردو وبيبي فوت وأنشطة رياضية لخدمة الشباب ومدارس الأحد.', hours: 'الجمعة والأحد بعد القداسات والاجتماعات', servant: 'مسؤول النشاط الرياضي', phone: '01234567890', directions: 'انزل سلم البدروم (تحت خالص) من الفناء الخارجي.' },
-        { key: 'studio', title: 'استوديو الصوت والتسجيل والإنتاج (تحت خالص)', category: 'basement', floor: 'basement', icon: '🎙️', desc: 'استوديو احترافي معزول صوتياً بأحدث مايكروفونات لتسجيل الترانيم والألحان والإنتاج الإعلامي.', hours: 'بالحجز المسبق', servant: 'مهندس الصوت والإنتاج', phone: '01234567890', directions: 'البدروم (تحت خالص) - الممر الداخلي المعزول صوتياً بجوار الملعب.' }
+        { key: 'big_church', title: 'الكنيسة الكبرى (الكاتدرائية الرئيسية)', category: 'church', floor: 'first', icon: '👑', image: 'church_3d_real_map.jpg', desc: 'الكنيسة الكبرى حيث تقام قداسات الأحد والأعياد الكبرى والنهضات الروحية مع القبة الأيقونية المرسومة والنجف الكريستالي.', hours: 'الجمعة والأحد والأعياد والنهضات', servant: 'خورس الشمامسة وآباء الكنيسة', phone: '01234567890', directions: 'اصعد السلم الرئيسي من الدور الأرضي للدور الأول العلوي وافتح الأبواب الخشبية الكبرى.' },
+        { key: 'bookstore', title: 'المكتبة الكنسية والمعرض الزجاجي', category: 'church', floor: 'first', icon: '📖', image: 'church_3d_real_map.jpg', desc: 'المكتبة الزجاجية على الممشى الرئيسي توفر أحدث الكتب الروحية، الأيقونات، الصلبان، وهدايا ومداليات التخرج.', hours: 'يومياً 9:00 ص - 1:00 م و 5:00 م - 9:30 م', servant: 'خدام المكتبة', phone: '01234567892', directions: 'على الممشى الرئيسي أو بالدور الأول بجوار السلم الخشبي.' },
+        { key: 'st_mary_shrine', title: 'مزار السيدة العذراء مريم (قلب الزهور)', category: 'church', floor: 'ground', icon: '🌹', image: 'church_3d_real_map.jpg', desc: 'مزار السيدة العذراء المزين بقلب الزهور المبارك في فناء الكنيسة لنيل البركة وإيقاد الشموع.', hours: 'متاح طوال اليوم بالفناء', servant: 'خدام الكنيسة', phone: '01234567890', directions: 'في الفناء الخارجي للكنيسة بجوار مدخل الكنيسة الصغيرة والكانتين ومبنى الخدمات.' },
+        { key: 'small_church', title: 'الكنيسة الصغيرة (مذبح مارمرقس)', category: 'church', floor: 'ground', icon: '⛪', image: 'ground_floor_3d_1787691993192.jpg', desc: 'مخصصة للقداسات الإلهية اليومية المبكرة والعشيات وتسابيح كيهك الهادئة بمقاعدها الخشبية الأصيلة.', hours: 'يومياً 6:00 ص - 10:00 م', servant: 'آباء وخدام الكنيسة', phone: '01234567890', directions: 'عبر السلالم الرخامية بالدور الأرضي بعد الممشى الخارجي.' },
+        { key: 'priest_office', title: 'مكتب وغرفة الآباء الكهنة', category: 'church', floor: 'ground', icon: '✝️', image: 'ground_floor_3d_1787691993192.jpg', desc: 'مقر الآباء الكهنة للاعترافات والاستشارات الروحية والمقابلات الفردية.', hours: 'الأربعاء والجمعة والسبت مساءً', servant: 'الآباء الكهنة', phone: '01234567890', directions: 'الدور الأرضي - الممر الأيسر بعد مدخل الاستقبال.' },
+        { key: 'nursery', title: 'حضانة الأطفال (Church Nursery)', category: 'church', floor: 'ground', icon: '👶', image: 'ground_floor_3d_1787691993192.jpg', desc: 'فصول تعليمية وألعاب تربوية وترفيهية مجهزة للأطفال مع بوابة السيدة العذراء.', hours: 'الأحد إلى الخميس 8:00 ص - 2:00 م', servant: 'تاسوني مسؤولة الحضانة', phone: '01234567890', directions: 'الدور الأرضي - الجناح الأيسر بجوار الفناء الداخلي.' },
+        { key: 'garage', title: 'جراج ومواقف السيارات', category: 'church', floor: 'ground', icon: '🚗', image: 'church_3d_real_map.jpg', desc: 'مساحة مخصصة لانتظار سيارات المصلين والزوار بأمان تام على الممر الجانبي.', hours: 'مفتوح طوال أوقات الصلوات والخدمات', servant: 'مسؤولو أمن الجراج', phone: '01234567890', directions: 'الممر الجانبي على يسار البوابة الرئيسية.' },
+        { key: 'condolence_hall', title: 'قاعة العزاء والمناسبات (مبنى الخدمات)', category: 'services', floor: 'services', icon: '🕊️', image: 'services_building_3d.jpg', desc: 'قاعة مجهزة ومكيفة لاستقبال واجب العزاء والمناسبات الرسمية واللقاءات الكنسية.', hours: 'متاحة للحجز وأوقات المناسبات', servant: 'مسؤولو حجز قاعة العزاء', phone: '01234567891', directions: 'مبنى الخدمات - الدور الأول بعد الممر وفناء العذراء.' },
+        { key: 'toilets', title: 'دورات المياه (أمام قاعة العزاء)', category: 'services', floor: 'services', icon: '🚻', image: 'services_building_3d.jpg', desc: 'مرافق صحية حديثة ومجهزة ونظيفة تقع أمام مدخل قاعة العزاء مباشرة بمبنى الخدمات.', hours: 'متاحة طوال اليوم', servant: 'فريق الخدمات والنظافة', phone: '01234567890', directions: 'مبنى الخدمات - أمام قاعة العزاء مباشرة عبر الممر الداخلي.' },
+        { key: 'services_classrooms', title: 'فصول وقاعات الخدمات ومدارس الأحد (أدوار 2 و 3 و 4)', category: 'services', floor: 'services', icon: '👥', image: 'services_building_3d.jpg', desc: 'أدوار كاملة مخصصة لفصول مدارس الأحد، اجتماعات الشباب، دراسة الكتاب، والأنشطة الكنسية.', hours: 'الجمعة والأحد وأيام الاجتماعات الأسبوعية', servant: 'خدام المراحل والأنشطة', phone: '01234567890', directions: 'مبنى الخدمات - اصعد بالسلالم أو المصعد للأدوار الثاني والثالث والرابع.' },
+        { key: 'cafeteria', title: 'كافتيريا الكنيسة والساحة (فوق خالص)', category: 'services', floor: 'services', icon: '☕', image: 'services_building_3d.jpg', desc: 'مشروبات ساخنة وباردة ومخبوزات وساندوتشات صيامية وفطار طازج بعد القداسات في أعلى المبنى والساحة.', hours: 'الجمعة والأحد ومواعيد الأنشطة', servant: 'فريق ضيافة الكافتيريا', phone: '01234567890', directions: 'مبنى الخدمات - أعلى طابق (فوق خالص بالروف) أو بساحة الخدمات.' },
+        { key: 'playground', title: 'صالة الألعاب والملعب (تحت خالص بالبدروم)', category: 'services', floor: 'basement', icon: '⚽', image: 'services_building_3d.jpg', desc: 'ملعب مجهز بالنجيلة الخضراء وتنس طاولة وبلياردو وبيبي فوت وأنشطة رياضية لخدمة الشباب ومدارس الأحد.', hours: 'الجمعة والأحد بعد القداسات والاجتماعات', servant: 'مسؤول النشاط الرياضي', phone: '01234567890', directions: 'انزل سلم البدروم (تحت خالص) من الفناء الخارجي أو مدخل مبنى الخدمات.' },
+        { key: 'studio', title: 'استوديو الصوت والتسجيل والإنتاج (تحت خالص)', category: 'services', floor: 'basement', icon: '🎙️', image: 'services_building_3d.jpg', desc: 'استوديو احترافي معزول صوتياً بأحدث مايكروفونات لتسجيل الترانيم والألحان والإنتاج الإعلامي.', hours: 'بالحجز المسبق', servant: 'مهندس الصوت والإنتاج', phone: '01234567890', directions: 'البدروم (تحت خالص) - الممر الداخلي المعزول صوتياً بجوار الملعب.' }
+      ],
+      historyPhotos: [
+        { id: 1, title: 'وضع حجر أساس وبناء كنيسة كليوباترا الأثرية', year: 'تاريخ التأسيس', url: 'church_3d_real_map.jpg', desc: 'صورة وثائقية من بدايات تأسيس وبناء الكنيسة في منطقة كليوباترا حمامات بالإسكندرية لتكون بيتاً للصلاة ومنارة للأجيال.' },
+        { id: 2, title: 'القبة السماوية وأيقونات الكاتدرائية الكبرى', year: 'أعمال التجديد والتوسعة', url: 'church_3d_real_map.jpg', desc: 'صورة للقبة السماوية البديعة التي تزين سقف الكنيسة الكبرى وتضم أيقونة ضابط الكل والسيدة العذراء والتلاميذ الأطهار.' },
+        { id: 3, title: 'مزار السيدة العذراء مريم وتدشين الفناء', year: 'مزار العذراء', url: 'church_3d_real_map.jpg', desc: 'مزار السيدة العذراء المبارك بقلب الزهور في الفناء الخارجي، ملتقى البركة والصلوات لجميع زوار ومخدومي الكنيسة.' },
+        { id: 4, title: 'مبنى الخدمات وفصول مدارس الأحد والأنشطة', year: 'صرح الخدمات', url: 'services_building_3d.jpg', desc: 'المبنى المستقل المتكامل المخصص لخدمة مدارس الأحد، قاعات العزاء والمناسبات، الكافتيريا وصالة الألعاب الرياضية.' }
       ],
       schedule: [
         { id: 1, title: 'القداس الإلهي الأول (مبكر)', category: 'liturgy', day: 'الجمعة', time: '6:00 ص - 8:30 ص', place: 'الكنيسة الصغيرة (الأرضي)', priest: 'آباء الكنيسة', badge: 'قداس مبكر' },
@@ -952,13 +1036,20 @@
           this.data = JSON.parse(JSON.stringify(DEFAULT_STORE));
         }
 
-        // 1. Fetch live real-time data from Google Sheets Cloud Database
+        if (!this.data.historyPhotos) {
+          this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
+        }
+
+        // Fetch live real-time data from Google Sheets Cloud Database
         try {
           const res = await fetch(GOOGLE_SCRIPT_URL);
           if (res.ok) {
             const cloudData = await res.json();
             if (cloudData && cloudData.places && cloudData.places.length > 0) {
               this.data = cloudData;
+              if (!this.data.historyPhotos || this.data.historyPhotos.length === 0) {
+                this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
+              }
               this.data.settings.googleScriptUrl = GOOGLE_SCRIPT_URL;
               localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(this.data));
               this.applyToUI();
@@ -998,6 +1089,7 @@
         if (s.churchLocation) document.getElementById('posterChurchLocation').innerText = s.churchLocation;
 
         renderMapPlaces();
+        renderHistoryPhotos();
         renderSchedule(activeSchedFilter);
         renderProducts(activeShopFilter);
         renderClergy();
@@ -1082,13 +1174,27 @@
       inspector.classList.remove('hidden');
 
       document.getElementById('inspTitle').innerText = place.title;
-      document.getElementById('inspIcon').innerText = place.icon || '📍';
+      
+      // Handle Place Image Preview
+      const imgEl = document.getElementById('inspImage');
+      const fallbackEl = document.getElementById('inspImageFallback');
+      if (place.image && place.image.trim() !== '') {
+        imgEl.src = place.image;
+        imgEl.classList.remove('hidden');
+        if (fallbackEl) fallbackEl.classList.add('hidden');
+      } else {
+        imgEl.classList.add('hidden');
+        if (fallbackEl) {
+          fallbackEl.innerText = place.icon || '🏛️';
+          fallbackEl.classList.remove('hidden');
+        }
+      }
       
       const floorNames = { 
         ground: 'مبنى الكنيسة - الدور الأرضي', 
         first: 'مبنى الكنيسة - الدور العلوي', 
         services: 'مبنى الخدمات المستقل',
-        basement: 'تحت خالص (البدروم)'
+        basement: 'تحت خالص (البدروم والأنشطة)'
       };
       document.getElementById('inspFloor').innerText = floorNames[place.floor] || place.floor;
       document.getElementById('inspDesc').innerText = place.desc || 'لا يوجد وصف تفصيلي.';
@@ -1108,6 +1214,77 @@
     function closePersistentPlace() {
       const inspector = document.getElementById('persistentPlaceInspector');
       if (inspector) inspector.classList.add('hidden');
+    }
+
+    function openPlacePhotoModal() {
+      const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
+      const place = places.find(p => p.key === activePersistentKey);
+      if (!place || !place.image) return;
+
+      document.getElementById('lightboxIcon').innerText = place.icon || '📸';
+      document.getElementById('lightboxTitle').innerText = place.title;
+      document.getElementById('lightboxDate').innerText = place.floor || 'معالم الكنيسة';
+      document.getElementById('lightboxImg').src = place.image;
+      document.getElementById('lightboxDesc').innerText = place.desc || '';
+
+      document.getElementById('photoLightboxModal').classList.remove('hidden');
+      document.getElementById('photoLightboxModal').classList.add('flex');
+    }
+
+    // ================= HISTORY PHOTOS GALLERY & LIGHTBOX =================
+    function renderHistoryPhotos() {
+      const grid = document.getElementById('historyPhotosGrid');
+      if (!grid) return;
+      const photos = (AppStore.data && AppStore.data.historyPhotos) ? AppStore.data.historyPhotos : [];
+
+      if (photos.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-6 text-xs text-slate-400">لا توجد صور تاريخية حالياً في الأرشيف.</div>';
+        return;
+      }
+
+      grid.innerHTML = photos.map(p => `
+        <div onclick="openHistoryLightbox(${p.id})" class="cursor-pointer group glass-card-interactive p-2 rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between">
+          <div class="relative w-full h-28 sm:h-36 rounded-xl overflow-hidden mb-2 bg-sapphire-950">
+            <img src="${p.url}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
+              <span class="text-[10px] text-cyan-300 font-bold flex items-center gap-1">
+                <i data-lucide="zoom-in" class="w-3 h-3"></i>
+                <span>تكبير الصورة</span>
+              </span>
+            </div>
+            ${p.year ? `<span class="absolute top-1.5 right-1.5 bg-slate-950/85 text-amber-300 text-[9px] font-bold px-1.5 py-0.5 rounded-md border border-amber-500/30">${p.year}</span>` : ''}
+          </div>
+          <div>
+            <h4 class="text-xs font-black text-white group-hover:text-cyanGlow transition-colors line-clamp-1">${p.title}</h4>
+            <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">${p.desc || ''}</p>
+          </div>
+        </div>
+      `).join('');
+      
+      lucide.createIcons();
+    }
+
+    function openHistoryLightbox(id) {
+      const photos = (AppStore.data && AppStore.data.historyPhotos) ? AppStore.data.historyPhotos : [];
+      const p = photos.find(item => item.id === id);
+      if (!p) return;
+
+      document.getElementById('lightboxIcon').innerText = '🏛️';
+      document.getElementById('lightboxTitle').innerText = p.title;
+      document.getElementById('lightboxDate').innerText = p.year || 'أرشيف وتاريخ الكنيسة';
+      document.getElementById('lightboxImg').src = p.url;
+      document.getElementById('lightboxDesc').innerText = p.desc || '';
+
+      document.getElementById('photoLightboxModal').classList.remove('hidden');
+      document.getElementById('photoLightboxModal').classList.add('flex');
+    }
+
+    function closePhotoLightbox() {
+      const modal = document.getElementById('photoLightboxModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
     }
 
     // ================= SCHEDULE RENDER & FILTER =================
