@@ -579,6 +579,7 @@
   </main>
 
   <script>
+    const PERMANENT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
     let currentAdminData = null;
     let activeAdminTab = 'general';
 
@@ -613,7 +614,7 @@
         try { currentAdminData = JSON.parse(saved); } catch(e) {}
       }
 
-      const scriptUrl = (currentAdminData && currentAdminData.settings && currentAdminData.settings.googleScriptUrl) ? currentAdminData.settings.googleScriptUrl : 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
+      const scriptUrl = (currentAdminData && currentAdminData.settings && currentAdminData.settings.googleScriptUrl) ? currentAdminData.settings.googleScriptUrl : PERMANENT_GOOGLE_SCRIPT_URL;
       
       try {
         const res = await fetch(scriptUrl);
@@ -621,6 +622,7 @@
           const cloudData = await res.json();
           if (cloudData && cloudData.places) {
             currentAdminData = cloudData;
+            currentAdminData.settings.googleScriptUrl = PERMANENT_GOOGLE_SCRIPT_URL;
             localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(currentAdminData));
           }
         }
@@ -636,7 +638,7 @@
             studioPhone: '01234567890',
             liveTitle: 'بث صلوات القداس الإلهي والعشية مباشر',
             youtubeUrl: 'https://www.youtube-nocookie.com/embed/live_stream?channel=UC_SAMPLE',
-            googleScriptUrl: scriptUrl
+            googleScriptUrl: PERMANENT_GOOGLE_SCRIPT_URL
           },
           places: [],
           historyPhotos: [],
@@ -659,12 +661,12 @@
     }
 
     async function saveAdminData() {
+      if (!currentAdminData.settings) currentAdminData.settings = {};
+      currentAdminData.settings.googleScriptUrl = PERMANENT_GOOGLE_SCRIPT_URL;
       localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(currentAdminData));
       
-      const scriptUrl = (currentAdminData.settings && currentAdminData.settings.googleScriptUrl) ? currentAdminData.settings.googleScriptUrl : 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
-      
       try {
-        await fetch(scriptUrl, {
+        await fetch(PERMANENT_GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
