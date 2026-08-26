@@ -98,7 +98,7 @@
 <body class="text-slate-100 min-h-screen pb-24 overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950">
 
   <!-- ================= LUXURY LOADING / SPLASH SCREEN ================= -->
-  <div id="appSplashScreen" class="fixed inset-0 z-50 bg-[#050a18] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-700 ease-out">
+  <div id="appSplashScreen" class="fixed inset-0 z-50 bg-[#050a18] flex flex-col items-center justify-center p-6 text-center transition-opacity duration-300 ease-out">
     
     <!-- Rotating Halo & Logo Box -->
     <div class="relative mb-6">
@@ -1543,7 +1543,7 @@
       select.innerHTML = AppStore.data.clergy.map(c => `<option>${c.name}</option>`).join('') + '<option>أي أب كاهن متاح</option>';
     }
 
-    // Dismiss Loading Splash Screen Smoothly
+    // Dismiss Loading Splash Screen Fast & Smoothly
     function hideSplashScreen() {
       const splash = document.getElementById('appSplashScreen');
       if (splash) {
@@ -1551,7 +1551,7 @@
         splash.style.pointerEvents = 'none';
         setTimeout(() => {
           splash.classList.add('hidden');
-        }, 750);
+        }, 300);
       }
     }
 
@@ -1563,6 +1563,6 @@
         });
       }
       
-      // Auto-hide splash screen after resources initialize
-      setTimeout(hideSplashScreen, 1200);
+      // Fast smooth launch (350ms)
+      setTimeout(hideSplashScreen, 350);
     }
