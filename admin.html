@@ -194,33 +194,72 @@
         </form>
       </div>
 
-      <!-- 2. PLACES / MAP TAB (WITH IMAGES) -->
+      <!-- 2. PLACES / MAP TAB (WITH REAL PHOTO UPLOAD) -->
       <div id="content-places" class="tab-panel hidden space-y-4">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-cyan-950/40 p-4 rounded-2xl border border-cyan-500/30">
           <div>
-            <h4 class="text-sm font-black text-white">أماكن ومرافق الخريطة التفاعلية والصور:</h4>
-            <p class="text-[11px] text-slate-400">يمكنك إضافة صور حقيقية تظهر للزائر عند الضغط على أي مكان بالخريطة</p>
+            <h4 class="text-sm font-black text-white flex items-center gap-2">
+              <i data-lucide="camera" class="w-4 h-4 text-cyanGlow"></i>
+              <span>إدارة صور وبيانات أماكن الخريطة:</span>
+            </h4>
+            <p class="text-[11px] text-slate-300 mt-0.5">يمكنك رفع صور حقيقية من موبايلك أو جهازك لكل مكان لتظهر للزائر فور الضغط عليه في الخريطة 📸</p>
           </div>
-          <button onclick="openAddPlaceForm()" class="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1">
+          <button onclick="openAddPlaceForm()" class="px-3.5 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1.5 shadow-glow-cyan self-start sm:self-auto">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>إضافة مكان جديد</span>
           </button>
         </div>
 
-        <div id="adminPlacesList" class="space-y-2.5"></div>
+        <div id="adminPlacesList" class="space-y-3"></div>
 
-        <div id="placeFormBox" class="hidden p-4 rounded-2xl bg-sapphire-900/90 border border-cyanGlow/40 space-y-3">
-          <h5 id="placeFormHeading" class="text-xs font-black text-cyan-300">إضافة مكان جديد للخريطة</h5>
+        <!-- Place Edit / Add Form Modal -->
+        <div id="placeFormBox" class="hidden p-5 rounded-3xl bg-sapphire-900/95 border-2 border-cyanGlow/50 space-y-4 shadow-2xl">
+          <div class="flex items-center justify-between pb-2 border-b border-white/10">
+            <h5 id="placeFormHeading" class="text-sm font-black text-cyan-300">تعديل بيانات وصور المكان</h5>
+            <button onclick="document.getElementById('placeFormBox').classList.add('hidden')" class="text-slate-400 hover:text-white">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+          
           <input type="hidden" id="editPlaceKey" />
           
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <!-- IMAGE UPLOADER BOX -->
+          <div class="p-4 rounded-2xl bg-sapphire-950/90 border border-cyan-500/40 flex flex-col sm:flex-row items-center gap-4">
+            <div class="relative w-28 h-28 rounded-2xl overflow-hidden bg-slate-900 border-2 border-cyan-400/50 flex-shrink-0 shadow-md flex items-center justify-center">
+              <img id="placeImagePreview" src="" alt="معاينة الصورة" class="w-full h-full object-cover hidden" />
+              <div id="placeImagePlaceholder" class="text-3xl text-slate-500 flex flex-col items-center">
+                <span>📸</span>
+                <span class="text-[9px] text-slate-400 mt-1">لا توجد صورة</span>
+              </div>
+            </div>
+
+            <div class="flex-1 space-y-2 w-full">
+              <span class="text-xs font-black text-cyan-300 block">📸 صورة المكان الحقيقية:</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <label class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md transition-all">
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                  <span>اختر صورة من جهازك / الموبايل</span>
+                  <input type="file" id="placeFormFileInput" accept="image/*" class="hidden" onchange="handleFormImageUpload(event)" />
+                </label>
+
+                <button type="button" onclick="removePlaceFormImage()" class="px-3 py-2 rounded-xl bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-white text-xs font-bold transition-all">
+                  حذف الصورة
+                </button>
+              </div>
+              <div>
+                <input id="placeImageInput" type="text" placeholder="أو الصق رابط صورة خارجية (Image URL)" class="w-full bg-sapphire-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow" oninput="updatePlacePreviewFromUrl(this.value)" />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">اسم المكان:</label>
-              <input id="placeTitleInput" type="text" required class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">اسم المكان أو القاعة:</label>
+              <input id="placeTitleInput" type="text" required class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none" />
             </div>
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">المبنى / الدور:</label>
-              <select id="placeFloorInput" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white">
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">المبنى / الدور:</label>
+              <select id="placeFloorInput" class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none">
                 <option value="first">مبنى الكنيسة - الدور العلوي (الكاتدرائية)</option>
                 <option value="ground">مبنى الكنيسة - الدور الأرضي</option>
                 <option value="services">مبنى الخدمات المستقل (أدوار الخدمات)</option>
@@ -228,89 +267,116 @@
               </select>
             </div>
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">الأيقونة (Emoji):</label>
-              <input id="placeIconInput" type="text" placeholder="🏛️" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">الأيقونة (Emoji):</label>
+              <input id="placeIconInput" type="text" placeholder="🏛️" class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none" />
             </div>
           </div>
 
-          <!-- PLACE IMAGE URL -->
           <div>
-            <label class="text-[10px] text-cyan-300 font-bold block mb-1">📸 رابط صورة المكان (Image URL):</label>
-            <input id="placeImageInput" type="url" placeholder="https://example.com/photo.jpg أو رابط صورة مباشرة" class="w-full bg-sapphire-950 border border-cyan-500/40 rounded-lg p-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow" />
-            <p class="text-[10px] text-slate-400 mt-0.5">ضع رابط صورة تظهر في نافذة التفاصيل عند ضغط الزائر على هذا المكان في الخريطة.</p>
+            <label class="text-[11px] font-bold text-slate-300 block mb-1">الوصف والتفاصيل:</label>
+            <textarea id="placeDescInput" rows="2" class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none"></textarea>
           </div>
 
-          <div>
-            <label class="text-[10px] text-slate-300 block mb-1">الوصف والتفاصيل:</label>
-            <textarea id="placeDescInput" rows="2" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white"></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">مواعيد العمل:</label>
-              <input id="placeHoursInput" type="text" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">مواعيد العمل:</label>
+              <input id="placeHoursInput" type="text" class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none" />
             </div>
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">المسؤول / رقم التواصل:</label>
-              <input id="placeServantInput" type="text" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">المسؤول / رقم التواصل:</label>
+              <input id="placeServantInput" type="text" class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none" />
             </div>
           </div>
 
           <div>
-            <label class="text-[10px] text-slate-300 block mb-1">إرشادات وطريقة الوصول من المدخل:</label>
-            <input id="placeDirectionsInput" type="text" class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+            <label class="text-[11px] font-bold text-slate-300 block mb-1">إرشادات وطريقة الوصول من المدخل:</label>
+            <input id="placeDirectionsInput" type="text" class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-cyanGlow focus:outline-none" />
           </div>
 
-          <div class="flex items-center gap-2 pt-2">
-            <button onclick="savePlaceItem()" class="flex-1 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">حفظ المكان والصورة</button>
-            <button onclick="document.getElementById('placeFormBox').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-sapphire-800 text-slate-300 text-xs">إلغاء</button>
+          <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+            <button onclick="savePlaceItem()" class="flex-1 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs shadow-glow-cyan transition-all">
+              💾 حفظ المكان والصورة وتحديث الخريطة فوراً
+            </button>
+            <button onclick="document.getElementById('placeFormBox').classList.add('hidden')" class="px-5 py-2.5 rounded-xl bg-sapphire-800 text-slate-300 text-xs font-bold hover:bg-sapphire-700">إلغاء</button>
           </div>
         </div>
       </div>
 
-      <!-- 3. CHURCH HISTORY PHOTOS TAB (NEW) -->
+      <!-- 3. CHURCH HISTORY PHOTOS TAB (WITH DIRECT UPLOAD) -->
       <div id="content-history" class="tab-panel hidden space-y-4">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-amber-950/40 p-4 rounded-2xl border border-amber-500/30">
           <div>
-            <h4 class="text-sm font-black text-white">معرض صور تاريخ وأرشيف الكنيسة:</h4>
-            <p class="text-[11px] text-slate-400">إضافة وتعديل صور أرشيف بناء الكنيسة، التدشين، وسيرة البابا كيرلس</p>
+            <h4 class="text-sm font-black text-white flex items-center gap-2">
+              <i data-lucide="image" class="w-4 h-4 text-amber-400"></i>
+              <span>معرض صور تاريخ وأرشيف الكنيسة:</span>
+            </h4>
+            <p class="text-[11px] text-slate-300 mt-0.5">إضافة وتعديل صور أرشيف بناء الكنيسة، التدشين، وسيرة البابا كيرلس مع إمكانية رفع الصور مباشرة</p>
           </div>
-          <button onclick="openAddHistoryPhotoForm()" class="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1">
+          <button onclick="openAddHistoryPhotoForm()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-all flex items-center gap-1.5 shadow-glow-gold self-start sm:self-auto">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span>إضافة صورة تاريخية جديدة</span>
           </button>
         </div>
 
-        <div id="adminHistoryPhotosList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+        <div id="adminHistoryPhotosList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5"></div>
 
-        <div id="historyPhotoFormBox" class="hidden p-4 rounded-2xl bg-sapphire-900/90 border border-cyanGlow/40 space-y-3">
-          <h5 id="historyPhotoFormHeading" class="text-xs font-black text-cyan-300">إضافة صورة تاريخية جديدة</h5>
+        <!-- History Edit / Add Form Modal -->
+        <div id="historyPhotoFormBox" class="hidden p-5 rounded-3xl bg-sapphire-900/95 border-2 border-amber-500/50 space-y-4 shadow-2xl">
+          <div class="flex items-center justify-between pb-2 border-b border-white/10">
+            <h5 id="historyPhotoFormHeading" class="text-sm font-black text-amber-300">إضافة صورة تاريخية جديدة</h5>
+            <button onclick="document.getElementById('historyPhotoFormBox').classList.add('hidden')" class="text-slate-400 hover:text-white">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+
           <input type="hidden" id="editHistoryPhotoId" />
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <!-- HISTORY IMAGE UPLOADER -->
+          <div class="p-4 rounded-2xl bg-sapphire-950/90 border border-amber-500/40 flex flex-col sm:flex-row items-center gap-4">
+            <div class="relative w-28 h-28 rounded-2xl overflow-hidden bg-slate-900 border-2 border-amber-400/50 flex-shrink-0 shadow-md flex items-center justify-center">
+              <img id="historyImagePreview" src="" alt="معاينة الصورة" class="w-full h-full object-cover hidden" />
+              <div id="historyImagePlaceholder" class="text-3xl text-slate-500 flex flex-col items-center">
+                <span>🏛️</span>
+                <span class="text-[9px] text-slate-400 mt-1">اختر صورة</span>
+              </div>
+            </div>
+
+            <div class="flex-1 space-y-2 w-full">
+              <span class="text-xs font-black text-amber-300 block">📸 ملف الصورة التاريخية:</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <label class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-black text-xs flex items-center gap-1.5 cursor-pointer shadow-md transition-all">
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                  <span>اختر صورة من جهازك / الموبايل</span>
+                  <input type="file" id="historyFormFileInput" accept="image/*" class="hidden" onchange="handleHistoryImageUpload(event)" />
+                </label>
+              </div>
+              <div>
+                <input id="historyUrlInput" type="text" placeholder="أو الصق رابط صورة (Image URL)" class="w-full bg-sapphire-900 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400" oninput="updateHistoryPreviewFromUrl(this.value)" />
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">عنوان الصورة / الحدث:</label>
-              <input id="historyTitleInput" type="text" required placeholder="مثال: وضع حجر أساس الكنيسة..." class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">عنوان الصورة / الحدث التاريخي:</label>
+              <input id="historyTitleInput" type="text" required placeholder="مثال: وضع حجر أساس الكنيسة..." class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-amber-400 focus:outline-none" />
             </div>
             <div>
-              <label class="text-[10px] text-slate-300 block mb-1">السنة / التاريخ:</label>
-              <input id="historyYearInput" type="text" placeholder="مثال: 1975م / عيد القيامة..." class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white" />
+              <label class="text-[11px] font-bold text-slate-300 block mb-1">السنة / التاريخ:</label>
+              <input id="historyYearInput" type="text" placeholder="مثال: 1975م / عيد القيامة..." class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-amber-400 focus:outline-none" />
             </div>
           </div>
 
           <div>
-            <label class="text-[10px] text-cyan-300 font-bold block mb-1">📸 رابط الصورة (Image URL):</label>
-            <input id="historyUrlInput" type="url" required placeholder="https://... رابط الصورة على الإنترنت أو استضافة الصور" class="w-full bg-sapphire-950 border border-cyan-500/40 rounded-lg p-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow" />
+            <label class="text-[11px] font-bold text-slate-300 block mb-1">وصف أو تعليق توضيحي للحدث التاريخي:</label>
+            <textarea id="historyDescInput" rows="2" placeholder="اكتب نبذة عن مناسبة الصورة والآباء أو المعالم الظاهرة فيها..." class="w-full bg-sapphire-950 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:border-amber-400 focus:outline-none"></textarea>
           </div>
 
-          <div>
-            <label class="text-[10px] text-slate-300 block mb-1">وصف أو تعليق توضيحي للحدث التاريخي:</label>
-            <textarea id="historyDescInput" rows="2" placeholder="اكتب نبذة عن مناسبة الصورة والآباء أو المعالم الظاهرة فيها..." class="w-full bg-sapphire-950 border border-white/10 rounded-lg p-2 text-xs text-white"></textarea>
-          </div>
-
-          <div class="flex items-center gap-2 pt-2">
-            <button onclick="saveHistoryPhotoItem()" class="flex-1 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">حفظ الصورة في الأرشيف</button>
-            <button onclick="document.getElementById('historyPhotoFormBox').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-sapphire-800 text-slate-300 text-xs">إلغاء</button>
+          <div class="flex items-center gap-2 pt-3 border-t border-white/10">
+            <button onclick="saveHistoryPhotoItem()" class="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-glow-gold transition-all">
+              💾 حفظ الصورة في أرشيف التاريخ
+            </button>
+            <button onclick="document.getElementById('historyPhotoFormBox').classList.add('hidden')" class="px-5 py-2.5 rounded-xl bg-sapphire-800 text-slate-300 text-xs font-bold hover:bg-sapphire-700">إلغاء</button>
           </div>
         </div>
       </div>
@@ -497,6 +563,31 @@
     let currentAdminData = null;
     let activeAdminTab = 'general';
 
+    function compressImageFile(file, maxWidth, maxHeight, quality, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          let w = img.width;
+          let h = img.height;
+          if (w > maxWidth || h > maxHeight) {
+            const ratio = Math.min(maxWidth / w, maxHeight / h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          callback(dataUrl);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     async function loadAdminData() {
       const saved = localStorage.getItem('CLEOPATRA_CHURCH_DATA_V2');
       if (saved) {
@@ -616,37 +707,99 @@
       alert('تم تحديث الرابط ومزامنة البيانات بنجاح!');
     }
 
-    // 2. PLACES MANAGEMENT (WITH IMAGES)
+    // 2. PLACES MANAGEMENT (WITH DIRECT PHOTO UPLOAD & PREVIEWS)
     function renderAdminPlaces() {
       const list = document.getElementById('adminPlacesList');
       if (!list) return;
       const places = currentAdminData.places || [];
       
       list.innerHTML = places.map((p, idx) => `
-        <div class="p-3.5 rounded-2xl bg-sapphire-900/60 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="p-3.5 rounded-2xl bg-sapphire-900/60 border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 group hover:border-cyan-500/40 transition-all">
           <div class="flex items-center gap-3">
-            ${p.image ? `
-              <img src="${p.image}" alt="${p.title}" class="w-12 h-12 rounded-xl object-cover border border-white/20 flex-shrink-0" />
-            ` : `
-              <div class="w-12 h-12 rounded-xl bg-sapphire-950 border border-white/10 flex items-center justify-center text-xl flex-shrink-0">
-                ${p.icon || '📍'}
-              </div>
-            `}
+            <div class="relative w-16 h-16 rounded-2xl overflow-hidden bg-slate-900 border border-white/20 flex-shrink-0 shadow-md flex items-center justify-center">
+              ${p.image ? `
+                <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" />
+              ` : `
+                <div class="w-full h-full flex flex-col items-center justify-center text-2xl bg-sapphire-950">
+                  <span>${p.icon || '📍'}</span>
+                </div>
+              `}
+            </div>
             <div>
-              <h5 class="text-xs font-black text-white flex items-center gap-2">
+              <h5 class="text-xs sm:text-sm font-black text-white flex items-center gap-2 flex-wrap">
                 <span>${p.title}</span>
                 <span class="text-[10px] bg-cyan-950 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30">${p.floor}</span>
-                ${p.image ? '<span class="text-[10px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded-md">📸 به صورة</span>' : ''}
+                ${p.image ? '<span class="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded-md border border-emerald-500/30">📸 صورة حقيقية مضافة</span>' : '<span class="text-[10px] bg-amber-950 text-amber-300 px-2 py-0.5 rounded-md border border-amber-500/30">⚠️ بدون صورة</span>'}
               </h5>
-              <p class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${p.desc || ''}</p>
+              <p class="text-[11px] text-slate-300 mt-1 line-clamp-1">${p.desc || ''}</p>
             </div>
           </div>
-          <div class="flex items-center gap-2 self-end sm:self-center">
-            <button onclick="editPlaceItem('${p.key}')" class="px-3 py-1.5 rounded-xl bg-cyan-600/30 hover:bg-cyan-600 text-cyan-300 hover:text-white text-xs font-bold transition-all">تعديل</button>
-            <button onclick="deletePlaceItem('${p.key}')" class="px-3 py-1.5 rounded-xl bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-white text-xs font-bold transition-all">حذف</button>
+
+          <!-- Fast Photo Change & Action Buttons -->
+          <div class="flex items-center gap-2 self-end md:self-center flex-wrap">
+            <label class="px-3 py-1.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 text-xs font-bold transition-all border border-cyan-500/30 cursor-pointer flex items-center gap-1">
+              <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+              <span>تغيير الصورة 📸</span>
+              <input type="file" accept="image/*" class="hidden" onchange="handleQuickPlaceUpload('${p.key}', event)" />
+            </label>
+
+            <button onclick="editPlaceItem('${p.key}')" class="px-3 py-1.5 rounded-xl bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+              <span>تعديل التفاصيل</span>
+            </button>
+
+            <button onclick="deletePlaceItem('${p.key}')" class="px-3 py-1.5 rounded-xl bg-red-600/30 hover:bg-red-600 text-red-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              <span>حذف</span>
+            </button>
           </div>
         </div>
       `).join('');
+
+      lucide.createIcons();
+    }
+
+    function handleQuickPlaceUpload(key, e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      compressImageFile(file, 1200, 900, 0.85, function(dataUrl) {
+        const place = currentAdminData.places.find(p => p.key === key);
+        if (place) {
+          place.image = dataUrl;
+          renderAdminPlaces();
+          saveAdminData();
+          showToast(`📸 تم تحديث صورة "${place.title}" بنجاح!`);
+        }
+      });
+    }
+
+    function handleFormImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      compressImageFile(file, 1200, 900, 0.85, function(dataUrl) {
+        document.getElementById('placeImageInput').value = dataUrl;
+        updatePlacePreviewFromUrl(dataUrl);
+      });
+    }
+
+    function updatePlacePreviewFromUrl(url) {
+      const preview = document.getElementById('placeImagePreview');
+      const placeholder = document.getElementById('placeImagePlaceholder');
+      if (url && url.trim() !== '') {
+        preview.src = url;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        preview.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    function removePlaceFormImage() {
+      document.getElementById('placeImageInput').value = '';
+      updatePlacePreviewFromUrl('');
     }
 
     function openAddPlaceForm() {
@@ -657,26 +810,32 @@
       document.getElementById('placeFloorInput').value = 'first';
       document.getElementById('placeIconInput').value = '🏛️';
       document.getElementById('placeImageInput').value = '';
+      updatePlacePreviewFromUrl('');
       document.getElementById('placeDescInput').value = '';
       document.getElementById('placeHoursInput').value = '';
       document.getElementById('placeServantInput').value = '';
       document.getElementById('placeDirectionsInput').value = '';
+      
+      document.getElementById('placeFormBox').scrollIntoView({ behavior: 'smooth' });
     }
 
     function editPlaceItem(key) {
       const place = currentAdminData.places.find(p => p.key === key);
       if (!place) return;
       document.getElementById('placeFormBox').classList.remove('hidden');
-      document.getElementById('placeFormHeading').innerText = `تعديل: ${place.title}`;
+      document.getElementById('placeFormHeading').innerText = `تعديل مكان: ${place.title}`;
       document.getElementById('editPlaceKey').value = place.key;
       document.getElementById('placeTitleInput').value = place.title || '';
       document.getElementById('placeFloorInput').value = place.floor || 'first';
       document.getElementById('placeIconInput').value = place.icon || '🏛️';
       document.getElementById('placeImageInput').value = place.image || '';
+      updatePlacePreviewFromUrl(place.image || '');
       document.getElementById('placeDescInput').value = place.desc || '';
       document.getElementById('placeHoursInput').value = place.hours || '';
       document.getElementById('placeServantInput').value = place.servant || '';
       document.getElementById('placeDirectionsInput').value = place.directions || '';
+
+      document.getElementById('placeFormBox').scrollIntoView({ behavior: 'smooth' });
     }
 
     function savePlaceItem() {
@@ -716,21 +875,21 @@
       saveAdminData();
     }
 
-    // 3. CHURCH HISTORY PHOTOS MANAGEMENT
+    // 3. CHURCH HISTORY PHOTOS MANAGEMENT (WITH DIRECT UPLOAD)
     function renderAdminHistoryPhotos() {
       const list = document.getElementById('adminHistoryPhotosList');
       if (!list) return;
       const photos = currentAdminData.historyPhotos || [];
       
       list.innerHTML = photos.map(p => `
-        <div class="p-3 rounded-2xl bg-sapphire-900/60 border border-white/10 flex flex-col justify-between overflow-hidden group">
-          <div class="relative w-full h-32 rounded-xl overflow-hidden mb-2 bg-sapphire-950">
+        <div class="p-3 rounded-2xl bg-sapphire-900/60 border border-white/10 flex flex-col justify-between overflow-hidden group hover:border-amber-500/40 transition-all">
+          <div class="relative w-full h-36 rounded-xl overflow-hidden mb-2 bg-slate-900 border border-white/10">
             <img src="${p.url}" alt="${p.title}" class="w-full h-full object-cover" />
-            <span class="absolute top-2 right-2 bg-slate-950/80 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-md border border-amber-500/30">${p.year || 'تاريخي'}</span>
+            <span class="absolute top-2 right-2 bg-slate-950/85 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-md border border-amber-500/30">${p.year || 'تاريخي'}</span>
           </div>
           <div>
             <h5 class="text-xs font-black text-white line-clamp-1">${p.title}</h5>
-            <p class="text-[10px] text-slate-400 mt-1 line-clamp-2">${p.desc || ''}</p>
+            <p class="text-[10px] text-slate-300 mt-1 line-clamp-2">${p.desc || ''}</p>
           </div>
           <div class="flex items-center justify-end gap-2 mt-3 pt-2 border-t border-white/5">
             <button onclick="editHistoryPhotoItem(${p.id})" class="px-2.5 py-1 rounded-lg bg-cyan-600/30 text-cyan-300 text-xs font-bold hover:bg-cyan-600 hover:text-white transition-all">تعديل</button>
@@ -738,6 +897,31 @@
           </div>
         </div>
       `).join('');
+
+      lucide.createIcons();
+    }
+
+    function handleHistoryImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      compressImageFile(file, 1200, 900, 0.85, function(dataUrl) {
+        document.getElementById('historyUrlInput').value = dataUrl;
+        updateHistoryPreviewFromUrl(dataUrl);
+      });
+    }
+
+    function updateHistoryPreviewFromUrl(url) {
+      const preview = document.getElementById('historyImagePreview');
+      const placeholder = document.getElementById('historyImagePlaceholder');
+      if (url && url.trim() !== '') {
+        preview.src = url;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        preview.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
     }
 
     function openAddHistoryPhotoForm() {
@@ -747,7 +931,10 @@
       document.getElementById('historyTitleInput').value = '';
       document.getElementById('historyYearInput').value = '';
       document.getElementById('historyUrlInput').value = '';
+      updateHistoryPreviewFromUrl('');
       document.getElementById('historyDescInput').value = '';
+      
+      document.getElementById('historyPhotoFormBox').scrollIntoView({ behavior: 'smooth' });
     }
 
     function editHistoryPhotoItem(id) {
@@ -759,13 +946,16 @@
       document.getElementById('historyTitleInput').value = p.title || '';
       document.getElementById('historyYearInput').value = p.year || '';
       document.getElementById('historyUrlInput').value = p.url || '';
+      updateHistoryPreviewFromUrl(p.url || '');
       document.getElementById('historyDescInput').value = p.desc || '';
+
+      document.getElementById('historyPhotoFormBox').scrollIntoView({ behavior: 'smooth' });
     }
 
     function saveHistoryPhotoItem() {
       const title = document.getElementById('historyTitleInput').value.trim();
       const url = document.getElementById('historyUrlInput').value.trim();
-      if (!title || !url) { alert('عنوان الصورة ورابط الصورة مطلوبان'); return; }
+      if (!title || !url) { alert('عنوان الصورة ورابط أو ملف الصورة مطلوبان'); return; }
 
       const id = parseInt(document.getElementById('editHistoryPhotoId').value) || Date.now();
       const item = {
