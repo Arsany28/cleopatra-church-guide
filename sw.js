@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'cleopatra-church-v3';
+﻿const CACHE_NAME = 'cleopatra-church-v4';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
