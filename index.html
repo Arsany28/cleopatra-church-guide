@@ -1323,7 +1323,7 @@
         </div>
 
         <div class="flex items-center gap-2">
-          <a id="churchYoutubeLink" href="https://www.youtube.com" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+          <a id="churchYoutubeLink" href="https://www.youtube.com/@stmary-pistellos" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all active:scale-95">
             <i data-lucide="youtube" class="w-4 h-4"></i>
             <span>زيارة القناة الرسمية</span>
           </a>
@@ -3362,54 +3362,54 @@
     function addServiceReminder(title) { showToast(`تمت إضافة تذكير لخدمة: ${title}`); }
 
     
-    const defaultChurchVideos = [
+        const defaultChurchVideos = [
       {
-        id: "liturgy1",
-        title: "القداس الإلهي الكيرلسي الكامل - خورس الشمامسة",
-        category: "قداسات إلهية",
-        speaker: "آباء الكنيسة وخورس الشمامسة",
-        youtubeId: "7wtfhZwyrcc",
-        thumbnail: "https://images.unsplash.com/photo-1548625361-195fe5787fa9?w=500&auto=format&fit=crop&q=60"
+        id: "jubilee_song",
+        title: "ترنيمة اليوبيل الذهبي (50 عاماً): كان حلم لقديس وعظيم",
+        category: "احتفالية اليوبيل الـ 50",
+        speaker: "كورال فيك الحياة - كنيسة العذراء بكليوباترا",
+        youtubeId: "S0zNNOvnO7k",
+        thumbnail: "https://img.youtube.com/vi/S0zNNOvnO7k/hqdefault.jpg"
       },
       {
-        id: "tasbeha",
-        title: "تسبحة كيهك والألحان التراثية (الهوسات والمدائح)",
-        category: "تسابيح وألحان",
-        speaker: "تسجيلات استوديو الكنيسة",
-        youtubeId: "5qap5aO4i9A",
-        thumbnail: "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=500&auto=format&fit=crop&q=60"
+        id: "pope_tawadros_jubilee",
+        title: "عظة قداسة البابا تواضروس الثاني في احتفالية اليوبيل الذهبي للكنيسة",
+        category: "عظات قداسة البابا",
+        speaker: "قداسة البابا المعظم الأنبا تواضروس الثاني",
+        youtubeId: "GhZRtnHhgEI",
+        thumbnail: "https://img.youtube.com/vi/GhZRtnHhgEI/hqdefault.jpg"
       },
       {
-        id: "sermon1",
-        title: "سلسلة عظات روحية: الرجاء وحياة الصلاة في الضيقات",
-        category: "عظات وكلمات منفعة",
-        speaker: "اجتماع الشباب الأسبوعي",
-        youtubeId: "fJ9rUzIMcZQ",
-        thumbnail: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=500&auto=format&fit=crop&q=60"
+        id: "fr_bishoy_kamel_1976",
+        title: "تسجيل نادر: أول قداس في تاريخ الكنيسة للقمص بيشوي كامل (1976م)",
+        category: "أرشيف وتاريخ الكنيسة",
+        speaker: "المتنيح القمص بيشوي كامل",
+        youtubeId: "FrKe1uQMD0l",
+        thumbnail: "https://img.youtube.com/vi/FrKe1uQMD0l/hqdefault.jpg"
       },
       {
-        id: "virgin_mary_feast",
-        title: "نهضة صوم السيدة العذراء مريم ومدائح الشفاعة",
-        category: "نهضات ومناسبات",
-        speaker: "نهضة العذراء مريم بكليوباترا",
+        id: "anba_paula_sermon",
+        title: "عظة نيافة الحبر الجليل الأنبا بولا في كنيسة العذراء كليوباترا",
+        category: "عظات الآباء الأساقفة",
+        speaker: "نيافة الأنبا بولا - مطران طنطا وتوابعها",
+        youtubeId: "Ga9-A22zC0T",
+        thumbnail: "https://img.youtube.com/vi/Ga9-A22zC0T/hqdefault.jpg"
+      },
+      {
+        id: "virgin_mary_cleopatra",
+        title: "صلوات عشية ونهضة صوم السيدة العذراء مريم والمدائح التراثية",
+        category: "نهضة العذراء مريم",
+        speaker: "آباء وشمامسة كنيسة العذراء بكليوباترا",
         youtubeId: "9bZkp7q19f0",
-        thumbnail: "https://images.unsplash.com/photo-1544427920-c49ccfb85579?w=500&auto=format&fit=crop&q=60"
+        thumbnail: "https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg"
       },
       {
-        id: "pope_cyril_feast",
-        title: "سيرة وتاريخ القديس البابا كيرلس عمود الدين (شفيـع الكنيسة)",
-        category: "سير قديسين وتاريخ",
-        speaker: "تذكار عيد نياحة البابا كيرلس",
+        id: "pope_cyril_feast_doc",
+        title: "تذكار عيد نياحة القديس البابا كيرلس عمود الدين وتاريخ كنيسته",
+        category: "تاريخ وشفيع الكنيسة",
+        speaker: "كنيسة السيدة العذراء والبابا كيرلس بكليوباترا",
         youtubeId: "kJQP7kiw5Fk",
-        thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=500&auto=format&fit=crop&q=60"
-      },
-      {
-        id: "sunday_school_hymns",
-        title: "باقة ترانيم ومدائح كورال أطفال وشباب الكنيسة",
-        category: "ترانيم وتسابيح",
-        speaker: "كورال كنيسة العذراء بكليوباترا",
-        youtubeId: "3JZ_D3ELwOQ",
-        thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60"
+        thumbnail: "https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg"
       }
     ];
 
