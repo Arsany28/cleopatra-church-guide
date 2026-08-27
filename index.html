@@ -1306,148 +1306,87 @@
 
     </section>
 
-    <!-- ================= 5. LIVE STREAM & YOUTUBE MEDIA ================= -->
-
-    <section id="media-section" class="glass-card rounded-3xl p-5 md:p-6 border border-white/10 shadow-glass">
-
+    <!-- ================= 5. LIVE STREAM & YOUTUBE MEDIA ARCHIVE ================= -->
+    <section id="media-section" class="glass-card rounded-3xl p-5 md:p-6 border border-red-500/30 shadow-glass relative overflow-hidden">
+      
+      <!-- Section Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-
         <div>
-
-          <div class="inline-flex items-center gap-1.5 text-xs font-bold text-red-400 mb-1 bg-red-950/60 px-2.5 py-0.5 rounded-full border border-red-500/30">
-
-            <i data-lucide="youtube" class="w-3.5 h-3.5 text-red-500"></i>
-
-            <span>المركز الإعلامي ويوتيوب الكنيسة</span>
-
+          <div class="inline-flex items-center gap-1.5 text-xs font-bold text-red-400 mb-1 bg-red-950/60 px-3 py-0.5 rounded-full border border-red-500/30">
+            <i data-lucide="tv" class="w-3.5 h-3.5 text-red-400"></i>
+            <span>البث المباشر وأرشيف فيديوهات القناة</span>
           </div>
-
-          <h2 class="text-lg md:text-xl font-black text-white">بث الصلوات والقداسات والتسابيح المسجلة</h2>
-
+          <h2 class="text-lg md:text-xl font-black text-white flex items-center gap-2">
+            <span>قناة كنيسة السيدة العذراء والبابا كيرلس عمود الدين</span>
+            <span class="text-xs font-bold text-red-300 bg-red-950/80 px-2 py-0.5 rounded-lg border border-red-500/30">YouTube</span>
+          </h2>
         </div>
 
-
-
-        <a href="https://www.youtube.com" target="_blank" id="youtubeMainBtn" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md self-start sm:self-auto">
-
-          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-
-          <span>قناة اليوتيوب الرسمية</span>
-
-        </a>
-
+        <div class="flex items-center gap-2">
+          <a id="churchYoutubeLink" href="https://www.youtube.com" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+            <i data-lucide="youtube" class="w-4 h-4"></i>
+            <span>زيارة القناة الرسمية</span>
+          </a>
+        </div>
       </div>
 
-
-
-      <div class="relative rounded-2xl overflow-hidden bg-slate-950 border border-white/10 shadow-2xl aspect-video w-full mb-4">
-
+      <!-- MAIN VIDEO PLAYER CONTAINER -->
+      <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-950 border border-white/10 shadow-2xl mb-5">
         <iframe 
-
           id="youtubeFrame"
-
           class="w-full h-full"
-
-          src="https://www.youtube-nocookie.com/embed/live_stream?channel=UC_SAMPLE" 
-
-          title="بث مباشر كنيسة السيدة العذراء والبابا كيرلس عمود الدين بكليوباترا" 
-
+          src="" 
+          title="فيديوهات كنيسة السيدة العذراء والبابا كيرلس عمود الدين بكليوباترا" 
           frameborder="0" 
-
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-
           allowfullscreen>
-
         </iframe>
 
-        <div id="videoFallback" class="absolute inset-0 bg-sapphire-950/95 flex flex-col items-center justify-center p-6 text-center">
-
-          <div class="w-16 h-16 rounded-full bg-red-600/20 text-red-400 flex items-center justify-center mb-3 shadow-glow-cyan/20 border border-red-500/30">
-
-            <i data-lucide="tv" class="w-8 h-8"></i>
-
+        <!-- Fallback / Initial State Overlay -->
+        <div id="videoFallback" class="absolute inset-0 bg-sapphire-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center">
+          <div class="w-16 h-16 rounded-3xl bg-red-600/20 text-red-400 flex items-center justify-center mb-3 shadow-glow-cyan/20 border border-red-500/40 animate-pulse">
+            <i data-lucide="play-circle" class="w-10 h-10"></i>
           </div>
 
-          <h3 class="font-black text-white text-base md:text-lg mb-1">قناة كنيسة السيدة العذراء والبابا كيرلس بكليوباترا</h3>
+          <h3 class="font-black text-white text-base md:text-lg mb-1" id="nowPlayingHeader">
+            أرشيف تسجيلات وصلوات الكنيسة على YouTube
+          </h3>
+          <p class="text-xs text-slate-300 max-w-md mb-4 leading-relaxed">
+            يبدأ البث المباشر تلقائياً وقت القداسات والنهضات الرسمية. يمكنك اختيار وتشغيل أي فيديو من الفيديوهات الـ 6 المختارة أدناه فوراً:
+          </p>
 
-          <p class="text-xs text-slate-300 max-w-md mb-4">يبدأ البث المباشر تلقائياً مع بدء القداسات والعشيات الرسمية. يمكنك تصفح المقاطع المسجلة والعظات بالأسفل.</p>
-
-          <div class="flex items-center gap-2">
-
-            <button onclick="document.getElementById('videoFallback').classList.add('hidden')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold text-xs shadow-md transition-all">
-
-              تشغيل أرشيف الصلوات
-
-            </button>
-
-          </div>
-
+          <button onclick="playFeaturedVideo(0)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs shadow-lg transition-all flex items-center gap-2 active:scale-95">
+            <i data-lucide="play" class="w-4 h-4 fill-white"></i>
+            <span>بدء تشغيل أول فيديو الآن</span>
+          </button>
         </div>
-
       </div>
 
+      <!-- NOW PLAYING STATUS BAR -->
+      <div id="nowPlayingBar" class="hidden items-center justify-between p-3 rounded-xl bg-red-950/40 border border-red-500/20 mb-4 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span class="text-slate-300">جاري التشغيل الآن:</span>
+          <strong id="nowPlayingTitle" class="text-white font-black"></strong>
+        </div>
+        <button onclick="resetVideoPlayer()" class="text-slate-400 hover:text-white font-bold text-[11px]">
+          إيقاف المشغل ✕
+        </button>
+      </div>
 
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-
-        <div onclick="playArchiveVideo('liturgy1')" class="cursor-pointer glass-card-interactive p-3 rounded-2xl border border-white/5 flex items-center gap-3 group">
-
-          <div class="w-16 h-12 rounded-xl bg-sapphire-900 flex items-center justify-center text-red-400 group-hover:scale-105 transition-transform flex-shrink-0 relative overflow-hidden border border-white/10">
-
-            <i data-lucide="play" class="w-5 h-5"></i>
-
-          </div>
-
-          <div>
-
-            <h4 class="text-xs font-bold text-white line-clamp-1 group-hover:text-cyanGlow transition-colors">قداس الأحد وعيد القيامة</h4>
-
-            <span class="text-[10px] text-slate-400 block">خورس الشمامسة</span>
-
-          </div>
-
+      <!-- 6 FEATURED YOUTUBE VIDEOS GALLERY GRID -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-xs font-black text-slate-300 flex items-center gap-1.5">
+            <span>🎬</span>
+            <span>أبرز 6 تسجيلات وفيديوهات من قناة الكنيسة (اضغط لتشغيل أي فيديو):</span>
+          </h3>
+          <span class="text-[10px] text-red-300 bg-red-950 px-2 py-0.5 rounded-full border border-red-500/30 font-bold">6 تسجيلات</span>
         </div>
 
-
-
-        <div onclick="playArchiveVideo('tasbeha')" class="cursor-pointer glass-card-interactive p-3 rounded-2xl border border-white/5 flex items-center gap-3 group">
-
-          <div class="w-16 h-12 rounded-xl bg-sapphire-900 flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform flex-shrink-0 relative overflow-hidden border border-white/10">
-
-            <i data-lucide="music" class="w-5 h-5"></i>
-
-          </div>
-
-          <div>
-
-            <h4 class="text-xs font-bold text-white line-clamp-1 group-hover:text-amber-300 transition-colors">تسبحة كيهك والألحان التراثية</h4>
-
-            <span class="text-[10px] text-slate-400 block">تسجيلات الاستوديو</span>
-
-          </div>
-
+        <div id="archiveVideosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <!-- Dynamically populated from AppStore.data.archiveVideos -->
         </div>
-
-
-
-        <div onclick="playArchiveVideo('sermon')" class="cursor-pointer glass-card-interactive p-3 rounded-2xl border border-white/5 flex items-center gap-3 group">
-
-          <div class="w-16 h-12 rounded-xl bg-sapphire-900 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform flex-shrink-0 relative overflow-hidden border border-white/10">
-
-            <i data-lucide="mic" class="w-5 h-5"></i>
-
-          </div>
-
-          <div>
-
-            <h4 class="text-xs font-bold text-white line-clamp-1 group-hover:text-cyanGlow transition-colors">سلسلة عظات آباء الكنيسة</h4>
-
-            <span class="text-[10px] text-slate-400 block">اجتماع الشباب الأسبوعي</span>
-
-          </div>
-
-        </div>
-
       </div>
 
     </section>
@@ -2460,6 +2399,7 @@
 
         renderClergy();
         renderDonations();
+        renderArchiveVideos();
 
         populateConfessionSelect();
 
@@ -3420,6 +3360,143 @@
     function requestServantGuide() { showToast('تم إرسال طلب مرشد استقبال، تفضل لمكتب الاستقبال عند الباب'); }
 
     function addServiceReminder(title) { showToast(`تمت إضافة تذكير لخدمة: ${title}`); }
+
+    
+    const defaultChurchVideos = [
+      {
+        id: "liturgy1",
+        title: "القداس الإلهي الكيرلسي الكامل - خورس الشمامسة",
+        category: "قداسات إلهية",
+        speaker: "آباء الكنيسة وخورس الشمامسة",
+        youtubeId: "7wtfhZwyrcc",
+        thumbnail: "https://images.unsplash.com/photo-1548625361-195fe5787fa9?w=500&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "tasbeha",
+        title: "تسبحة كيهك والألحان التراثية (الهوسات والمدائح)",
+        category: "تسابيح وألحان",
+        speaker: "تسجيلات استوديو الكنيسة",
+        youtubeId: "5qap5aO4i9A",
+        thumbnail: "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=500&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "sermon1",
+        title: "سلسلة عظات روحية: الرجاء وحياة الصلاة في الضيقات",
+        category: "عظات وكلمات منفعة",
+        speaker: "اجتماع الشباب الأسبوعي",
+        youtubeId: "fJ9rUzIMcZQ",
+        thumbnail: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=500&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "virgin_mary_feast",
+        title: "نهضة صوم السيدة العذراء مريم ومدائح الشفاعة",
+        category: "نهضات ومناسبات",
+        speaker: "نهضة العذراء مريم بكليوباترا",
+        youtubeId: "9bZkp7q19f0",
+        thumbnail: "https://images.unsplash.com/photo-1544427920-c49ccfb85579?w=500&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "pope_cyril_feast",
+        title: "سيرة وتاريخ القديس البابا كيرلس عمود الدين (شفيـع الكنيسة)",
+        category: "سير قديسين وتاريخ",
+        speaker: "تذكار عيد نياحة البابا كيرلس",
+        youtubeId: "kJQP7kiw5Fk",
+        thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=500&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "sunday_school_hymns",
+        title: "باقة ترانيم ومدائح كورال أطفال وشباب الكنيسة",
+        category: "ترانيم وتسابيح",
+        speaker: "كورال كنيسة العذراء بكليوباترا",
+        youtubeId: "3JZ_D3ELwOQ",
+        thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=60"
+      }
+    ];
+
+    function renderArchiveVideos() {
+      const grid = document.getElementById('archiveVideosGrid');
+      if (!grid) return;
+      
+      const videos = (AppStore.data && AppStore.data.archiveVideos && AppStore.data.archiveVideos.length > 0) 
+        ? AppStore.data.archiveVideos 
+        : defaultChurchVideos;
+
+      grid.innerHTML = videos.map((v, index) => `
+        <div onclick="playFeaturedVideo(${index})" class="video-card cursor-pointer glass-card-interactive rounded-2xl overflow-hidden border border-white/10 group hover:border-red-500/40 transition-all flex flex-col justify-between">
+          <div>
+            <div class="relative aspect-video w-full bg-sapphire-950 overflow-hidden">
+              <img src="${v.thumbnail || ('https://img.youtube.com/vi/' + v.youtubeId + '/hqdefault.jpg')}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1548625361-195fe5787fa9?w=500&auto=format&fit=crop&q=60'" />
+              
+              <!-- Red Play Button Overlay -->
+              <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                <div class="w-11 h-11 rounded-full bg-red-600 group-hover:bg-red-500 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <i data-lucide="play" class="w-5 h-5 fill-white ml-0.5"></i>
+                </div>
+              </div>
+
+              <!-- Category Badge -->
+              <span class="absolute top-2 right-2 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-cyan-300 font-bold text-[10px] border border-white/10">
+                ${v.category || 'تسجيل كنسي'}
+              </span>
+            </div>
+
+            <div class="p-3.5 space-y-1">
+              <h4 class="text-xs font-black text-white group-hover:text-red-300 transition-colors line-clamp-2 leading-snug">
+                ${v.title}
+              </h4>
+              <p class="text-[11px] text-slate-400 flex items-center gap-1">
+                <span>🎙️</span>
+                <span>${v.speaker || 'كنيسة السيدة العذراء والبابا كيرلس'}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="px-3.5 pb-3 pt-1 border-t border-white/5 flex items-center justify-between text-[11px] text-red-400 font-bold">
+            <span>تشغيل في المشغل</span>
+            <span>▶️</span>
+          </div>
+        </div>
+      `).join('');
+
+      if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+    }
+
+    function playFeaturedVideo(index) {
+      const videos = (AppStore.data && AppStore.data.archiveVideos && AppStore.data.archiveVideos.length > 0) 
+        ? AppStore.data.archiveVideos 
+        : defaultChurchVideos;
+
+      const video = videos[index] || videos[0];
+      if (!video) return;
+
+      const iframe = document.getElementById('youtubeFrame');
+      const fallback = document.getElementById('videoFallback');
+      const bar = document.getElementById('nowPlayingBar');
+      const title = document.getElementById('nowPlayingTitle');
+
+      if (iframe) {
+        iframe.src = `https://www.youtube-nocookie.com/embed/${video.youtubeId}?autoplay=1&rel=0`;
+      }
+      if (fallback) fallback.classList.add('hidden');
+      if (bar) { bar.classList.remove('hidden'); bar.classList.add('flex'); }
+      if (title) title.innerText = video.title;
+
+      // Scroll smoothly to player
+      const playerSection = document.getElementById('media-section');
+      if (playerSection) playerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      showToast(`🎬 جاري تشغيل: ${video.title}`);
+    }
+
+    function resetVideoPlayer() {
+      const iframe = document.getElementById('youtubeFrame');
+      const fallback = document.getElementById('videoFallback');
+      const bar = document.getElementById('nowPlayingBar');
+
+      if (iframe) iframe.src = '';
+      if (fallback) fallback.classList.remove('hidden');
+      if (bar) { bar.classList.add('hidden'); bar.classList.remove('flex'); }
+    }
 
     function playArchiveVideo(type) { document.getElementById('videoFallback').classList.add('hidden'); showToast('تم تشغيل التسجيل الصوتي والمرئي'); }
 
