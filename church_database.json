@@ -8,7 +8,7 @@
     "liveTitle": "بث صلوات القداس الإلهي والعشية مباشر",
     "youtubeUrl": "https://www.youtube-nocookie.com/embed/live_stream?channel=UC_SAMPLE",
     "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec",
-    "youtubeChannelUrl": "https://www.youtube.com/@stmary-pistellos"
+    "youtubeChannelUrl": "https://youtube.com/@stmary-pistellos?si=_Qwi01qUFMJCgwSt"
   },
   "places": [
     {
@@ -405,52 +405,52 @@
   },
   "archiveVideos": [
     {
-      "id": "jubilee_song",
-      "title": "ترنيمة اليوبيل الذهبي (50 عاماً): كان حلم لقديس وعظيم",
+      "id": "udbpGpo1kOM",
+      "title": "احتفالية اليوبيل الذهبي لتأسيس الكنيسة بحضور قداسة البابا المعظم الأنبا تواضروس الثاني",
       "category": "احتفالية اليوبيل الـ 50",
+      "speaker": "قداسة البابا تواضروس الثاني وآباء الكنيسة",
+      "youtubeId": "udbpGpo1kOM",
+      "thumbnail": "https://img.youtube.com/vi/udbpGpo1kOM/hqdefault.jpg"
+    },
+    {
+      "id": "S0zNNOvnO7k",
+      "title": "ترنيمة اليوبيل الذهبي: كان حلم لقديس وعظيم (كورال فيك الحياة)",
+      "category": "ترانيم اليوبيل",
       "speaker": "كورال فيك الحياة - كنيسة العذراء بكليوباترا",
       "youtubeId": "S0zNNOvnO7k",
       "thumbnail": "https://img.youtube.com/vi/S0zNNOvnO7k/hqdefault.jpg"
     },
     {
-      "id": "pope_tawadros_jubilee",
-      "title": "عظة قداسة البابا تواضروس الثاني في احتفالية اليوبيل الذهبي للكنيسة",
-      "category": "عظات قداسة البابا",
-      "speaker": "قداسة البابا المعظم الأنبا تواضروس الثاني",
-      "youtubeId": "GhZRtnHhgEI",
-      "thumbnail": "https://img.youtube.com/vi/GhZRtnHhgEI/hqdefault.jpg"
+      "id": "R8VZJ71WkaM",
+      "title": "فيلم وثائقي عن تاريخ كنيسة السيدة العذراء والبابا كيرلس بمناسبة اليوبيل الذهبي",
+      "category": "فيلم وثائقي وتاريخي",
+      "speaker": "إنتاج وتوثيق الكنيسة (1976 - 2026)",
+      "youtubeId": "R8VZJ71WkaM",
+      "thumbnail": "https://img.youtube.com/vi/R8VZJ71WkaM/hqdefault.jpg"
     },
     {
-      "id": "fr_bishoy_kamel_1976",
-      "title": "تسجيل نادر: أول قداس في تاريخ الكنيسة للقمص بيشوي كامل (1976م)",
-      "category": "أرشيف وتاريخ الكنيسة",
-      "speaker": "المتنيح القمص بيشوي كامل",
-      "youtubeId": "FrKe1uQMD0l",
-      "thumbnail": "https://img.youtube.com/vi/FrKe1uQMD0l/hqdefault.jpg"
+      "id": "QG-aMmnCM2Q",
+      "title": "قداس عيد السيدة العذراء مريم 2026 الكامل",
+      "category": "قداسات إلهية",
+      "speaker": "خورس الشمامسة وآباء الكنيسة",
+      "youtubeId": "QG-aMmnCM2Q",
+      "thumbnail": "https://img.youtube.com/vi/QG-aMmnCM2Q/hqdefault.jpg"
     },
     {
-      "id": "anba_paula_sermon",
-      "title": "عظة نيافة الحبر الجليل الأنبا بولا في كنيسة العذراء كليوباترا",
-      "category": "عظات الآباء الأساقفة",
-      "speaker": "نيافة الأنبا بولا - مطران طنطا وتوابعها",
-      "youtubeId": "Ga9-A22zC0T",
-      "thumbnail": "https://img.youtube.com/vi/Ga9-A22zC0T/hqdefault.jpg"
+      "id": "Y03UuHJVVjw",
+      "title": "سهرة وتسبحة عيد العذراء مريم (الألحان والتسابيح التراثية)",
+      "category": "تسابيح وألحان",
+      "speaker": "تسجيلات استوديو وخورس الكنيسة",
+      "youtubeId": "Y03UuHJVVjw",
+      "thumbnail": "https://img.youtube.com/vi/Y03UuHJVVjw/hqdefault.jpg"
     },
     {
-      "id": "virgin_mary_cleopatra",
-      "title": "صلوات عشية ونهضة صوم السيدة العذراء مريم والمدائح التراثية",
-      "category": "نهضة العذراء مريم",
-      "speaker": "آباء وشمامسة كنيسة العذراء بكليوباترا",
-      "youtubeId": "9bZkp7q19f0",
-      "thumbnail": "https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg"
-    },
-    {
-      "id": "pope_cyril_feast_doc",
-      "title": "تذكار عيد نياحة القديس البابا كيرلس عمود الدين وتاريخ كنيسته",
-      "category": "تاريخ وشفيع الكنيسة",
-      "speaker": "كنيسة السيدة العذراء والبابا كيرلس بكليوباترا",
-      "youtubeId": "kJQP7kiw5Fk",
-      "thumbnail": "https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg"
+      "id": "hAcizynAM-g",
+      "title": "نهضة العذراء مريم - القمص إبرام إميل (وكيل البطريركية)",
+      "category": "عظات ونهضات",
+      "speaker": "القمص إبرام إميل - وكيل عام البطريركية",
+      "youtubeId": "hAcizynAM-g",
+      "thumbnail": "https://img.youtube.com/vi/hAcizynAM-g/hqdefault.jpg"
     }
   ]
 }
