@@ -1118,7 +1118,100 @@
 
   
       <!-- 6. DONATIONS TAB -->
-      <div id="content-donations" class="tab-panel hidden space-y-4">
+      
+    <!-- 7. YOUTUBE MEDIA ARCHIVE TAB -->
+    <div id="content-youtube" class="tab-panel hidden space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
+        <div>
+          <h3 class="text-sm sm:text-base font-black text-white flex items-center gap-2">
+            <i data-lucide="youtube" class="w-5 h-5 text-red-500"></i>
+            <span>إدارة فيديوهات وأرشيف قناة YouTube للكنيسة</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">يمكنك إضافة، تعديل، وحذف الفيديوهات المعروضة في موقع الزوار وتحديثها فوراً</p>
+        </div>
+
+        <button onclick="openAddVideoForm()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs shadow-md transition-all flex items-center gap-1.5 active:scale-95">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>إضافة فيديو جديد للأرشيف ➕</span>
+        </button>
+      </div>
+
+      <!-- ADD / EDIT VIDEO FORM (Toggled) -->
+      <div id="videoFormBox" class="hidden p-5 rounded-2xl bg-sapphire-900/90 border-2 border-red-500/40 shadow-2xl space-y-4 animate-scale-up">
+        <div class="flex items-center justify-between pb-2 border-b border-white/10">
+          <h4 id="videoFormTitle" class="text-xs font-black text-white flex items-center gap-2">
+            <span>🎬</span> <span>إضافة فيديو جديد لقناة الكنيسة:</span>
+          </h4>
+          <button onclick="closeVideoForm()" class="text-slate-400 hover:text-white text-xs font-bold">✕ إغلاق</button>
+        </div>
+
+        <input type="hidden" id="editVideoIndex" value="-1" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block font-bold text-slate-300 text-xs mb-1">عنوان الفيديو (Title):</label>
+            <input type="text" id="inputVideoTitle" required placeholder="مثال: فيلم وثائقي عن تاريخ الكنيسة..." class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-400" />
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 text-xs mb-1">تصنيف الفيديو (Category):</label>
+            <select id="inputVideoCategory" class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white font-bold focus:outline-none focus:border-red-400">
+              <option value="احتفالية اليوبيل الـ 50">✨ احتفالية اليوبيل الـ 50</option>
+              <option value="وثائقي وتاريخ الكنيسة">🏛️ وثائقي وتاريخ الكنيسة</option>
+              <option value="قداسات إلهية">🕊️ قداسات إلهية</option>
+              <option value="عظات وكلمات منفعة">📖 عظات وكلمات منفعة</option>
+              <option value="تسابيح وألحان">🕯️ تسابيح وألحان</option>
+              <option value="ترانيم ومدائح">🎵 ترانيم ومدائح</option>
+              <option value="نهضات ومناسبات">🌹 نهضات ومناسبات</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block font-bold text-slate-300 text-xs mb-1">المتحدث أو الخورس / المناسبة (Speaker/Event):</label>
+            <input type="text" id="inputVideoSpeaker" placeholder="مثال: قداسة البابا تواضروس الثاني / كورال الكنيسة" class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-400" />
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 text-xs mb-1">رابط الفيديو أو كود YouTube (Video URL / ID):</label>
+            <input type="text" id="inputVideoUrl" required placeholder="https://youtu.be/R8VZJ71WkaM أو R8VZJ71WkaM" oninput="previewVideoThumbnail()" class="w-full bg-sapphire-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-red-400" />
+          </div>
+        </div>
+
+        <!-- Thumbnail Live Preview -->
+        <div id="videoThumbPreviewBox" class="hidden items-center gap-3 p-3 rounded-xl bg-sapphire-950 border border-white/10">
+          <img id="videoThumbPreviewImg" src="" alt="Thumbnail" class="w-24 h-14 rounded-lg object-cover border border-white/20 shadow-md" />
+          <div>
+            <span class="text-xs font-black text-white block">معاينة الصورة المصغرة (Thumbnail)</span>
+            <span id="videoThumbExtractedId" class="text-[11px] text-cyan-300 font-mono"></span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2 border-t border-white/10">
+          <button onclick="saveVideoItem()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-xs shadow-md transition-all">
+            💾 حفظ الفيديو وتحديث موقع الزوار فوراً
+          </button>
+          <button onclick="closeVideoForm()" class="px-5 py-2.5 rounded-xl bg-sapphire-800 text-slate-300 hover:text-white text-xs font-bold">
+            إلغاء
+          </button>
+        </div>
+      </div>
+
+      <!-- CURRENT VIDEOS LIST GRID -->
+      <div class="space-y-2">
+        <h4 class="text-xs font-black text-slate-300 mb-2 flex items-center justify-between">
+          <span>🎬 الفيديوهات الحالية المعروضة للزوار:</span>
+          <span id="adminVideosCountBadge" class="text-[10px] text-red-300 bg-red-950 px-2 py-0.5 rounded-full border border-red-500/30 font-bold"></span>
+        </h4>
+
+        <div id="adminVideosList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <!-- Dynamically populated from currentAdminData.archiveVideos -->
+        </div>
+      </div>
+    </div>
+
+    <div id="content-donations" class="tab-panel hidden space-y-4">
         <div class="flex items-center justify-between">
           <div>
             <h3 class="text-sm sm:text-base font-black text-white flex items-center gap-2">
@@ -1380,6 +1473,7 @@
       populateGeneralForm();
       populateDonationsForm();
       renderAdminDonationLogs();
+      renderAdminVideos();
 
       renderAdminPlaces();
 
@@ -1527,6 +1621,198 @@
       currentAdminData.donationLogs = [];
       renderAdminDonationLogs();
       saveAdminData();
+    }
+
+    
+    function extractYouTubeId(url) {
+      if (!url) return '';
+      url = url.trim();
+      if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : url;
+    }
+
+    function previewVideoThumbnail() {
+      const urlInput = document.getElementById('inputVideoUrl');
+      const val = urlInput ? urlInput.value.trim() : '';
+      const vidId = extractYouTubeId(val);
+      const previewBox = document.getElementById('videoThumbPreviewBox');
+      const previewImg = document.getElementById('videoThumbPreviewImg');
+      const extractedText = document.getElementById('videoThumbExtractedId');
+
+      if (vidId && vidId.length === 11) {
+        if (previewImg) previewImg.src = `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
+        if (extractedText) extractedText.innerText = `كود الفيديو: ${vidId}`;
+        if (previewBox) { previewBox.classList.remove('hidden'); previewBox.classList.add('flex'); }
+      } else {
+        if (previewBox) { previewBox.classList.add('hidden'); previewBox.classList.remove('flex'); }
+      }
+    }
+
+    function renderAdminVideos() {
+      const list = document.getElementById('adminVideosList');
+      const badge = document.getElementById('adminVideosCountBadge');
+      if (!list) return;
+
+      const videos = currentAdminData.archiveVideos || [];
+      if (badge) badge.innerText = `${videos.length} فيديو`;
+
+      if (videos.length === 0) {
+        list.innerHTML = '<div class="col-span-full text-center py-8 text-xs text-slate-400 bg-sapphire-900/40 rounded-2xl border border-white/5">لا توجد فيديوهات مضافة حالياً. اضغط على زر "إضافة فيديو جديد" بالأعلى.</div>';
+        return;
+      }
+
+      list.innerHTML = videos.map((v, idx) => `
+        <div class="p-3.5 rounded-2xl bg-sapphire-950 border border-white/10 flex flex-col justify-between group hover:border-red-500/40 transition-all shadow-lg space-y-3">
+          <div>
+            <div class="relative aspect-video rounded-xl overflow-hidden bg-slate-900 border border-white/10 mb-2.5">
+              <img src="${v.thumbnail || ('https://img.youtube.com/vi/' + v.youtubeId + '/hqdefault.jpg')}" alt="${v.title}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1548625361-195fe5787fa9?w=500&auto=format&fit=crop&q=60'" />
+              <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/75 text-[10px] text-cyan-300 font-bold border border-white/10">
+                ${v.category || 'فيديو'}
+              </span>
+              <a href="https://youtu.be/${v.youtubeId}" target="_blank" class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-red-600 text-white text-[10px] font-bold flex items-center gap-1 shadow">
+                <span>يوتيوب ↗</span>
+              </a>
+            </div>
+
+            <h4 class="text-xs font-black text-white line-clamp-2 leading-snug mb-1">${v.title}</h4>
+            <p class="text-[11px] text-slate-400 flex items-center gap-1">
+              <span>🎙️</span>
+              <span>${v.speaker || 'كنيسة السيدة العذراء والبابا كيرلس'}</span>
+            </p>
+            <span class="text-[10px] text-slate-500 font-mono block mt-1">ID: ${v.youtubeId}</span>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-white/10 gap-1 text-xs">
+            <div class="flex items-center gap-1">
+              ${idx > 0 ? `<button onclick="moveVideoOrder(${idx}, -1)" title="تقديم لأعلى" class="p-1 rounded bg-white/10 hover:bg-white/20 text-slate-200">⬆️</button>` : ''}
+              ${idx < videos.length - 1 ? `<button onclick="moveVideoOrder(${idx}, 1)" title="تأخير لأسفل" class="p-1 rounded bg-white/10 hover:bg-white/20 text-slate-200">⬇️</button>` : ''}
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <button onclick="editVideoItem(${idx})" class="px-2.5 py-1 rounded-lg bg-blue-600/30 text-blue-300 hover:bg-blue-600 hover:text-white font-bold text-[11px] flex items-center gap-1">
+                <i data-lucide="edit-3" class="w-3 h-3"></i> تعديل
+              </button>
+              <button onclick="deleteVideoItem(${idx})" class="px-2.5 py-1 rounded-lg bg-red-600/30 text-red-300 hover:bg-red-600 hover:text-white font-bold text-[11px] flex items-center gap-1">
+                <i data-lucide="trash-2" class="w-3 h-3"></i> حذف
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+    }
+
+    function openAddVideoForm() {
+      document.getElementById('editVideoIndex').value = '-1';
+      document.getElementById('videoFormTitle').innerHTML = '<span>🎬</span> <span>إضافة فيديو جديد للأرشيف:</span>';
+      document.getElementById('inputVideoTitle').value = '';
+      document.getElementById('inputVideoCategory').value = 'احتفالية اليوبيل الـ 50';
+      document.getElementById('inputVideoSpeaker').value = '';
+      document.getElementById('inputVideoUrl').value = '';
+      previewVideoThumbnail();
+      
+      const box = document.getElementById('videoFormBox');
+      if (box) {
+        box.classList.remove('hidden');
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function editVideoItem(idx) {
+      const videos = currentAdminData.archiveVideos || [];
+      const v = videos[idx];
+      if (!v) return;
+
+      document.getElementById('editVideoIndex').value = idx;
+      document.getElementById('videoFormTitle').innerHTML = `<span>✏️</span> <span>تعديل فيديو: ${v.title}</span>`;
+      document.getElementById('inputVideoTitle').value = v.title || '';
+      document.getElementById('inputVideoCategory').value = v.category || 'احتفالية اليوبيل الـ 50';
+      document.getElementById('inputVideoSpeaker').value = v.speaker || '';
+      document.getElementById('inputVideoUrl').value = v.youtubeId || '';
+      previewVideoThumbnail();
+
+      const box = document.getElementById('videoFormBox');
+      if (box) {
+        box.classList.remove('hidden');
+        box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function closeVideoForm() {
+      const box = document.getElementById('videoFormBox');
+      if (box) box.classList.add('hidden');
+    }
+
+    function saveVideoItem() {
+      const title = document.getElementById('inputVideoTitle').value.trim();
+      const category = document.getElementById('inputVideoCategory').value;
+      const speaker = document.getElementById('inputVideoSpeaker').value.trim();
+      const rawUrl = document.getElementById('inputVideoUrl').value.trim();
+      const idx = parseInt(document.getElementById('editVideoIndex').value);
+
+      if (!title || !rawUrl) {
+        alert('من فضلك اكتب عنوان الفيديو ورابط YouTube');
+        return;
+      }
+
+      const ytId = extractYouTubeId(rawUrl);
+      if (!ytId || ytId.length < 5) {
+        alert('رابط يوتيوب غير صحيح، يرجى كتابة الرابط أو كود الفيديو');
+        return;
+      }
+
+      const videoObj = {
+        id: ytId,
+        title: title,
+        category: category,
+        speaker: speaker || 'كنيسة السيدة العذراء والبابا كيرلس',
+        youtubeId: ytId,
+        thumbnail: `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
+      };
+
+      if (!currentAdminData.archiveVideos) currentAdminData.archiveVideos = [];
+
+      if (idx >= 0 && idx < currentAdminData.archiveVideos.length) {
+        currentAdminData.archiveVideos[idx] = videoObj;
+        showToast('✅ تم تعديل وحفظ الفيديو بنجاح!');
+      } else {
+        currentAdminData.archiveVideos.unshift(videoObj);
+        showToast('✅ تم إضافة الفيديو الجديد بنجاح!');
+      }
+
+      closeVideoForm();
+      renderAdminVideos();
+      saveAdminData();
+    }
+
+    function deleteVideoItem(idx) {
+      const videos = currentAdminData.archiveVideos || [];
+      const v = videos[idx];
+      if (!v) return;
+
+      if (!confirm(`هل أنت متأكد من حذف فيديو "${v.title}"؟`)) return;
+
+      currentAdminData.archiveVideos.splice(idx, 1);
+      renderAdminVideos();
+      saveAdminData();
+      showToast('🗑️ تم حذف الفيديو من الأرشيف بنجاح!');
+    }
+
+    function moveVideoOrder(idx, direction) {
+      const videos = currentAdminData.archiveVideos || [];
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= videos.length) return;
+
+      const temp = videos[idx];
+      videos[idx] = videos[targetIdx];
+      videos[targetIdx] = temp;
+
+      renderAdminVideos();
+      saveAdminData();
+      showToast('🔄 تم تغيير ترتيب عرض الفيديو!');
     }
 
     function populateDonationsForm() {
@@ -2748,6 +3034,7 @@
         populateGeneralForm();
       populateDonationsForm();
       renderAdminDonationLogs();
+      renderAdminVideos();
 
         renderAdminPlaces();
 
