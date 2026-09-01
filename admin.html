@@ -190,71 +190,48 @@
 
 
 
-    <!-- ADMIN TABS NAVIGATION -->
-
-    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 border-b border-white/10">
-
-      <button onclick="showAdminTab('general')" id="tab-btn-general" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-purple-600 text-white shadow-md flex items-center gap-1.5 whitespace-nowrap">
-
+        <!-- ADMIN TABS NAVIGATION -->
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-white/10">
+      <button onclick="showAdminTab('general')" id="tab-btn-general" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-purple-600 text-white shadow-md flex items-center gap-1.5 whitespace-nowrap">
         <i data-lucide="settings" class="w-4 h-4"></i>
-
-        <span>1. الإعدادات العامة وGoogle Sheets</span>
-
+        <span>1. الإعدادات العامة</span>
       </button>
 
-
-
-      <button onclick="showAdminTab('places')" id="tab-btn-places" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
-
+      <button onclick="showAdminTab('places')" id="tab-btn-places" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
         <i data-lucide="map-pin" class="w-4 h-4"></i>
-
-        <span>2. الأماكن والخريطة والصور 📸</span>
-
+        <span>2. الأماكن والخريطة 📸</span>
       </button>
 
+      <button onclick="showAdminTab('youtube')" id="tab-btn-youtube" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap border border-red-500/30">
+        <i data-lucide="youtube" class="w-4 h-4 text-red-500"></i>
+        <span>3. فيديوهات YouTube 🎬</span>
+      </button>
 
-
-      <button onclick="showAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
-
+      <button onclick="showAdminTab('history')" id="tab-btn-history" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
         <i data-lucide="image" class="w-4 h-4"></i>
-
-        <span>3. أرشيف صور وتاريخ الكنيسة 🏛️</span>
-
+        <span>4. أرشيف الصور 🏛️</span>
       </button>
 
-
-
-      <button onclick="showAdminTab('schedule')" id="tab-btn-schedule" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
-
+      <button onclick="showAdminTab('schedule')" id="tab-btn-schedule" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
         <i data-lucide="calendar" class="w-4 h-4"></i>
-
-        <span>4. القداسات والمواعيد</span>
-
+        <span>5. القداسات والمواعيد</span>
       </button>
 
-
-
-      <button onclick="showAdminTab('shop')" id="tab-btn-shop" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
-
+      <button onclick="showAdminTab('shop')" id="tab-btn-shop" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
         <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-
-        <span>5. متجر المكتبة والكتب</span>
-
+        <span>6. متجر المكتبة</span>
       </button>
 
+      <button onclick="showAdminTab('donations')" id="tab-btn-donations" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap border border-rose-500/30">
+        <i data-lucide="heart-handshake" class="w-4 h-4 text-rose-400"></i>
+        <span>7. التبرعات والحسابات 💝</span>
+      </button>
 
-
-      <button onclick="showAdminTab('clergy')" id="tab-btn-clergy" class="admin-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
-
+      <button onclick="showAdminTab('clergy')" id="tab-btn-clergy" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-white/5 flex items-center gap-1.5 whitespace-nowrap">
         <i data-lucide="cross" class="w-4 h-4"></i>
-
-        <span>6. الآباء الكهنة والاعترافات</span>
-
+        <span>8. الآباء الكهنة</span>
       </button>
-
     </div>
-
-
 
     <!-- TABS CONTENT BOX -->
 
