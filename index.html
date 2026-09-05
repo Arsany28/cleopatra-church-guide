@@ -846,7 +846,7 @@
 
           <div id="inspImageWrapper" class="relative w-full md:w-56 h-36 rounded-2xl overflow-hidden border border-white/10 flex-shrink-0 bg-sapphire-950/80 shadow-md group cursor-pointer" onclick="openPlacePhotoModal()">
 
-            <img id="inspImage" src="" alt="صورة المكان" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <img id="inspImage" src="" alt="صورة المكان" onerror="this.classList.add('hidden'); const fb=document.getElementById('inspImageFallback'); if(fb) fb.classList.remove('hidden');" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
 
             <div id="inspImageFallback" class="w-full h-full flex items-center justify-center text-4xl hidden">
 
@@ -2265,68 +2265,44 @@
 
       data: null,
 
-      async init() {
-
+            async init() {
         const saved = localStorage.getItem('CLEOPATRA_CHURCH_DATA_V2');
-
         if (saved) {
-
           try { this.data = JSON.parse(saved); } catch(e) { this.data = JSON.parse(JSON.stringify(DEFAULT_STORE)); }
-
         } else {
-
           this.data = JSON.parse(JSON.stringify(DEFAULT_STORE));
-
         }
-
-
 
         if (!this.data.historyPhotos) {
-
           this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
-
         }
 
-
-
         // Fetch live real-time data from Google Sheets Cloud Database
-
         try {
-
           const res = await fetch(GOOGLE_SCRIPT_URL);
-
           if (res.ok) {
-
             const cloudData = await res.json();
-
             if (cloudData && cloudData.places && cloudData.places.length > 0) {
-
-              this.data = cloudData;
-
-              if (!this.data.historyPhotos || this.data.historyPhotos.length === 0) {
-
-                this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
-
+              // Smart Merge: Preserve local uploaded photos so they are NEVER overwritten
+              if (this.data && this.data.places) {
+                cloudData.places.forEach(cp => {
+                  const lp = this.data.places.find(p => p.key === cp.key);
+                  if (lp && lp.image && (lp.image.startsWith('data:') || lp.image.length > 50)) {
+                    cp.image = lp.image;
+                  }
+                });
               }
-
+              this.data = cloudData;
+              if (!this.data.historyPhotos || this.data.historyPhotos.length === 0) {
+                this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
+              }
               this.data.settings.googleScriptUrl = GOOGLE_SCRIPT_URL;
-
               localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(this.data));
-
-              this.applyToUI();
-
-              return;
-
             }
-
           }
-
         } catch(e) {}
 
-
-
         this.applyToUI();
-
       },
 
       async save() {
