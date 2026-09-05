@@ -2514,6 +2514,32 @@
 
 
     
+    
+    function sanitizePlaceData(p) {
+      if (!p) return p;
+      // If icon contains a URL by mistake, move it to image
+      if (p.icon && (p.icon.includes('http') || p.icon.includes('drive.google') || p.icon.includes('data:image') || p.icon.length > 10)) {
+        if (!p.image || p.image.trim() === '') {
+          p.image = p.icon;
+        }
+        p.icon = '🏛️';
+        if (p.key === 'studio') p.icon = '🎙️';
+        else if (p.key === 'playground') p.icon = '⚽';
+        else if (p.key === 'cafeteria') p.icon = '☕';
+        else if (p.key === 'toilets') p.icon = '🚻';
+        else if (p.key === 'condolence_hall') p.icon = '🕊️';
+        else if (p.key === 'big_church') p.icon = '👑';
+        else if (p.key === 'small_church') p.icon = '⛪';
+        else if (p.key === 'bookstore') p.icon = '📖';
+        else if (p.key === 'nursery') p.icon = '👶';
+        else if (p.key === 'garage') p.icon = '🚗';
+      }
+      if (p.image) {
+        p.image = formatImageUrl(p.image);
+      }
+      return p;
+    }
+
     function formatImageUrl(url) {
       if (!url) return '';
       url = url.trim();
@@ -2528,36 +2554,28 @@
     }
 
     function showPersistentPlace(placeKey) {
-
       activePersistentKey = placeKey;
-
       const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
-
-      const place = places.find(p => p.key === placeKey) || places[0];
-
+      let place = places.find(p => p.key === placeKey) || places[0];
       if (!place) return;
 
-
+      place = sanitizePlaceData(place);
 
       const inspector = document.getElementById('persistentPlaceInspector');
-
       if (!inspector) return;
-
       inspector.classList.remove('hidden');
 
-
-
       document.getElementById('inspTitle').innerText = place.title;
-
       
-
       // Handle Place Image Preview
-
       const imgEl = document.getElementById('inspImage');
-
       const fallbackEl = document.getElementById('inspImageFallback');
 
-      const finalImgUrl = formatImageUrl(place.image);
+      let finalImgUrl = formatImageUrl(place.image);
+      if (!finalImgUrl && place.icon && (place.icon.includes('http') || place.icon.includes('data:'))) {
+        finalImgUrl = formatImageUrl(place.icon);
+      }
+
       if (finalImgUrl && finalImgUrl.trim() !== '') {
         imgEl.src = finalImgUrl;
         imgEl.classList.remove('hidden');
@@ -2565,51 +2583,31 @@
       } else {
         imgEl.classList.add('hidden');
         if (fallbackEl) {
-          fallbackEl.innerText = (place.icon && place.icon.length <= 5) ? place.icon : '🏛️';
+          fallbackEl.innerText = (place.icon && place.icon.length <= 4) ? place.icon : '⛪';
           fallbackEl.classList.remove('hidden');
         }
       }
 
-      
-
       const floorNames = { 
-
         ground: 'مبنى الكنيسة - الدور الأرضي', 
-
-        first: 'مبنى الكنيسة - الدور العلوي', 
-
+        first: 'مبنى الكنيسة - الدور العلوي (الكاتدرائية)', 
         services: 'مبنى الخدمات المستقل',
-
-        basement: 'تحت خالص (البدروم والأنشطة)'
-
+        basement: 'تحت خالص (البدروم والأنشطة)' 
       };
-
       document.getElementById('inspFloor').innerText = floorNames[place.floor] || place.floor;
-
-      document.getElementById('inspDesc').innerText = place.desc || 'لا يوجد وصف تفصيلي.';
-
-      document.getElementById('inspHours').innerText = place.hours || 'متاح يومياً';
-
+      document.getElementById('inspDesc').innerText = place.desc || 'مكان مخصص لخدمة شعب الكنيسة ونوال البركة.';
+      document.getElementById('inspHours').innerText = place.hours || 'متاح طوال اليوم';
       document.getElementById('inspServant').innerText = place.servant || 'خدام الكنيسة';
-
-      document.getElementById('inspDirections').innerText = place.directions || 'اتبع اللوحات الإرشادية داخل الكنيسة.';
-
-      
+      document.getElementById('inspDirections').innerText = place.directions || 'اتبع اللوحات الإرشادية داخل مبنى الكنيسة.';
 
       const phoneLink = document.getElementById('inspPhoneLink');
-
       if (phoneLink) {
-
         phoneLink.innerText = place.phone || '01234567890';
-
         phoneLink.href = `tel:${place.phone || '01234567890'}`;
-
       }
 
-
-
+      inspector.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       renderQuickPlacesBar();
-
     }
 
 
