@@ -1993,113 +1993,33 @@
 
 
     function handleQuickPlaceUpload(key, e) {
-
       const file = e.target.files[0];
-
       if (!file) return;
 
+      showToast('⏳ جاري معالجة وضغط الصورة من جهازك...');
 
-
-      compressImageFile(file, 900, 700, 0.75, function(dataUrl) {
-
+      compressImageFile(file, 800, 600, 0.75, function(dataUrl) {
         const place = currentAdminData.places.find(p => p.key === key);
-
         if (place) {
-
           place.image = dataUrl;
-
           renderAdminPlaces();
-
           saveAdminData();
-
-          showToast(`📸 تم تحديث صورة "${place.title}" بنجاح!`);
-
+          showToast(`📸 تم رفع صورة "${place.title}" بنجاح وتظهر الآن على الخريطة!`);
         }
-
       });
-
     }
-
-
 
     function handleFormImageUpload(e) {
-
       const file = e.target.files[0];
-
       if (!file) return;
 
+      showToast('⏳ جاري معالجة وضغط الصورة من جهازك...');
 
-
-      compressImageFile(file, 900, 700, 0.75, function(dataUrl) {
-
+      compressImageFile(file, 800, 600, 0.75, function(dataUrl) {
         document.getElementById('placeImageInput').value = dataUrl;
-
         updatePlacePreviewFromUrl(dataUrl);
-
+        showToast('📸 تم اختيار الصورة بنجاح! اضغط على "حفظ المكان والصورة" لتأكيد الحفظ.');
       });
-
-    }
-
-
-
-    
-    
-    function sanitizePlaceData(p) {
-      if (!p) return p;
-      // If icon contains a URL by mistake, move it to image
-      if (p.icon && (p.icon.includes('http') || p.icon.includes('drive.google') || p.icon.includes('data:image') || p.icon.length > 10)) {
-        if (!p.image || p.image.trim() === '') {
-          p.image = p.icon;
-        }
-        p.icon = '🏛️';
-        if (p.key === 'studio') p.icon = '🎙️';
-        else if (p.key === 'playground') p.icon = '⚽';
-        else if (p.key === 'cafeteria') p.icon = '☕';
-        else if (p.key === 'toilets') p.icon = '🚻';
-        else if (p.key === 'condolence_hall') p.icon = '🕊️';
-        else if (p.key === 'big_church') p.icon = '👑';
-        else if (p.key === 'small_church') p.icon = '⛪';
-        else if (p.key === 'bookstore') p.icon = '📖';
-        else if (p.key === 'nursery') p.icon = '👶';
-        else if (p.key === 'garage') p.icon = '🚗';
-      }
-      if (p.image) {
-        p.image = formatImageUrl(p.image);
-      }
-      return p;
-    }
-
-    function formatImageUrl(url) {
-      if (!url) return '';
-      url = url.trim();
-      const gdMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/);
-      if (gdMatch && gdMatch[1]) {
-        return `https://lh3.googleusercontent.com/d/${gdMatch[1]}`;
-      }
-      if (url.includes('dropbox.com') && url.includes('dl=0')) {
-        return url.replace('dl=0', 'raw=1');
-      }
-      return url;
-    }
-
-    function updatePlacePreviewFromUrl(url) {
-      const preview = document.getElementById('placeImagePreview');
-      const placeholder = document.getElementById('placeImagePlaceholder');
-      const inputEl = document.getElementById('placeImageInput');
-      
-      const formatted = formatImageUrl(url);
-      if (inputEl && formatted !== url && formatted.startsWith('https://lh3.googleusercontent.com')) {
-        inputEl.value = formatted;
-      }
-
-      if (formatted && formatted.trim() !== '') {
-        preview.src = formatted;
-        preview.classList.remove('hidden');
-        if (placeholder) placeholder.classList.add('hidden');
-      } else {
-        preview.classList.add('hidden');
-        if (placeholder) placeholder.classList.remove('hidden');
-      }
     }
 
 
