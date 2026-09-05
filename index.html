@@ -791,29 +791,17 @@
           
 
           <!-- Place Image Preview Box -->
-
           <div id="inspImageWrapper" class="relative w-full md:w-56 h-36 rounded-2xl overflow-hidden border border-white/10 flex-shrink-0 bg-sapphire-950/80 shadow-md group cursor-pointer" onclick="openPlacePhotoModal()">
-
-            <img id="inspImage" src="" alt="صورة المكان" onerror="this.classList.add('hidden'); const fb=document.getElementById('inspImageFallback'); if(fb) fb.classList.remove('hidden');" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-
+            <img id="inspImage" src="big_church_photo.jpg" alt="صورة المكان" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://raw.githubusercontent.com/Arsany28/cleopatra-church-guide/main/big_church_photo.jpg'" />
             <div id="inspImageFallback" class="w-full h-full flex items-center justify-center text-4xl hidden">
-
               ⛪
-
             </div>
-
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-
               <span class="text-[10px] text-cyan-300 font-bold flex items-center gap-1">
-
                 <i data-lucide="maximize-2" class="w-3 h-3"></i>
-
                 <span>عرض الصورة بالحجم الكامل</span>
-
               </span>
-
             </div>
-
           </div>
 
 
@@ -2555,6 +2543,76 @@
             }
       ]
 };
+    // Ensure absolutely NO stale localStorage interferes with live photos
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch(e) {}
+
+    const AppStore = {
+      data: JSON.parse(JSON.stringify(DEFAULT_STORE)),
+      async init() {
+        // 1. Load immediately from in-memory DEFAULT_STORE (NO localStorage)
+        this.data = JSON.parse(JSON.stringify(DEFAULT_STORE));
+        this.applyToUI();
+
+        // 2. Fetch fresh church_database.json from GitHub
+        try {
+          const res = await fetch('./church_database.json?t=' + Date.now());
+          if (res.ok) {
+            const freshData = await res.json();
+            if (freshData && freshData.places && freshData.places.length > 0) {
+              this.data = freshData;
+              if (!this.data.historyPhotos || this.data.historyPhotos.length === 0) {
+                this.data.historyPhotos = DEFAULT_STORE.historyPhotos;
+              }
+              this.applyToUI();
+            }
+          }
+        } catch(e) {
+          console.log('AppStore loaded directly from memory DEFAULT_STORE');
+        }
+      },
+      save() {
+        // In-memory only - NO localStorage
+        this.applyToUI();
+      },
+      applyToUI() {
+        if (!this.data) return;
+        const s = this.data.settings || {};
+        const hName = document.getElementById('headerChurchName');
+        if (hName && s.churchName) hName.innerText = s.churchName;
+        const hLoc = document.getElementById('headerChurchLocation');
+        if (hLoc && s.churchLocation) hLoc.innerText = s.churchLocation;
+        const bLive = document.getElementById('bannerLiveTitle');
+        if (bLive && s.liveTitle) bLive.innerText = s.liveTitle;
+        if (s.studioPhone) {
+          const stEl = document.getElementById('facilitiesStudioPhoneTxt');
+          if (stEl) stEl.innerText = s.studioPhone;
+          const stLnk = document.getElementById('facilitiesStudioPhone');
+          if (stLnk) stLnk.href = `tel:${s.studioPhone}`;
+        }
+        if (s.address) {
+          const adEl = document.getElementById('historyAddress');
+          if (adEl) adEl.innerText = s.address;
+        }
+        const pName = document.getElementById('posterChurchName');
+        if (pName && s.churchName) pName.innerText = s.churchName;
+        const pLoc = document.getElementById('posterChurchLocation');
+        if (pLoc && s.churchLocation) pLoc.innerText = s.churchLocation;
+
+        if (typeof renderMapPlaces === 'function') renderMapPlaces();
+        if (typeof renderHistoryPhotos === 'function') renderHistoryPhotos();
+        if (typeof renderSchedule === 'function') renderSchedule(activeSchedFilter);
+        if (typeof renderProducts === 'function') renderProducts(activeShopFilter);
+        if (typeof renderDonations === 'function') renderDonations();
+        if (typeof renderClergy === 'function') renderClergy();
+        if (typeof populateConfessionSelect === 'function') populateConfessionSelect();
+        if (typeof renderArchiveVideos === 'function') renderArchiveVideos();
+        if (typeof generateChurchQRCode === 'function') generateChurchQRCode();
+      }
+    };
+
 
 
 
@@ -2728,42 +2786,40 @@
       return url;
     }
 
-    function showPersistentPlace(placeKey) {
+        function showPersistentPlace(placeKey) {
       activePersistentKey = placeKey;
-      const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
+      const places = (AppStore.data && AppStore.data.places && AppStore.data.places.length > 0) 
+        ? AppStore.data.places 
+        : DEFAULT_STORE.places;
       let place = places.find(p => p.key === placeKey) || places[0];
       if (!place) return;
 
       place = sanitizePlaceData(place);
 
       const inspector = document.getElementById('persistentPlaceInspector');
-      if (!inspector) return;
-      inspector.classList.remove('hidden');
+      if (inspector) inspector.classList.remove('hidden');
 
-      document.getElementById('inspTitle').innerText = place.title;
+      const titleEl = document.getElementById('inspTitle');
+      if (titleEl) titleEl.innerText = place.title;
       
       // Handle Place Image Preview
       const imgEl = document.getElementById('inspImage');
       const fallbackEl = document.getElementById('inspImageFallback');
 
-      let finalImgUrl = formatImageUrl(place.image);
-      if (!finalImgUrl && place.icon && (place.icon.includes('http') || place.icon.includes('data:'))) {
-        finalImgUrl = formatImageUrl(place.icon);
-      }
+      let targetImg = place.image || 'big_church_photo.jpg';
 
-      if (finalImgUrl && finalImgUrl.trim() !== '') {
-        imgEl.src = finalImgUrl;
-        imgEl.onerror = function() {
-          this.src = 'https://raw.githubusercontent.com/Arsany28/cleopatra-church-guide/main/' + (place.image || '');
-        };
+      if (imgEl) {
         imgEl.classList.remove('hidden');
         if (fallbackEl) fallbackEl.classList.add('hidden');
-      } else {
-        imgEl.classList.add('hidden');
-        if (fallbackEl) {
-          fallbackEl.innerText = (place.icon && place.icon.length <= 4) ? place.icon : '⛪';
-          fallbackEl.classList.remove('hidden');
-        }
+
+        imgEl.onerror = function() {
+          if (!this.dataset.triedRaw) {
+            this.dataset.triedRaw = '1';
+            this.src = 'https://raw.githubusercontent.com/Arsany28/cleopatra-church-guide/main/' + targetImg;
+          }
+        };
+        imgEl.dataset.triedRaw = '';
+        imgEl.src = targetImg;
       }
 
       const floorNames = { 
@@ -2772,11 +2828,16 @@
         services: 'مبنى الخدمات المستقل',
         basement: 'تحت خالص (البدروم والأنشطة)' 
       };
-      document.getElementById('inspFloor').innerText = floorNames[place.floor] || place.floor;
-      document.getElementById('inspDesc').innerText = place.desc || 'مكان مخصص لخدمة شعب الكنيسة ونوال البركة.';
-      document.getElementById('inspHours').innerText = place.hours || 'متاح طوال اليوم';
-      document.getElementById('inspServant').innerText = place.servant || 'خدام الكنيسة';
-      document.getElementById('inspDirections').innerText = place.directions || 'اتبع اللوحات الإرشادية داخل مبنى الكنيسة.';
+      const floorEl = document.getElementById('inspFloor');
+      if (floorEl) floorEl.innerText = floorNames[place.floor] || place.floor;
+      const descEl = document.getElementById('inspDesc');
+      if (descEl) descEl.innerText = place.desc || '';
+      const hoursEl = document.getElementById('inspHours');
+      if (hoursEl) hoursEl.innerText = place.hours || 'متاح طوال اليوم';
+      const servantEl = document.getElementById('inspServant');
+      if (servantEl) servantEl.innerText = place.servant || 'خدام الكنيسة';
+      const dirEl = document.getElementById('inspDirections');
+      if (dirEl) dirEl.innerText = place.directions || '';
 
       const phoneLink = document.getElementById('inspPhoneLink');
       if (phoneLink) {
@@ -2784,13 +2845,7 @@
         phoneLink.href = `tel:${place.phone || '01234567890'}`;
       }
 
-      // On mobile devices, immediately open the modal popup so user sees the real photo right away!
-      if (window.innerWidth < 768 && place.image) {
-        openPlacePhotoModal();
-      } else {
-        inspector.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      renderQuickPlacesBar();
+      if (typeof renderQuickPlacesBar === 'function') renderQuickPlacesBar();
     }
 
 
@@ -2805,32 +2860,37 @@
 
 
 
-    function openPlacePhotoModal() {
+        function openPlacePhotoModal() {
+      const places = (AppStore.data && AppStore.data.places && AppStore.data.places.length > 0) 
+        ? AppStore.data.places 
+        : DEFAULT_STORE.places;
+      const place = places.find(p => p.key === activePersistentKey) || places[0];
+      if (!place) return;
 
-      const places = (AppStore.data && AppStore.data.places) ? AppStore.data.places : [];
+      const targetImg = place.image || 'big_church_photo.jpg';
 
-      const place = places.find(p => p.key === activePersistentKey);
+      const iconEl = document.getElementById('lightboxIcon');
+      if (iconEl) iconEl.innerText = place.icon || '📸';
+      const titleEl = document.getElementById('lightboxTitle');
+      if (titleEl) titleEl.innerText = place.title;
+      const dateEl = document.getElementById('lightboxDate');
+      if (dateEl) dateEl.innerText = place.floor || 'معالم الكنيسة';
 
-      if (!place || !place.image) return;
+      const lbImg = document.getElementById('lightboxImg');
+      if (lbImg) {
+        lbImg.onerror = function() {
+          this.src = 'https://raw.githubusercontent.com/Arsany28/cleopatra-church-guide/main/' + targetImg;
+        };
+        lbImg.src = targetImg;
+      }
+      const descEl = document.getElementById('lightboxDesc');
+      if (descEl) descEl.innerText = place.desc || '';
 
-
-
-      document.getElementById('lightboxIcon').innerText = place.icon || '📸';
-
-      document.getElementById('lightboxTitle').innerText = place.title;
-
-      document.getElementById('lightboxDate').innerText = place.floor || 'معالم الكنيسة';
-
-      document.getElementById('lightboxImg').src = place.image;
-
-      document.getElementById('lightboxDesc').innerText = place.desc || '';
-
-
-
-      document.getElementById('photoLightboxModal').classList.remove('hidden');
-
-      document.getElementById('photoLightboxModal').classList.add('flex');
-
+      const modal = document.getElementById('photoLightboxModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
     }
 
 
