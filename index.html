@@ -1602,7 +1602,7 @@
 
             <div class="flex items-center gap-3.5 mb-3.5">
 
-              <div onclick="openHistoryLightbox(2)" class="w-14 h-20 rounded-xl overflow-hidden border-2 border-amber-400/50 shadow-md flex-shrink-0 cursor-pointer group/icon relative hover:scale-105 transition-transform" title="اضغط لتكبير أيقونة البابا كيرلس عمود الدين">
+              <div onclick="openHistoryLightbox(\'history_pope_cyril_icon.jpg\')" class="w-14 h-20 rounded-xl overflow-hidden border-2 border-amber-400/50 shadow-md flex-shrink-0 cursor-pointer group/icon relative hover:scale-105 transition-transform" title="اضغط لتكبير أيقونة البابا كيرلس عمود الدين">
 
                 <img src="history_pope_cyril_icon.jpg" alt="أيقونة القديس البابا كيرلس عمود الدين" onerror="this.src='https://raw.githubusercontent.com/Arsany28/cleopatra-church-guide/main/history_pope_cyril_icon.jpg'" class="w-full h-full object-cover" />
 
@@ -2517,34 +2517,20 @@
             },
             {
                         "id": 9,
-                        "title": "نهضة صوم السيدة العذراء مريم وصلوات القداسات الإلهية",
-                        "year": "أغسطس 2026م",
-                        "url": "history_altar_revival.jpg",
-                        "desc": "صورة من صلوات القداس الإلهي ورفع البخور أمام مذبح الكنيسة الطاهر بمشاركة القمص أبرآم إميل وكهنة الكنيسة خلال أيام النهضة الروحية."
-            },
-            {
-                        "id": 10,
                         "title": "خورس شمامسة وشعب الكنيسة في احتفالية اليوبيل الـ 50",
                         "year": "أغسطس 2026م",
                         "url": "history_deacons_choir.jpg",
                         "desc": "صورة حقيقية من الاحتفالية الكبرى وصوت التسابيح والألحان القبطية الأصيلة تملأ أرجاء صحن الكاتدرائية وسط بهجة غامرة لشعب الكنيسة."
             },
             {
-                        "id": 11,
+                        "id": 10,
                         "title": "احتفالية اليوبيل الذهبي (50 عاماً) بحضور البابا تواضروس الثاني",
                         "year": "أغسطس 2026م",
                         "url": "history_pope_jubilee_2026.jpg",
                         "desc": "لقطة تاريخية توثق مشاركة قداسة البابا المعظم الأنبا تواضروس الثاني مع أحبار الكنيسة وخورس الشمامسة في احتفالية مرور 50 عاماً على تأسيس الكنيسة."
             },
             {
-                        "id": 12,
-                        "title": "مبنى الخدمات المتكامل (صرح الحمامة الحسنة)",
-                        "year": "افتتاح 2023م",
-                        "url": "services_building_3d.jpg",
-                        "desc": "الماكيت الهندسي والتوثيق المعماري لمبنى الخدمات الملحق بالكنيسة المكون من عدة طوابق لخدمة مدارس الأحد، الأنشطة والخدمات الاجتماعية."
-            },
-            {
-                        "id": 13,
+                        "id": 11,
                         "title": "شعار اليوبيل الذهبي الرسمي (1976 - 2026م)",
                         "year": "نصف قرن",
                         "url": "history_church_logo_jubilee.jpg",
@@ -3033,11 +3019,9 @@
 
 
 
-    function openHistoryLightbox(id) {
-
+    function openHistoryLightbox(idOrUrl) {
       const photos = (AppStore.data && AppStore.data.historyPhotos) ? AppStore.data.historyPhotos : [];
-
-      const p = photos.find(item => item.id === id);
+      const p = photos.find(item => item.id === idOrUrl || item.url === idOrUrl);
 
       if (!p) return;
 
