@@ -2042,28 +2042,38 @@
 
 
 
+    
+    function formatImageUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+      const gdMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/);
+      if (gdMatch && gdMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${gdMatch[1]}`;
+      }
+      if (url.includes('dropbox.com') && url.includes('dl=0')) {
+        return url.replace('dl=0', 'raw=1');
+      }
+      return url;
+    }
+
     function updatePlacePreviewFromUrl(url) {
-
       const preview = document.getElementById('placeImagePreview');
-
       const placeholder = document.getElementById('placeImagePlaceholder');
-
-      if (url && url.trim() !== '') {
-
-        preview.src = url;
-
-        preview.classList.remove('hidden');
-
-        placeholder.classList.add('hidden');
-
-      } else {
-
-        preview.classList.add('hidden');
-
-        placeholder.classList.remove('hidden');
-
+      const inputEl = document.getElementById('placeImageInput');
+      
+      const formatted = formatImageUrl(url);
+      if (inputEl && formatted !== url && formatted.startsWith('https://lh3.googleusercontent.com')) {
+        inputEl.value = formatted;
       }
 
+      if (formatted && formatted.trim() !== '') {
+        preview.src = formatted;
+        preview.classList.remove('hidden');
+        if (placeholder) placeholder.classList.add('hidden');
+      } else {
+        preview.classList.add('hidden');
+        if (placeholder) placeholder.classList.remove('hidden');
+      }
     }
 
 
