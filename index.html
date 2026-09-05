@@ -1596,29 +1596,45 @@
 
 
 
-        <div class="p-5 rounded-2xl bg-sapphire-900/70 border border-amber-500/20 relative overflow-hidden">
+        <div class="p-5 rounded-2xl bg-sapphire-900/70 border border-amber-500/20 relative overflow-hidden flex flex-col justify-between">
 
-          <div class="flex items-center gap-3 mb-3">
+          <div>
 
-            <span class="text-3xl">👑</span>
+            <div class="flex items-center gap-3.5 mb-3.5">
 
-            <div>
+              <div onclick="openHistoryLightbox(2)" class="w-14 h-20 rounded-xl overflow-hidden border-2 border-amber-400/50 shadow-md flex-shrink-0 cursor-pointer group/icon relative hover:scale-105 transition-transform" title="اضغط لتكبير أيقونة البابا كيرلس عمود الدين">
 
-              <h3 class="font-black text-white text-base">القديس البابا كيرلس الأول (عمود الدين)</h3>
+                <img src="history_pope_cyril_icon.jpg" alt="أيقونة القديس البابا كيرلس عمود الدين" onerror="this.src='https://raw.githubusercontent.com/Arsany28/cleopatra-church-guide/main/history_pope_cyril_icon.jpg'" class="w-full h-full object-cover" />
 
-              <span class="text-[11px] text-amber-300">بابا وبطريرك الكرازة المرقسية الـ 24</span>
+                <div class="absolute inset-0 bg-slate-950/50 opacity-0 group-hover/icon:opacity-100 flex items-center justify-center transition-opacity">
+
+                  <span class="text-white text-xs">🔍</span>
+
+                </div>
+
+              </div>
+
+              <div>
+
+                <div class="inline-block bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-500/30 mb-1">شفيع الكنيسة وبطل الأرثوذكسية</div>
+
+                <h3 class="font-black text-white text-base">القديس البابا كيرلس الأول (عمود الدين)</h3>
+
+                <span class="text-[11px] text-amber-300/90 font-medium">بابا وبطريرك الكرازة المرقسية الـ 24</span>
+
+              </div>
 
             </div>
 
+            <p class="text-xs text-slate-300 leading-relaxed text-justify mb-3">
+
+              لُقّب بـ <strong>"عمود الدين"</strong> و <strong>"مصباح الكنيسة الأرثوذكسية"</strong>. قاد مجمع أفسس المسكوني المقدس عام 431م مدافعاً بقوة عن لاهوت السيد المسيح وإعلان السيدة العذراء <strong>"والدة الإله (ثيؤطوكوس)"</strong>. صاغ القداس الكيرلسي المليء بالعمق اللاهوتي، ويُحتفل بعيد نياحته في 3 أبيب من كل عام.
+
+            </p>
+
           </div>
 
-          <p class="text-xs text-slate-300 leading-relaxed text-justify mb-3">
-
-            لُقّب بـ <strong>"عمود الدين"</strong> و <strong>"مصباح الكنيسة الأرثوذكسية"</strong>. قاد مجمع أفسس المسكوني المقدس عام 431م مدافعاً بقوة عن لاهوت السيد المسيح وإعلان السيدة العذراء <strong>"والدة الإله (ثيؤطوكوس)"</strong>. صاغ القداس الكيرلسي المليء بالعمق اللاهوتي، ويُحتفل بعيد نياحته في 3 أبيب من كل عام.
-
-          </p>
-
-          <div class="bg-sapphire-950/80 p-2.5 rounded-xl border border-white/5 flex items-center justify-between text-xs">
+          <div class="bg-sapphire-950/80 p-2.5 rounded-xl border border-white/5 flex items-center justify-between text-xs mt-auto">
 
             <span class="text-slate-400">🕊️ تذكار نياحته:</span>
 
@@ -2452,48 +2468,55 @@
             },
             {
                         "id": 2,
+                        "title": "أيقونة القديس البابا كيرلس الأول (عمود الدين) شفيع الكنيسة",
+                        "year": "شفيع الكنيسة",
+                        "url": "history_pope_cyril_icon.jpg",
+                        "desc": "«أيقونة القديس البابا كيرلس عمود الدين» - البابا الـ 24 وبطل مجمع أفسس المسكوني، حاملاً أيقونة السيدة العذراء والدة الإله وعصا الرعاية وبجواره عمود الإيمان الأرثوذكسي."
+            },
+            {
+                        "id": 3,
                         "title": "مجمع الآباء كهنة الكنيسة الأحباء أمام الهيكل وحامل الأيقونات",
                         "year": "أرشيف الكنيسة",
                         "url": "history_church_fathers.jpg",
                         "desc": "صورة تذكارية موثقة للآباء الموقرين كهنة كنيسة السيدة العذراء والبابا كيرلس بكليوباترا أمام الهيكل المقدس وحامل الأيقونات المحفور."
             },
             {
-                        "id": 3,
+                        "id": 4,
                         "title": "احتفالية اليوبيل الذهبي (50 عاماً) بحضور البابا تواضروس الثاني",
                         "year": "أغسطس 2026م",
                         "url": "history_pope_jubilee_2026.jpg",
                         "desc": "لقطة تاريخية توثق مشاركة قداسة البابا المعظم الأنبا تواضروس الثاني مع أحبار الكنيسة وخورس الشمامسة في احتفالية مرور 50 عاماً على تأسيس الكنيسة."
             },
             {
-                        "id": 4,
+                        "id": 5,
                         "title": "خورس شمامسة وشعب الكنيسة في احتفالية اليوبيل الـ 50",
                         "year": "أغسطس 2026م",
                         "url": "history_deacons_choir.jpg",
                         "desc": "صورة حقيقية من الاحتفالية الكبرى وصوت التسابيح والألحان القبطية الأصيلة تملأ أرجاء صحن الكاتدرائية وسط بهجة غامرة لشعب الكنيسة."
             },
             {
-                        "id": 5,
+                        "id": 6,
                         "title": "نهضة صوم السيدة العذراء مريم وصلوات القداسات الإلهية",
                         "year": "أغسطس 2026م",
                         "url": "history_altar_revival.jpg",
                         "desc": "صورة من صلوات القداس الإلهي ورفع البخور أمام مذبح الكنيسة الطاهر بمشاركة القمص أبرآم إميل وكهنة الكنيسة خلال أيام النهضة الروحية."
             },
             {
-                        "id": 6,
+                        "id": 7,
                         "title": "الكاتدرائية الكبرى والقبة السماوية والنجف الكريستالي",
                         "year": "الصرح الحالي",
                         "url": "big_church_photo.jpg",
                         "desc": "صورة فوتوغرافية حقيقية لداخل صحن الكنيسة الكبرى وتصاميم الأعمدة الرخامية والأيقونات القبطية التراثية التي صممها كبار فناني الأيقونة."
             },
             {
-                        "id": 7,
+                        "id": 8,
                         "title": "مبنى الخدمات المتكامل (صرح الحمامة الحسنة)",
                         "year": "افتتاح 2023م",
                         "url": "services_building_3d.jpg",
                         "desc": "الماكيت الهندسي والتوثيق المعماري لمبنى الخدمات الملحق بالكنيسة المكون من عدة طوابق لخدمة مدارس الأحد، الأنشطة والخدمات الاجتماعية."
             },
             {
-                        "id": 8,
+                        "id": 9,
                         "title": "شعار اليوبيل الذهبي الرسمي (1976 - 2026م)",
                         "year": "نصف قرن",
                         "url": "history_church_logo_jubilee.jpg",
