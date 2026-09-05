@@ -2199,7 +2199,7 @@
 
         { key: 'playground', title: 'صالة الألعاب والملعب (تحت خالص بالبدروم)', category: 'services', floor: 'basement', icon: '⚽', image: 'services_building_3d.jpg', desc: 'ملعب مجهز بالنجيلة الخضراء وتنس طاولة وبلياردو وبيبي فوت وأنشطة رياضية لخدمة الشباب ومدارس الأحد.', hours: 'الجمعة والأحد بعد القداسات والاجتماعات', servant: 'مسؤول النشاط الرياضي', phone: '01234567890', directions: 'انزل سلم البدروم (تحت خالص) من الفناء الخارجي أو مدخل مبنى الخدمات.' },
 
-        { key: 'studio', title: 'استوديو الصوت والتسجيل والإنتاج (تحت خالص)', category: 'services', floor: 'basement', icon: '🎙️', image: 'services_building_3d.jpg', desc: 'استوديو احترافي معزول صوتياً بأحدث مايكروفونات لتسجيل الترانيم والألحان والإنتاج الإعلامي.', hours: 'بالحجز المسبق', servant: 'مهندس الصوت والإنتاج', phone: '01234567890', directions: 'البدروم (تحت خالص) - الممر الداخلي المعزول صوتياً بجوار الملعب.' }
+        { key: 'studio', title: 'استوديو الصوت والتسجيل والإنتاج (تحت خالص)', category: 'services', floor: 'basement', icon: '🎙️', image: 'https://lh3.googleusercontent.com/d/1CLvRoOcQeoeDW24Up4pPZpS-Bvqp_4Xi', desc: 'استوديو احترافي معزول صوتياً بأحدث مايكروفونات لتسجيل الترانيم والألحان والإنتاج الإعلامي.', hours: 'بالحجز المسبق', servant: 'مهندس الصوت والإنتاج', phone: '01234567890', directions: 'البدروم (تحت خالص) - الممر الداخلي المعزول صوتياً بجوار الملعب.' }
 
       ],
 
@@ -2265,7 +2265,7 @@
 
       data: null,
 
-            async init() {
+                  async init() {
         const saved = localStorage.getItem('CLEOPATRA_CHURCH_DATA_V2');
         if (saved) {
           try { this.data = JSON.parse(saved); } catch(e) { this.data = JSON.parse(JSON.stringify(DEFAULT_STORE)); }
@@ -2283,12 +2283,14 @@
           if (res.ok) {
             const cloudData = await res.json();
             if (cloudData && cloudData.places && cloudData.places.length > 0) {
-              // Smart Merge: Preserve local uploaded photos so they are NEVER overwritten
+              // Smart Merge: NEVER overwrite a valid image with an empty string!
               if (this.data && this.data.places) {
                 cloudData.places.forEach(cp => {
                   const lp = this.data.places.find(p => p.key === cp.key);
-                  if (lp && lp.image && (lp.image.startsWith('data:') || lp.image.length > 50)) {
-                    cp.image = lp.image;
+                  if (lp && lp.image && lp.image.trim() !== '') {
+                    if (!cp.image || cp.image.trim() === '' || cp.image.length < 5) {
+                      cp.image = lp.image;
+                    }
                   }
                 });
               }
