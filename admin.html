@@ -2043,6 +2043,32 @@
 
 
     
+    
+    function sanitizePlaceData(p) {
+      if (!p) return p;
+      // If icon contains a URL by mistake, move it to image
+      if (p.icon && (p.icon.includes('http') || p.icon.includes('drive.google') || p.icon.includes('data:image') || p.icon.length > 10)) {
+        if (!p.image || p.image.trim() === '') {
+          p.image = p.icon;
+        }
+        p.icon = '🏛️';
+        if (p.key === 'studio') p.icon = '🎙️';
+        else if (p.key === 'playground') p.icon = '⚽';
+        else if (p.key === 'cafeteria') p.icon = '☕';
+        else if (p.key === 'toilets') p.icon = '🚻';
+        else if (p.key === 'condolence_hall') p.icon = '🕊️';
+        else if (p.key === 'big_church') p.icon = '👑';
+        else if (p.key === 'small_church') p.icon = '⛪';
+        else if (p.key === 'bookstore') p.icon = '📖';
+        else if (p.key === 'nursery') p.icon = '👶';
+        else if (p.key === 'garage') p.icon = '🚗';
+      }
+      if (p.image) {
+        p.image = formatImageUrl(p.image);
+      }
+      return p;
+    }
+
     function formatImageUrl(url) {
       if (!url) return '';
       url = url.trim();
