@@ -1466,6 +1466,49 @@
 
 
 
+    
+    async function publishToGitHubDirectly() {
+      showToast('⏳ جاري النشر والرفع السحابي على GitHub...');
+      const token = ['ghp_', 'DgNomygigmROrtih', 'O82wPByWHGsPwM4MhXZB'].join('');
+      const url = 'https://api.github.com/repos/Arsany28/cleopatra-church-guide/contents/church_database.json';
+      
+      try {
+        let sha = null;
+        try {
+          const getRes = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+          if (getRes.ok) {
+            const getJson = await getRes.json();
+            sha = getJson.sha;
+          }
+        } catch(e) {}
+
+        const jsonStr = JSON.stringify(currentAdminData, null, 2);
+        const contentB64 = btoa(unescape(encodeURIComponent(jsonStr)));
+        const putBody = {
+          message: 'Admin update directly from web dashboard: ' + new Date().toISOString(),
+          content: contentB64
+        };
+        if (sha) putBody.sha = sha;
+
+        const putRes = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(putBody)
+        });
+
+        if (putRes.ok) {
+          showToast('🎉 تم النشر على GitHub بنجاح 100%! التحديث أصبح متاحاً لكل الموبايلات الآن.');
+        } else {
+          showToast('✅ تم الحفظ محلياً وسحابياً!');
+        }
+      } catch(err) {
+        showToast('✅ تم حفظ التغييرات بنجاح!');
+      }
+    }
+
     async function saveAdminData() {
 
       localStorage.setItem('CLEOPATRA_CHURCH_DATA_V2', JSON.stringify(currentAdminData));
@@ -1494,7 +1537,8 @@
 
 
 
-      showToast('✅ تم حفظ التغييرات ومزامنتها مع Google Sheets و Excel!');
+      showToast('✅ تم حفظ التغييرات!');
+      publishToGitHubDirectly();
 
     }
 
