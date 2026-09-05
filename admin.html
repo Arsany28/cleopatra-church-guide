@@ -146,6 +146,12 @@
 
       <div class="flex items-center gap-2 flex-wrap">
 
+        <!-- Auto-Save Status Indicator Badge -->
+        <div id="autoSaveIndicator" class="px-3.5 py-1.5 rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center gap-2 shadow-sm transition-all" title="حالة الحفظ التلقائي">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          <span id="autoSaveText">الحفظ التلقائي مفعّل ✅</span>
+        </div>
+
         <button onclick="downloadExcelDatabase()" class="px-3 py-1.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all">
 
           <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
@@ -1883,6 +1889,7 @@
     async function loadAdminData() {
       // 1. First render with embedded default data immediately (No blank screens)
       renderAllAdminSections();
+      setupAutoSaveFormListeners();
 
       // 2. Fetch fresh live database from church_database.json
       try {
@@ -1911,6 +1918,102 @@
           }
         }
       } catch(e) {}
+    }
+
+    
+    // ================= INTELLIGENT AUTO-SAVE SYSTEM =================
+    let autoSaveTimer = null;
+    let isSaving = false;
+
+    function updateAutoSaveStatus(status, text) {
+      const badge = document.getElementById('autoSaveIndicator');
+      const label = document.getElementById('autoSaveText');
+      if (!badge || !label) return;
+
+      if (status === 'saving') {
+        badge.className = 'px-3.5 py-1.5 rounded-xl bg-amber-950/90 text-amber-300 border border-amber-500/40 text-xs font-bold flex items-center gap-2 shadow-sm transition-all animate-pulse';
+        label.innerText = text || 'جاري الحفظ التلقائي السحابي... ⏳';
+      } else if (status === 'saved') {
+        badge.className = 'px-3.5 py-1.5 rounded-xl bg-emerald-950/90 text-emerald-300 border border-emerald-500/40 text-xs font-bold flex items-center gap-2 shadow-sm transition-all';
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        label.innerText = text || `تم الحفظ تلقائياً (${timeStr}) ✅`;
+      } else if (status === 'modified') {
+        badge.className = 'px-3.5 py-1.5 rounded-xl bg-blue-950/90 text-blue-300 border border-blue-500/40 text-xs font-bold flex items-center gap-2 shadow-sm transition-all';
+        label.innerText = text || 'توجد تعديلات قيد الحفظ... ✍️';
+      } else if (status === 'error') {
+        badge.className = 'px-3.5 py-1.5 rounded-xl bg-red-950/90 text-red-300 border border-red-500/40 text-xs font-bold flex items-center gap-2 shadow-sm transition-all';
+        label.innerText = text || 'فشل الحفظ السحابي ⚠️';
+      }
+    }
+
+    function syncAllFormsToData() {
+      if (!currentAdminData) return;
+      if (!currentAdminData.settings) currentAdminData.settings = {};
+
+      const getV = (id) => { const el = document.getElementById(id); return el ? el.value : null; };
+      const name = getV('inputChurchName'); if (name !== null) currentAdminData.settings.churchName = name;
+      const loc = getV('inputChurchLocation'); if (loc !== null) currentAdminData.settings.churchLocation = loc;
+      const shop = getV('inputShopWhatsapp'); if (shop !== null) currentAdminData.settings.shopWhatsapp = shop;
+      const studio = getV('inputStudioPhone'); if (studio !== null) currentAdminData.settings.studioPhone = studio;
+      const addr = getV('inputAddress'); if (addr !== null) currentAdminData.settings.address = addr;
+      const yt = getV('inputYoutubeUrl'); if (yt !== null) currentAdminData.settings.youtubeUrl = yt;
+      const live = getV('inputLiveBanner'); if (live !== null) currentAdminData.settings.liveTitle = live;
+
+      if (!currentAdminData.donations) currentAdminData.donations = {};
+      const don = currentAdminData.donations;
+      const getDV = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      don.instapay = getDV('inputDonInstapay');
+      don.vodafoneCash = getDV('inputDonVodafone');
+      don.bank1Name = getDV('inputDonBank1Name');
+      don.bank1Account = getDV('inputDonBank1Acc');
+      don.bank1Iban = getDV('inputDonBank1Iban');
+      don.bank2Name = getDV('inputDonBank2Name');
+      don.bank2Account = getDV('inputDonBank2Acc');
+      don.bank2Iban = getDV('inputDonBank2Iban');
+      don.treasuryHours = getDV('inputDonTreasuryHours');
+      don.whatsapp = getDV('inputDonWhatsapp');
+    }
+
+    function triggerAutoSave(immediate = false) {
+      syncAllFormsToData();
+      updateAutoSaveStatus('modified');
+
+      if (autoSaveTimer) clearTimeout(autoSaveTimer);
+
+      if (immediate) {
+        executeAutoSave();
+      } else {
+        autoSaveTimer = setTimeout(() => {
+          executeAutoSave();
+        }, 1200); // 1.2s debounce
+      }
+    }
+
+    async function executeAutoSave() {
+      if (isSaving) return;
+      isSaving = true;
+      updateAutoSaveStatus('saving');
+
+      try {
+        syncAllFormsToData();
+        await publishToGitHubDirectly();
+        updateAutoSaveStatus('saved');
+      } catch (err) {
+        console.error('AutoSave error:', err);
+        updateAutoSaveStatus('error');
+      } finally {
+        isSaving = false;
+      }
+    }
+
+    function setupAutoSaveFormListeners() {
+      const formInputs = document.querySelectorAll('#content-general input, #content-general textarea, #content-general select, #content-donations input, #content-donations textarea');
+      formInputs.forEach(input => {
+        input.addEventListener('input', () => triggerAutoSave(false));
+        input.addEventListener('change', () => triggerAutoSave(false));
+        input.addEventListener('blur', () => triggerAutoSave(true));
+      });
     }
 
     async function publishToGitHubDirectly() {
@@ -1956,6 +2059,7 @@
     }
 
     async function saveAdminData() {
+      syncAllFormsToData();
       const scriptUrl = (currentAdminData.settings && currentAdminData.settings.googleScriptUrl) ? currentAdminData.settings.googleScriptUrl : 'https://script.google.com/macros/s/AKfycbzHM2C6CIiANsO-Iv87C1NGMez_7CrADefOwfV-Z2g0wGVaoBMvgrCPErVLsyTuI99W/exec';
       try {
         fetch(scriptUrl, {
@@ -1966,8 +2070,8 @@
         }).catch(() => {});
       } catch(e) {}
 
-      showToast('✅ تم حفظ التغييرات!');
-      publishToGitHubDirectly();
+      showToast('⚡ جاري الحفظ التلقائي ونشر التغييرات...');
+      await executeAutoSave();
     }
 
 
