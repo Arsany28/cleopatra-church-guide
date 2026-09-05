@@ -2513,6 +2513,20 @@
 
 
 
+    
+    function formatImageUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+      const gdMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]+)/);
+      if (gdMatch && gdMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${gdMatch[1]}`;
+      }
+      if (url.includes('dropbox.com') && url.includes('dl=0')) {
+        return url.replace('dl=0', 'raw=1');
+      }
+      return url;
+    }
+
     function showPersistentPlace(placeKey) {
 
       activePersistentKey = placeKey;
@@ -2543,26 +2557,17 @@
 
       const fallbackEl = document.getElementById('inspImageFallback');
 
-      if (place.image && place.image.trim() !== '') {
-
-        imgEl.src = place.image;
-
+      const finalImgUrl = formatImageUrl(place.image);
+      if (finalImgUrl && finalImgUrl.trim() !== '') {
+        imgEl.src = finalImgUrl;
         imgEl.classList.remove('hidden');
-
         if (fallbackEl) fallbackEl.classList.add('hidden');
-
       } else {
-
         imgEl.classList.add('hidden');
-
         if (fallbackEl) {
-
-          fallbackEl.innerText = place.icon || '🏛️';
-
+          fallbackEl.innerText = (place.icon && place.icon.length <= 5) ? place.icon : '🏛️';
           fallbackEl.classList.remove('hidden');
-
         }
-
       }
 
       
